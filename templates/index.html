@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空天信息日报 | Space Daily</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .header .date {
+            font-size: 18px;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        .nav {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+        }
+        .nav a {
+            color: #495057;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .nav a:hover, .nav a.active {
+            background: #2a5298;
+            color: white;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 20px;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title .icon {
+            font-size: 24px;
+        }
+        .news-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2a5298;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .news-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .news-item.priority-high {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+        .news-item.priority-medium {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .news-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            flex: 1;
+            margin-right: 10px;
+        }
+        .news-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .tag-commercial { background: #e3f2fd; color: #1976d2; }
+        .tag-lowaltitude { background: #f3e5f5; color: #7b1fa2; }
+        .tag-remote { background: #e8f5e9; color: #388e3c; }
+        .tag-policy { background: #fff3e0; color: #f57c00; }
+        .tag-investment { background: #fce4ec; color: #c2185b; }
+        .tag-tech { background: #e0f2f1; color: #00796b; }
+        .news-summary {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #adb5bd;
+        }
+        .news-link {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .news-link:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 24px; }
+            .content { padding: 20px; }
+            .nav { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚀 空天信息日报</h1>
+            <div class="subtitle">Space Daily - 商业航天 · 低空经济 · 遥感卫星</div>
+            <div class="date">{{DATE}} | {{WEEKDAY}}</div>
+        </header>
+        
+        <nav class="nav">
+            <a href="#commercial" class="active">商业航天</a>
+            <a href="#lowaltitude">低空经济</a>
+            <a href="#remote">遥感卫星</a>
+            <a href="#investment">投融资</a>
+            <a href="#policy">政策法规</a>
+            <a href="#tech">技术前沿</a>
+        </nav>
+        
+        <div class="content">
+            <!-- 统计卡片 -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">{{COMMERCIAL_COUNT}}</div>
+                    <div class="stat-label">商业航天动态</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{LOWALTITUDE_COUNT}}</div>
+                    <div class="stat-label">低空经济资讯</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{REMOTE_COUNT}}</div>
+                    <div class="stat-label">遥感卫星进展</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{TOTAL_COUNT}}</div>
+                    <div class="stat-label">今日总计</div>
+                </div>
+            </div>
+
+            <!-- 商业航天 -->
+            <section class="section" id="commercial">
+                <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
+                {{COMMERCIAL_NEWS}}
+            </section>
+
+            <!-- 低空经济 -->
+            <section class="section" id="lowaltitude">
+                <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
+                {{LOWALTITUDE_NEWS}}
+            </section>
+
+            <!-- 遥感卫星 -->
+            <section class="section" id="remote">
+                <h2 class="section-title"><span class="icon">🛰️</span> 遥感卫星</h2>
+                {{REMOTE_NEWS}}
+            </section>
+
+            <!-- 投融资 -->
+            <section class="section" id="investment">
+                <h2 class="section-title"><span class="icon">💰</span> 投融资动态</h2>
+                {{INVESTMENT_NEWS}}
+            </section>
+
+            <!-- 政策法规 -->
+            <section class="section" id="policy">
+                <h2 class="section-title"><span class="icon">📜</span> 政策法规</h2>
+                {{POLICY_NEWS}}
+            </section>
+
+            <!-- 技术前沿 -->
+            <section class="section" id="tech">
+                <h2 class="section-title"><span class="icon">🔬</span> 技术前沿</h2>
+                {{TECH_NEWS}}
+            </section>
+        </div>
+        
+        <footer class="footer">
+            <p>Space Daily 空天信息日报 | 每日自动更新</p>
+            <p>Generated by AI at {{DATETIME}} | Data sources: 50+ industry channels</p>
+        </footer>
+    </div>
+</body>
+</html>

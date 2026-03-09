@@ -1,0 +1,93 @@
+# 空天信息行业日报数据源配置
+# Space Daily - Data Sources Configuration
+
+sources:
+  # 国内商业航天
+  domestic_space:
+    - name: "泰伯网"
+      url: "https://www.taibo.cn/rss"
+      category: "商业航天"
+    - name: "卫星与网络"
+      url: "http://www.satnet.com.cn/rss"
+      category: "商业航天"
+    - name: "36氪航天"
+      url: "https://36kr.com/search/articles/航天"
+      category: "投融资"
+    
+  # 低空经济
+  low_altitude:
+    - name: "亿航智能"
+      url: "https://www.ehang.com/news/rss"
+      category: "低空经济"
+    - name: "小鹏汇天"
+      url: "https://www.ht-aero.com/news/rss"
+      category: "低空经济"
+    - name: "民航局"
+      url: "https://www.caac.gov.cn/rss"
+      category: "政策法规"
+    
+  # 国际商业航天
+  international:
+    - name: "SpaceNews"
+      url: "https://spacenews.com/feed/"
+      category: "国际航天"
+    - name: "Planet Labs"
+      url: "https://www.planet.com/rss"
+      category: "遥感卫星"
+    - name: "Maxar"
+      url: "https://www.maxar.com/rss"
+      category: "遥感卫星"
+    
+  # 技术论文
+  research:
+    - name: "arXiv Remote Sensing"
+      url: "http://arxiv.org/rss/cs.CV"
+      category: "技术前沿"
+    - name: "IEEE GRSS"
+      url: "https://www.grss-ieee.org/rss"
+      category: "技术前沿"
+    
+  # 政策
+  policy:
+    - name: "工信部"
+      url: "https://www.miit.gov.cn/rss"
+      category: "政策法规"
+    - name: "自然资源部"
+      url: "https://www.mnr.gov.cn/rss"
+      category: "政策法规"
+
+# 重点企业监控（网页监控）
+companies:
+  - name: "中科星图"
+    url: "https://www.geovis.com.cn/news"
+    selector: ".news-list"
+  - name: "航天宏图"
+    url: "https://www.piesat.cn/news"
+    selector: ".news-item"
+  - name: "长光卫星"
+    url: "https://www.charmingglobe.com/news"
+    selector: ".news"
+  - name: "蓝箭航天"
+    url: "https://www.landspace.com/news"
+    selector: ".news-list"
+  - name: "天兵科技"
+    url: "https://www.space-pioneer.com/news"
+    selector: ".news"
+  - name: "银河航天"
+    url: "https://www.galaxyspace.com/news"
+    selector: ".news-item"
+  - name: "SpaceX"
+    url: "https://www.spacex.com/updates"
+    selector: ".update"
+  - name: "Rocket Lab"
+    url: "https://www.rocketlabusa.com/news"
+    selector: ".news-item"
+
+# 分类标签映射
+tags:
+  商业航天: ["发射", "火箭", "卫星", "星座", "SpaceX", "蓝箭", "天兵"]
+  低空经济: ["eVTOL", "无人机", "低空", "适航", "亿航", "小鹏汇天", "UAM"]
+  遥感卫星: ["遥感", "SAR", "光学", "高光谱", "Planet", "Maxar", "吉林一号"]
+  投融资: ["融资", "投资", "IPO", "并购", "亿元", "估值"]
+  政策法规: ["政策", "法规", "标准", "准入", "空域", "许可"]
+  技术前沿: ["AI", "大模型", "深度学习", "论文", "arXiv", "IEEE"]

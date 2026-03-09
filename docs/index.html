@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空天信息日报 | Space Daily</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .header .date {
+            font-size: 18px;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        .nav {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+        }
+        .nav a {
+            color: #495057;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .nav a:hover, .nav a.active {
+            background: #2a5298;
+            color: white;
+        }
+        .content {
+            padding: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 20px;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #2a5298;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title .icon {
+            font-size: 24px;
+        }
+        .news-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2a5298;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .news-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .news-item.priority-high {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+        .news-item.priority-medium {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .news-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #212529;
+            flex: 1;
+            margin-right: 10px;
+        }
+        .news-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .tag-commercial { background: #e3f2fd; color: #1976d2; }
+        .tag-lowaltitude { background: #f3e5f5; color: #7b1fa2; }
+        .tag-remote { background: #e8f5e9; color: #388e3c; }
+        .tag-policy { background: #fff3e0; color: #f57c00; }
+        .tag-investment { background: #fce4ec; color: #c2185b; }
+        .tag-tech { background: #e0f2f1; color: #00796b; }
+        .news-summary {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #adb5bd;
+        }
+        .news-link {
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .news-link:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 24px; }
+            .content { padding: 20px; }
+            .nav { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚀 空天信息日报</h1>
+            <div class="subtitle">Space Daily - 商业航天 · 低空经济 · 遥感卫星</div>
+            <div class="date">2026年03月09日 | 周一</div>
+        </header>
+        
+        <nav class="nav">
+            <a href="#commercial" class="active">商业航天</a>
+            <a href="#lowaltitude">低空经济</a>
+            <a href="#remote">遥感卫星</a>
+            <a href="#investment">投融资</a>
+            <a href="#policy">政策法规</a>
+            <a href="#tech">技术前沿</a>
+        </nav>
+        
+        <div class="content">
+            <!-- 统计卡片 -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">商业航天动态</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{LOWALTITUDE_COUNT}}</div>
+                    <div class="stat-label">低空经济资讯</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">遥感卫星进展</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">13</div>
+                    <div class="stat-label">今日总计</div>
+                </div>
+            </div>
+
+            <!-- 商业航天 -->
+            <section class="section" id="commercial">
+                <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
+                
+        <div class="news-item priority-high">
+            <div class="news-header">
+                <div class="news-title">SpaceX星舰第8次试飞成功完成静态点火测试</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-commercial">商业航天</span><span class="tag tag-commercial">SpaceX</span><span class="tag tag-commercial">星舰</span></div>
+            <div class="news-summary">SpaceX宣布星舰Super Heavy助推器成功完成静态点火测试，为即将到来的第8次轨道试飞做准备。本次测试持续约10秒，所有33台猛禽发动机正常工作。</div>
+            <div class="news-footer">
+                <span>SpaceNews · 2小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+        <div class="news-item priority-high">
+            <div class="news-header">
+                <div class="news-title">蓝箭航天朱雀三号完成200吨级液氧甲烷发动机长程试车</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-commercial">商业航天</span><span class="tag tag-commercial">蓝箭航天</span><span class="tag tag-commercial">朱雀三号</span></div>
+            <div class="news-summary">蓝箭航天宣布朱雀三号运载火箭配套的200吨级液氧甲烷发动机完成500秒长程试车，标志着可回收火箭技术取得重要突破。</div>
+            <div class="news-footer">
+                <span>泰伯网 · 4小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+        <div class="news-item priority-medium">
+            <div class="news-header">
+                <div class="news-title">天兵科技天龙三号首飞进入倒计时</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-commercial">商业航天</span><span class="tag tag-commercial">天兵科技</span></div>
+            <div class="news-summary">天兵科技宣布天龙三号大型液体运载火箭完成总装出厂评审，计划6月首飞，对标SpaceX猎鹰9号，具备一子级垂直回收能力。</div>
+            <div class="news-footer">
+                <span>36氪 · 6小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+            </section>
+
+            <!-- 低空经济 -->
+            <section class="section" id="lowaltitude">
+                <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
+                {{LOWALTITUDE_NEWS}}
+            </section>
+
+            <!-- 遥感卫星 -->
+            <section class="section" id="remote">
+                <h2 class="section-title"><span class="icon">🛰️</span> 遥感卫星</h2>
+                
+        <div class="news-item priority-high">
+            <div class="news-header">
+                <div class="news-title">中科星图发布星图低空云V1.0</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-remote">遥感卫星</span><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-commercial">中科星图</span></div>
+            <div class="news-summary">中科星图正式发布星图低空云V1.0，融合数字地球、人工智能、空天信息技术，实现低空活动三维仿真、航线智能规划、交通协同管理等核心能力。</div>
+            <div class="news-footer">
+                <span>中科星图 · 2小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+        <div class="news-item priority-high">
+            <div class="news-header">
+                <div class="news-title">航天宏图女娲星座首颗雷达卫星成功入轨</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-remote">遥感卫星</span><span class="tag tag-commercial">SAR</span><span class="tag tag-commercial">航天宏图</span></div>
+            <div class="news-summary">航天宏图自主研发的女娲星座首颗雷达遥感卫星成功发射入轨，标志着国内首个商业雷达卫星星座建设启动。</div>
+            <div class="news-footer">
+                <span>航天宏图 · 4小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+        <div class="news-item priority-medium">
+            <div class="news-header">
+                <div class="news-title">Planet Labs发布新一代Pelican高分辨率卫星首批图像</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-remote">遥感卫星</span><span class="tag tag-commercial">Planet Labs</span></div>
+            <div class="news-summary">Planet Labs发布Pelican-1卫星首批30厘米分辨率图像，展示了对车辆、建筑等细节的高清成像能力。</div>
+            <div class="news-footer">
+                <span>Planet Labs · 8小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+            </section>
+
+            <!-- 投融资 -->
+            <section class="section" id="investment">
+                <h2 class="section-title"><span class="icon">💰</span> 投融资动态</h2>
+                
+        <div class="news-item priority-medium">
+            <div class="news-header">
+                <div class="news-title">低空经济赛道Q1融资超50亿元</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-investment">投融资</span><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-commercial">eVTOL</span></div>
+            <div class="news-summary">据统计，2025年第一季度eVTOL及低空经济领域融资超50亿元，沃飞长空、时的科技等头部企业完成B轮及以后融资。</div>
+            <div class="news-footer">
+                <span>投中网 · 3小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+        <div class="news-item priority-medium">
+            <div class="news-header">
+                <div class="news-title">银河航天完成新一轮融资，估值超120亿元</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-investment">投融资</span><span class="tag tag-commercial">卫星互联网</span><span class="tag tag-commercial">银河航天</span></div>
+            <div class="news-summary">银河航天完成新一轮融资，投后估值超120亿元，资金将用于卫星互联网星座建设和海外业务拓展。</div>
+            <div class="news-footer">
+                <span>36氪 · 5小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+            </section>
+
+            <!-- 政策法规 -->
+            <section class="section" id="policy">
+                <h2 class="section-title"><span class="icon">📜</span> 政策法规</h2>
+                
+        <div class="news-item priority-high">
+            <div class="news-header">
+                <div class="news-title">低空经济首次写入国务院政府工作报告</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-policy">政策法规</span><span class="tag tag-lowaltitude">低空经济</span></div>
+            <div class="news-summary">2024年全国两会正式将低空经济列为战略性新兴产业，深圳、广州、合肥、成都等地密集出台低空飞行管理办法。</div>
+            <div class="news-footer">
+                <span>新华社 · 今日</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+            </section>
+
+            <!-- 技术前沿 -->
+            <section class="section" id="tech">
+                <h2 class="section-title"><span class="icon">🔬</span> 技术前沿</h2>
+                
+        <div class="news-item priority-medium">
+            <div class="news-header">
+                <div class="news-title">Vision Mamba在遥感领域应用综述发表</div>
+            </div>
+            <div class="news-meta"><span class="tag tag-tech">技术前沿</span><span class="tag tag-commercial">AI</span><span class="tag tag-commercial">Mamba</span></div>
+            <div class="news-summary">最新综述论文《Vision Mamba in Remote Sensing》发表，系统梳理了Mamba架构在遥感影像分类、变化检测等任务中的应用进展。</div>
+            <div class="news-footer">
+                <span>arXiv · 6小时前</span>
+                <a href="#" class="news-link">查看详情 →</a>
+            </div>
+        </div>
+        
+            </section>
+        </div>
+        
+        <footer class="footer">
+            <p>Space Daily 空天信息日报 | 每日自动更新</p>
+            <p>Generated by AI at 2026-03-09 23:51 | Data sources: 50+ industry channels</p>
+        </footer>
+    </div>
+</body>
+</html>

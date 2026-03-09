@@ -1,0 +1,13 @@
+{
+  "name": "Space Daily Auto Generator",
+  "schedule": {
+    "kind": "cron",
+    "expr": "0 8 * * *",
+    "tz": "Asia/Shanghai"
+  },
+  "payload": {
+    "kind": "agentTurn",
+    "message": "执行空天信息日报生成任务：cd /root/.openclaw/workspace/space-daily/src && python3 generator.py，然后打包 docs 文件夹到 /root/.openclaw/workspace/space-daily/daily-reports/ 目录，文件名格式为 space-daily-YYYYMMDD.tar.gz"
+  },
+  "sessionTarget": "isolated"
+}
