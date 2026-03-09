@@ -4,232 +4,529 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>空天信息日报 | Space Daily</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --text: #333;
+            --text-light: #666;
+            --bg: #f8f9fa;
+            --card-bg: #fff;
+            --border: #e9ecef;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
-            max-width: 900px;
+        
+        /* 固定导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0 20px;
+        }
+        
+        .navbar-content {
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-        .header .subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-        .header .date {
-            font-size: 18px;
-            font-weight: 300;
-            opacity: 0.95;
-        }
-        .nav {
-            background: #f8f9fa;
-            padding: 15px 30px;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-        }
-        .nav a {
-            color: #495057;
-            text-decoration: none;
-            font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-        .nav a:hover, .nav a.active {
-            background: #2a5298;
-            color: white;
-        }
-        .content {
-            padding: 30px;
-        }
-        .section {
-            margin-bottom: 40px;
-        }
-        .section-title {
-            font-size: 20px;
-            color: #1e3c72;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #2a5298;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
+            height: 60px;
         }
-        .section-title .icon {
-            font-size: 24px;
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .news-item {
-            background: #f8f9fa;
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+            border-bottom-color: var(--accent);
+        }
+        
+        /* Hero 区域 */
+        .hero {
+            margin-top: 60px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            padding: 80px 20px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(233, 69, 96, 0.2);
+            color: #e94560;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #e94560;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            opacity: 0.8;
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+        
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* 统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 48px;
+        }
+        
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-left: 4px solid #2a5298;
-            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
         }
-        .news-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        
+        .stat-card:nth-child(1) .stat-icon { background: #fee2e2; }
+        .stat-card:nth-child(2) .stat-icon { background: #dbeafe; }
+        .stat-card:nth-child(3) .stat-icon { background: #dcfce7; }
+        .stat-card:nth-child(4) .stat-icon { background: #f3e8ff; }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
         }
-        .news-item.priority-high {
-            border-left-color: #dc3545;
-            background: #fff5f5;
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-light);
         }
-        .news-item.priority-medium {
-            border-left-color: #ffc107;
-            background: #fffbf0;
+        
+        /* 新闻区域 */
+        .section {
+            margin-bottom: 48px;
         }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .view-all {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: gap 0.2s;
+        }
+        
+        .view-all:hover {
+            gap: 8px;
+        }
+        
+        /* 新闻卡片 */
+        .news-grid {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .news-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .news-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .news-card:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .news-card:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .news-card.priority-high::before {
+            background: #ef4444;
+            transform: scaleY(1);
+        }
+        
+        .news-card.priority-medium::before {
+            background: #f59e0b;
+        }
+        
         .news-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
+        
         .news-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
-            color: #212529;
+            color: var(--primary);
+            line-height: 1.4;
             flex: 1;
-            margin-right: 10px;
+            margin-right: 16px;
         }
-        .news-meta {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .tag {
+        
+        .news-time {
             font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-weight: 500;
+            color: var(--text-light);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
-        .tag-commercial { background: #e3f2fd; color: #1976d2; }
-        .tag-lowaltitude { background: #f3e5f5; color: #7b1fa2; }
-        .tag-remote { background: #e8f5e9; color: #388e3c; }
-        .tag-policy { background: #fff3e0; color: #f57c00; }
-        .tag-investment { background: #fce4ec; color: #c2185b; }
-        .tag-tech { background: #e0f2f1; color: #00796b; }
+        
         .news-summary {
-            color: #6c757d;
+            color: var(--text-light);
             font-size: 14px;
             line-height: 1.6;
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
+        
         .news-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 12px;
-            color: #adb5bd;
         }
-        .news-link {
-            color: #2a5298;
-            text-decoration: none;
+        
+        .news-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
             font-weight: 500;
+            background: var(--bg);
+            color: var(--text-light);
+            transition: all 0.2s;
         }
-        .news-link:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            background: #f8f9fa;
-            padding: 20px 30px;
-            text-align: center;
-            color: #6c757d;
-            font-size: 12px;
-            border-top: 1px solid #e9ecef;
-        }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .tag:hover {
+            background: var(--primary);
             color: white;
-            padding: 20px;
-            border-radius: 12px;
+        }
+        
+        .news-source {
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 48px 20px;
             text-align: center;
         }
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 5px;
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .stat-label {
-            font-size: 12px;
-            opacity: 0.9;
+        
+        .footer h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
+        
+        .footer p {
+            opacity: 0.7;
+            font-size: 14px;
+        }
+        
+        /* 响应式 */
         @media (max-width: 768px) {
-            .header h1 { font-size: 24px; }
-            .content { padding: 20px; }
-            .nav { padding: 10px 20px; }
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .news-title {
+                font-size: 16px;
+            }
+        }
+        
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>🚀 空天信息日报</h1>
-            <div class="subtitle">Space Daily - 商业航天 · 低空经济 · 遥感卫星</div>
-            <div class="date">2026年03月09日 | 周一</div>
-        </header>
-        
-        <nav class="nav">
-            <a href="#commercial" class="active">商业航天</a>
-            <a href="#lowaltitude">低空经济</a>
-            <a href="#remote">遥感卫星</a>
-            <a href="#investment">投融资</a>
-            <a href="#policy">政策法规</a>
-            <a href="#tech">技术前沿</a>
-        </nav>
-        
-        <div class="content">
-            <!-- 统计卡片 -->
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">商业航天动态</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">{{LOWALTITUDE_COUNT}}</div>
-                    <div class="stat-label">低空经济资讯</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">遥感卫星进展</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">13</div>
-                    <div class="stat-label">今日总计</div>
-                </div>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">🚀</div>
+                <span>Space Daily</span>
+            </a>
+            <div class="nav-links">
+                <a href="#commercial" class="active">商业航天</a>
+                <a href="#lowaltitude">低空经济</a>
+                <a href="#remote">遥感卫星</a>
+                <a href="#investment">投融资</a>
+                <a href="#policy">政策法规</a>
+                <a href="#tech">技术前沿</a>
             </div>
+        </div>
+    </nav>
 
-            <!-- 商业航天 -->
-            <section class="section" id="commercial">
-                <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
+    <!-- Hero 区域 -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">每日更新</div>
+            <h1>空天信息日报</h1>
+            <p class="hero-subtitle">商业航天 · 低空经济 · 遥感卫星 · 每日精选</p>
+            <div class="hero-meta">
+                <span>📅 2026年03月10日</span>
+                <span>📊 13 条资讯</span>
+                <span>🔄 自动更新</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🚀</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">商业航天动态</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🚁</div>
+                <div class="stat-number">{{LOWALTITUDE_COUNT}}</div>
+                <div class="stat-label">低空经济资讯</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🛰️</div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">遥感卫星进展</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-number">13</div>
+                <div class="stat-label">今日总计</div>
+            </div>
+        </div>
+
+        <!-- 商业航天 -->
+        <section class="section" id="commercial">
+            <div class="section-header">
+                <h2 class="section-title">商业航天动态</h2>
+                <a href="#" class="view-all">查看全部 →</a>
+            </div>
+            <div class="news-grid">
                 
         <div class="news-item priority-high">
             <div class="news-header">
@@ -267,17 +564,27 @@
             </div>
         </div>
         
-            </section>
+            </div>
+        </section>
 
-            <!-- 低空经济 -->
-            <section class="section" id="lowaltitude">
-                <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
+        <!-- 低空经济 -->
+        <section class="section" id="lowaltitude">
+            <div class="section-header">
+                <h2 class="section-title">低空经济</h2>
+                <a href="#" class="view-all">查看全部 →</a>
+            </div>
+            <div class="news-grid">
                 {{LOWALTITUDE_NEWS}}
-            </section>
+            </div>
+        </section>
 
-            <!-- 遥感卫星 -->
-            <section class="section" id="remote">
-                <h2 class="section-title"><span class="icon">🛰️</span> 遥感卫星</h2>
+        <!-- 遥感卫星 -->
+        <section class="section" id="remote">
+            <div class="section-header">
+                <h2 class="section-title">遥感卫星</h2>
+                <a href="#" class="view-all">查看全部 →</a>
+            </div>
+            <div class="news-grid">
                 
         <div class="news-item priority-high">
             <div class="news-header">
@@ -315,11 +622,16 @@
             </div>
         </div>
         
-            </section>
+            </div>
+        </section>
 
-            <!-- 投融资 -->
-            <section class="section" id="investment">
-                <h2 class="section-title"><span class="icon">💰</span> 投融资动态</h2>
+        <!-- 投融资 -->
+        <section class="section" id="investment">
+            <div class="section-header">
+                <h2 class="section-title">投融资动态</h2>
+                <a href="#" class="view-all">查看全部 →</a>
+            </div>
+            <div class="news-grid">
                 
         <div class="news-item priority-medium">
             <div class="news-header">
@@ -345,11 +657,16 @@
             </div>
         </div>
         
-            </section>
+            </div>
+        </section>
 
-            <!-- 政策法规 -->
-            <section class="section" id="policy">
-                <h2 class="section-title"><span class="icon">📜</span> 政策法规</h2>
+        <!-- 政策法规 -->
+        <section class="section" id="policy">
+            <div class="section-header">
+                <h2 class="section-title">政策法规</h2>
+                <a href="#" class="view-all">查看全部 →</a>
+            </div>
+            <div class="news-grid">
                 
         <div class="news-item priority-high">
             <div class="news-header">
@@ -363,11 +680,16 @@
             </div>
         </div>
         
-            </section>
+            </div>
+        </section>
 
-            <!-- 技术前沿 -->
-            <section class="section" id="tech">
-                <h2 class="section-title"><span class="icon">🔬</span> 技术前沿</h2>
+        <!-- 技术前沿 -->
+        <section class="section" id="tech">
+            <div class="section-header">
+                <h2 class="section-title">技术前沿</h2>
+                <a href="#" class="view-all">查看全部 →</a>
+            </div>
+            <div class="news-grid">
                 
         <div class="news-item priority-medium">
             <div class="news-header">
@@ -381,13 +703,17 @@
             </div>
         </div>
         
-            </section>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Space Daily 空天信息日报</h3>
+            <p>每日自动更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
+            <p style="margin-top: 12px; opacity: 0.5;">Generated at 2026-03-10 00:52</p>
         </div>
-        
-        <footer class="footer">
-            <p>Space Daily 空天信息日报 | 每日自动更新</p>
-            <p>Generated by AI at 2026-03-09 23:51 | Data sources: 50+ industry channels</p>
-        </footer>
-    </div>
+    </footer>
 </body>
 </html>
