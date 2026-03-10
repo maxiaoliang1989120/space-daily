@@ -487,8 +487,8 @@
             <h1>空天信息日报</h1>
             <p class="hero-subtitle">商业航天 · 低空经济 · 遥感卫星 · 每日精选</p>
             <div class="hero-meta">
-                <span>📅 2026年03月10日</span>
-                <span>📊 13 条资讯</span>
+                <span>📅 {{DATE}}</span>
+                <span>📊 {{TOTAL_COUNT}} 条资讯</span>
                 <span>🔄 自动更新</span>
             </div>
         </div>
@@ -500,22 +500,22 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">🚀</div>
-                <div class="stat-number">3</div>
+                <div class="stat-number">{{COMMERCIAL_COUNT}}</div>
                 <div class="stat-label">商业航天动态</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🚁</div>
-                <div class="stat-number">3</div>
+                <div class="stat-number">{{LOWALTITUDE_COUNT}}</div>
                 <div class="stat-label">低空经济资讯</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🛰️</div>
-                <div class="stat-number">3</div>
+                <div class="stat-number">{{REMOTE_COUNT}}</div>
                 <div class="stat-label">遥感卫星进展</div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">📈</div>
-                <div class="stat-number">13</div>
+                <div class="stat-number">{{TOTAL_COUNT}}</div>
                 <div class="stat-label">今日总计</div>
             </div>
         </div>
@@ -527,43 +527,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">SpaceX星舰第8次试飞成功完成静态点火测试</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-commercial">商业航天</span><span class="tag tag-commercial">SpaceX</span><span class="tag tag-commercial">星舰</span></div>
-            <div class="news-summary">SpaceX宣布星舰Super Heavy助推器成功完成静态点火测试，为即将到来的第8次轨道试飞做准备。本次测试持续约10秒，所有33台猛禽发动机正常工作。</div>
-            <div class="news-footer">
-                <span>SpaceNews · 2小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">蓝箭航天朱雀三号完成200吨级液氧甲烷发动机长程试车</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-commercial">商业航天</span><span class="tag tag-commercial">蓝箭航天</span><span class="tag tag-commercial">朱雀三号</span></div>
-            <div class="news-summary">蓝箭航天宣布朱雀三号运载火箭配套的200吨级液氧甲烷发动机完成500秒长程试车，标志着可回收火箭技术取得重要突破。</div>
-            <div class="news-footer">
-                <span>泰伯网 · 4小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-medium">
-            <div class="news-header">
-                <div class="news-title">天兵科技天龙三号首飞进入倒计时</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-commercial">商业航天</span><span class="tag tag-commercial">天兵科技</span></div>
-            <div class="news-summary">天兵科技宣布天龙三号大型液体运载火箭完成总装出厂评审，计划6月首飞，对标SpaceX猎鹰9号，具备一子级垂直回收能力。</div>
-            <div class="news-footer">
-                <span>36氪 · 6小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
+                {{COMMERCIAL_NEWS}}
             </div>
         </section>
 
@@ -574,43 +538,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">亿航智能获得沙特100架EH216-S订单</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-commercial">eVTOL</span><span class="tag tag-commercial">亿航智能</span></div>
-            <div class="news-summary">亿航智能与沙特 frontline 投资集团签署战略合作协议，获得100架EH216-S无人驾驶载人航空器订单，用于空中交通和旅游业。</div>
-            <div class="news-footer">
-                <span>亿航智能 · 1小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">民航局发布《民用无人驾驶航空发展路线图》修订意见稿</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-policy">政策法规</span><span class="tag tag-commercial">无人机</span></div>
-            <div class="news-summary">民航局就《民用无人驾驶航空发展路线图》修订征求意见，提出到2030年形成万亿级低空经济市场规模目标。</div>
-            <div class="news-footer">
-                <span>民航局 · 3小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-medium">
-            <div class="news-header">
-                <div class="news-title">小鹏汇天旅航者X2完成深圳CBD区域飞行演示</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-commercial">eVTOL</span><span class="tag tag-commercial">小鹏汇天</span></div>
-            <div class="news-summary">小鹏汇天旅航者X2无人驾驶载人航空器在深圳福田CBD完成飞行演示，标志着城市空中交通(UAM)场景应用取得新进展。</div>
-            <div class="news-footer">
-                <span>小鹏汇天 · 5小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
+                {{LOWALTITUDE_NEWS}}
             </div>
         </section>
 
@@ -621,43 +549,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">中科星图发布星图低空云V1.0</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-remote">遥感卫星</span><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-commercial">中科星图</span></div>
-            <div class="news-summary">中科星图正式发布星图低空云V1.0，融合数字地球、人工智能、空天信息技术，实现低空活动三维仿真、航线智能规划、交通协同管理等核心能力。</div>
-            <div class="news-footer">
-                <span>中科星图 · 2小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">航天宏图女娲星座首颗雷达卫星成功入轨</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-remote">遥感卫星</span><span class="tag tag-commercial">SAR</span><span class="tag tag-commercial">航天宏图</span></div>
-            <div class="news-summary">航天宏图自主研发的女娲星座首颗雷达遥感卫星成功发射入轨，标志着国内首个商业雷达卫星星座建设启动。</div>
-            <div class="news-footer">
-                <span>航天宏图 · 4小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-medium">
-            <div class="news-header">
-                <div class="news-title">Planet Labs发布新一代Pelican高分辨率卫星首批图像</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-remote">遥感卫星</span><span class="tag tag-commercial">Planet Labs</span></div>
-            <div class="news-summary">Planet Labs发布Pelican-1卫星首批30厘米分辨率图像，展示了对车辆、建筑等细节的高清成像能力。</div>
-            <div class="news-footer">
-                <span>Planet Labs · 8小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
+                {{REMOTE_NEWS}}
             </div>
         </section>
 
@@ -668,31 +560,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                
-        <div class="news-item priority-medium">
-            <div class="news-header">
-                <div class="news-title">低空经济赛道Q1融资超50亿元</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-investment">投融资</span><span class="tag tag-lowaltitude">低空经济</span><span class="tag tag-commercial">eVTOL</span></div>
-            <div class="news-summary">据统计，2025年第一季度eVTOL及低空经济领域融资超50亿元，沃飞长空、时的科技等头部企业完成B轮及以后融资。</div>
-            <div class="news-footer">
-                <span>投中网 · 3小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
-        <div class="news-item priority-medium">
-            <div class="news-header">
-                <div class="news-title">银河航天完成新一轮融资，估值超120亿元</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-investment">投融资</span><span class="tag tag-commercial">卫星互联网</span><span class="tag tag-commercial">银河航天</span></div>
-            <div class="news-summary">银河航天完成新一轮融资，投后估值超120亿元，资金将用于卫星互联网星座建设和海外业务拓展。</div>
-            <div class="news-footer">
-                <span>36氪 · 5小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
+                {{INVESTMENT_NEWS}}
             </div>
         </section>
 
@@ -703,19 +571,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                
-        <div class="news-item priority-high">
-            <div class="news-header">
-                <div class="news-title">低空经济首次写入国务院政府工作报告</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-policy">政策法规</span><span class="tag tag-lowaltitude">低空经济</span></div>
-            <div class="news-summary">2024年全国两会正式将低空经济列为战略性新兴产业，深圳、广州、合肥、成都等地密集出台低空飞行管理办法。</div>
-            <div class="news-footer">
-                <span>新华社 · 今日</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
+                {{POLICY_NEWS}}
             </div>
         </section>
 
@@ -726,19 +582,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                
-        <div class="news-item priority-medium">
-            <div class="news-header">
-                <div class="news-title">Vision Mamba在遥感领域应用综述发表</div>
-            </div>
-            <div class="news-meta"><span class="tag tag-tech">技术前沿</span><span class="tag tag-commercial">AI</span><span class="tag tag-commercial">Mamba</span></div>
-            <div class="news-summary">最新综述论文《Vision Mamba in Remote Sensing》发表，系统梳理了Mamba架构在遥感影像分类、变化检测等任务中的应用进展。</div>
-            <div class="news-footer">
-                <span>arXiv · 6小时前</span>
-                <a href="#" class="news-link">查看详情 →</a>
-            </div>
-        </div>
-        
+                {{TECH_NEWS}}
             </div>
         </section>
     </main>
@@ -748,7 +592,7 @@
         <div class="footer-content">
             <h3>Space Daily 空天信息日报</h3>
             <p>每日自动更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
-            <p style="margin-top: 12px; opacity: 0.5;">Generated at 2026-03-10 00:57</p>
+            <p style="margin-top: 12px; opacity: 0.5;">Generated at {{DATETIME}}</p>
         </div>
     </footer>
 </body>

@@ -184,7 +184,7 @@ class SpaceDailyGenerator:
     def generate(self):
         """生成日报"""
         # 读取模板
-        template_path = self.template_dir / "index.html"
+        template_path = self.template_dir / "index-v2.html"
         template = template_path.read_text(encoding='utf-8')
         
         # 获取数据
@@ -193,9 +193,18 @@ class SpaceDailyGenerator:
         
         # 渲染各板块
         sections = {}
+        category_map = {
+            "commercial": "COMMERCIAL",
+            "low_altitude": "LOWALTITUDE",
+            "remote": "REMOTE",
+            "investment": "INVESTMENT",
+            "policy": "POLICY",
+            "tech": "TECH"
+        }
         for category, news_list in news_data.items():
-            sections[f"{category.upper()}_NEWS"] = ''.join([self.render_news_item(n) for n in news_list])
-            sections[f"{category.upper()}_COUNT"] = str(len(news_list))
+            key_prefix = category_map.get(category, category.upper())
+            sections[f"{key_prefix}_NEWS"] = ''.join([self.render_news_item(n) for n in news_list])
+            sections[f"{key_prefix}_COUNT"] = str(len(news_list))
         
         sections["TOTAL_COUNT"] = str(sum(len(v) for v in news_data.values()))
         
@@ -206,6 +215,8 @@ class SpaceDailyGenerator:
         html = html.replace("{{DATETIME}}", date_info["datetime"])
         
         for key, value in sections.items():
+            html = html.replace(f"{{{{{key}}}}}", value)
+            # 同时尝试替换双花括号格式
             html = html.replace(f"{{{{{key}}}}}", value)
         
         # 保存文件
