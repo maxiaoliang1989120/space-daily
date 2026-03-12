@@ -6,61 +6,111 @@
     <title>空天信息日报 | Space Daily</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #4a3f8f 50%, #6b4c9a 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: var(--primary-gradient);
             min-height: 100vh;
             padding: 20px;
+            background-attachment: fixed;
         }
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            background: var(--glass-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
         }
         .header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: var(--primary-gradient);
             color: white;
-            padding: 40px 30px;
+            padding: 60px 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
         }
         .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            font-size: 42px;
+            margin-bottom: 12px;
+            letter-spacing: 4px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
         }
         .header .subtitle {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 20px;
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 24px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
         }
         .header .date {
-            font-size: 18px;
-            font-weight: 300;
-            opacity: 0.95;
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.98;
+            position: relative;
+            z-index: 1;
+            background: rgba(255,255,255,0.15);
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
         .nav {
-            background: #f8f9fa;
+            background: rgba(248, 249, 250, 0.95);
             padding: 15px 30px;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid rgba(233, 236, 239, 0.5);
             display: flex;
-            gap: 20px;
+            gap: 12px;
             overflow-x: auto;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
         .nav a {
             color: #495057;
             text-decoration: none;
             font-size: 14px;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
+            font-weight: 500;
         }
         .nav a:hover, .nav a.active {
-            background: #2a5298;
+            background: linear-gradient(135deg, #2a5298 0%, #6b4c9a 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.3);
+            transform: translateY(-1px);
         }
         .content {
             padding: 30px;
@@ -109,16 +159,18 @@
             gap: 20px;
         }
         .news-card {
-            background: #f8f9fa;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
             overflow: hidden;
             border-left: 4px solid #2a5298;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
         .news-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            border-left-width: 6px;
         }
         .news-card.priority-high {
             border-left-color: #dc3545;
@@ -163,16 +215,21 @@
         }
         .tag {
             font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
         }
-        .tag-commercial { background: #e3f2fd; color: #1976d2; }
-        .tag-lowaltitude { background: #f3e5f5; color: #7b1fa2; }
-        .tag-remote { background: #e8f5e9; color: #388e3c; }
-        .tag-policy { background: #fff3e0; color: #f57c00; }
-        .tag-investment { background: #fce4ec; color: #c2185b; }
-        .tag-tech { background: #e0f2f1; color: #00796b; }
+        .tag:hover {
+            transform: scale(1.05);
+        }
+        .tag-commercial { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); color: #1565c0; }
+        .tag-lowaltitude { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); color: #6a1b9a; }
+        .tag-remote { background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); color: #2e7d32; }
+        .tag-policy { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); color: #e65100; }
+        .tag-investment { background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); color: #ad1457; }
+        .tag-tech { background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%); color: #00695c; }
         .news-summary {
             color: #6c757d;
             font-size: 13px;
@@ -319,7 +376,7 @@
         <header class="header">
             <h1>🚀 空天信息日报</h1>
             <div class="subtitle">Space Daily - 商业航天 · 低空经济 · 遥感卫星</div>
-            <div class="date">2026年03月10日 | 周二</div>
+            <div class="date">2026年03月12日 | 周四</div>
         </header>
         
         <nav class="nav">
@@ -572,7 +629,7 @@
         
         <footer class="footer">
             <p>Space Daily 空天信息日报 | 每日自动更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
-            <p>Generated by AI at 2026-03-10 13:10 | Data sources: 50+ industry channels</p>
+            <p>Generated by AI at 2026-03-12 09:15 | Data sources: 50+ industry channels</p>
         </footer>
     </div>
 
