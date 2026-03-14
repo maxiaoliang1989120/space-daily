@@ -3,889 +3,2115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Space Daily 空天信息日报 - 聚焦商业航天、低空经济、遥感卫星领域的每日行业资讯">
+    <meta name="keywords" content="商业航天, 低空经济, 遥感卫星, SpaceX, eVTOL, 卫星互联网">
     <title>Space Daily | 空天信息日报</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #0a0a0f;
-            --secondary: #12121a;
-            --accent: #6366f1;
-            --accent-light: #818cf8;
-            --text: #f1f1f4;
-            --text-muted: #9ca3af;
-            --border: #27272a;
-            --card: #18181b;
-            --card-hover: #27272a;
-            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
-            --gradient-2: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            --primary-light: #1a1a2e;
+            --accent: #ff3366;
+            --accent-hover: #e62958;
+            --accent-blue: #0066ff;
+            --accent-purple: #7c3aed;
+            --text: #1a1a2e;
+            --text-light: #6b7280;
+            --text-lighter: #9ca3af;
+            --bg: #fafafa;
+            --bg-dark: #f3f4f6;
+            --card-bg: #ffffff;
+            --border: #e5e7eb;
+            --border-light: #f3f4f6;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
             font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--primary);
+            background: var(--bg);
             color: var(--text);
             line-height: 1.6;
-            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
-        /* Navigation */
-        .navbar {
+
+        /* Header & Navigation */
+        .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 10, 15, 0.95);
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            z-index: 1000;
+            transition: var(--transition);
         }
-        .nav-container {
+
+        .header.scrolled {
+            box-shadow: var(--shadow);
+        }
+
+        .header-inner {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 24px;
-            height: 64px;
+        }
+
+        .header-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            height: 64px;
         }
+
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
+            color: var(--primary);
         }
+
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: var(--gradient-1);
-            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 20px;
+            animation: float 3s ease-in-out infinite;
         }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
         .logo-text {
-            font-size: 22px;
-            font-weight: 700;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
-        .nav-links {
-            display: flex;
-            gap: 32px;
-        }
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 14px;
+
+        .logo-subtitle {
+            font-size: 11px;
+            color: var(--text-light);
             font-weight: 500;
-            transition: all 0.2s;
-            position: relative;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text);
-        }
-        .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-1);
-            border-radius: 1px;
-        }
-        .nav-right {
+
+        .header-actions {
             display: flex;
             align-items: center;
             gap: 16px;
         }
-        .date-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .live-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #10b981;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .live-indicator::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        /* Hero Section */
-        .hero {
-            margin-top: 64px;
-            padding: 48px 24px;
-            background: linear-gradient(180deg, var(--secondary) 0%, var(--primary) 100%);
-            border-bottom: 1px solid var(--border);
-        }
-        .hero-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-        .stat-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s;
-        }
-        .stat-card:hover {
-            background: var(--card-hover);
-            transform: translateY(-2px);
-        }
-        .stat-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .stat-icon {
+
+        .search-btn, .menu-btn {
             width: 40px;
             height: 40px;
-            border-radius: 10px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            transition: var(--transition);
+            font-size: 18px;
         }
-        .stat-icon.rocket { background: rgba(239, 68, 68, 0.2); }
-        .stat-icon.evtol { background: rgba(99, 102, 241, 0.2); }
-        .stat-icon.satellite { background: rgba(14, 165, 233, 0.2); }
-        .stat-icon.total { background: rgba(16, 185, 129, 0.2); }
-        .stat-label {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-        .hero-title {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            line-height: 1.2;
-        }
-        .hero-subtitle {
-            font-size: 16px;
-            color: var(--text-muted);
-            max-width: 600px;
-        }
-        /* Category Tabs */
-        .category-tabs {
-            display: flex;
-            gap: 8px;
-            margin-top: 32px;
-            flex-wrap: wrap;
-        }
-        .tab {
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .tab:hover, .tab.active {
-            background: var(--card);
-            color: var(--text);
+
+        .search-btn:hover, .menu-btn:hover {
+            background: var(--bg-dark);
             border-color: var(--accent);
         }
-        /* Main Content */
-        .main {
+
+        .menu-btn { display: none; }
+
+        /* Navigation */
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav::-webkit-scrollbar { display: none; }
+
+        .nav-item {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 120px;
+            padding: 60px 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 51, 102, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.3) 0%, transparent 50%);
+            animation: pulse-bg 10s ease-in-out infinite;
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .hero-grid {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 40px 24px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
         }
+
+        .hero-main {
+            color: white;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            opacity: 0.8;
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 32px;
+            flex-wrap: wrap;
+        }
+
+        .hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .hero-meta-item span { opacity: 0.6; }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 24px;
+        }
+
+        /* Section Header */
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
         }
+
         .section-title {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 12px;
         }
-        .section-title .icon {
-            font-size: 28px;
-        }
-        .view-all {
-            color: var(--accent-light);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .view-all:hover {
-            text-decoration: underline;
-        }
-        /* News Grid */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-bottom: 48px;
-        }
-        .news-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .news-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
-        }
-        .news-card.featured {
-            grid-column: span 2;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-        .news-image {
-            height: 180px;
-            background: var(--gradient-1);
+
+        .section-title-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 60px;
+            font-size: 20px;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .view-all-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition);
+        }
+
+        .view-all-link:hover { gap: 8px; }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .news-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-purple) 100%);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: transparent;
+        }
+
+        .news-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .news-card.priority-high { border-left: 4px solid #ef4444; }
+        .news-card.priority-medium { border-left: 4px solid #f59e0b; }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
             position: relative;
             overflow: hidden;
         }
-        .news-card.featured .news-image {
-            height: 100%;
-            min-height: 280px;
+
+        .news-image-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            transition: var(--transition);
         }
-        .news-priority {
+
+        .news-card:hover .news-image-bg {
+            transform: scale(1.05);
+        }
+
+        .news-priority-badge {
             position: absolute;
             top: 12px;
             left: 12px;
             padding: 4px 12px;
-            border-radius: 4px;
+            border-radius: 20px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .news-priority.high { background: rgba(239, 68, 68, 0.9); color: white; }
-        .news-priority.medium { background: rgba(245, 158, 11, 0.9); color: white; }
-        .news-priority.normal { background: rgba(99, 102, 241, 0.9); color: white; }
+
+        .priority-high .news-priority-badge { background: #ef4444; color: white; }
+        .priority-medium .news-priority-badge { background: #f59e0b; color: white; }
+
         .news-content {
-            padding: 20px;
+            padding: 24px;
         }
-        .news-card.featured .news-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .news-meta {
-            display: flex;
-            gap: 8px;
+
+        .news-category {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 12px;
-            flex-wrap: wrap;
         }
-        .tag {
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        .tag.commercial { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .tag.lowaltitude { background: rgba(99, 102, 241, 0.15); color: #6366f1; }
-        .tag.remote { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
-        .tag.investment { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .tag.policy { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-        .tag.tech { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+
         .news-title {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.5;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4;
             margin-bottom: 12px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .news-card.featured .news-title {
-            font-size: 22px;
-            -webkit-line-clamp: 3;
-        }
+
         .news-summary {
             font-size: 14px;
-            color: var(--text-muted);
+            color: var(--text-light);
             line-height: 1.6;
+            margin-bottom: 16px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+        }
+
+        .news-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-lighter);
+        }
+
+        .news-source {
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .news-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: var(--bg-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Featured Section */
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .featured-main {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            min-height: 480px;
+            cursor: pointer;
+        }
+
+        .featured-main-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            transition: var(--transition);
+        }
+
+        .featured-main:hover .featured-main-bg {
+            transform: scale(1.05);
+        }
+
+        .featured-main-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .featured-main-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: fit-content;
             margin-bottom: 16px;
         }
-        .news-card.featured .news-summary {
-            -webkit-line-clamp: 4;
+
+        .featured-main-title {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 16px;
         }
-        .news-footer {
+
+        .featured-main-summary {
+            font-size: 16px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .featured-side {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .featured-side-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .featured-side-item:hover {
+            transform: translateX(8px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .featured-side-image {
+            height: 140px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .featured-side-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .featured-side-category {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .featured-side-title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Archive Section */
+        .archive-section {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            border: 1px solid var(--border);
+            margin-bottom: 48px;
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .archive-item {
+            padding: 16px 20px;
+            background: var(--bg);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: auto;
         }
-        .news-source {
+
+        .archive-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .archive-date {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .archive-count {
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--accent);
+        }
+
+        .modal-header {
+            height: 300px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--card-bg), transparent);
+        }
+
+        .modal-body {
+            padding: 32px;
+        }
+
+        .modal-category {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+
+        .modal-meta {
+            display: flex;
+            gap: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .modal-meta-item {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
+            color: var(--text-light);
         }
-        .news-time::before {
-            content: '·';
-            margin-right: 8px;
+
+        .modal-text {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text);
         }
+
+        .modal-text p {
+            margin-bottom: 16px;
+        }
+
+        .modal-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .modal-tag {
+            padding: 8px 16px;
+            background: var(--bg-dark);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+        }
+
+        .modal-btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .modal-btn-secondary {
+            background: var(--bg-dark);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .modal-btn-secondary:hover {
+            background: var(--border);
+        }
+
         /* Footer */
         .footer {
-            border-top: 1px solid var(--border);
-            padding: 40px 24px;
-            text-align: center;
-            color: var(--text-muted);
+            background: var(--primary);
+            color: white;
+            padding: 64px 24px 32px;
+        }
+
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .footer-desc {
             font-size: 14px;
+            opacity: 0.7;
+            line-height: 1.6;
+            margin-bottom: 24px;
         }
-        .footer p {
-            margin-bottom: 8px;
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
         }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .footer-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-copyright {
+            font-size: 13px;
+            opacity: 0.5;
+        }
+
+        .footer-stats {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-xl);
+            z-index: 3000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--card-bg);
+            z-index: 1500;
+            padding: 80px 24px 24px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: var(--bg-dark);
+            border-radius: var(--radius);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-nav-item {
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: var(--radius);
+            background: var(--bg);
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
-            .news-grid { grid-template-columns: repeat(2, 1fr); }
-            .news-card.featured { grid-column: span 2; }
-            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
         }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .news-grid { grid-template-columns: 1fr; }
-            .news-card.featured { grid-template-columns: 1fr; grid-column: span 1; }
-            .news-card.featured .news-image { height: 200px; min-height: auto; }
-            .hero-stats { grid-template-columns: repeat(2, 1fr); }
-            .hero-title { font-size: 28px; }
-            .stat-value { font-size: 28px; }
+            .menu-btn { display: flex; }
+            .nav { display: none; }
+            .mobile-menu { display: block; }
+            
+            .hero {
+                margin-top: 64px;
+                padding: 40px 16px;
+            }
+            
+            .hero-title { font-size: 36px; }
+            .hero-subtitle { font-size: 16px; }
+            
+            .main-content { padding: 32px 16px; }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .stats-grid { grid-template-columns: 1fr; }
+            
+            .section-title { font-size: 22px; }
+            
+            .featured-main-title { font-size: 24px; }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+            
+            .archive-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-header { height: 200px; font-size: 60px; }
+            .modal-title { font-size: 22px; }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
         }
+
+        /* Loading Animation */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-dark) 25%, var(--border) 50%, var(--bg-dark) 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Category colors */
+        .cat-commercial { --cat-color: #0066ff; }
+        .cat-lowaltitude { --cat-color: #7c3aed; }
+        .cat-remote { --cat-color: #10b981; }
+        .cat-investment { --cat-color: #f59e0b; }
+        .cat-policy { --cat-color: #ef4444; }
+        .cat-tech { --cat-color: #06b6d4; }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">
-                <div class="logo-icon">🚀</div>
-                <span class="logo-text">Space Daily</span>
-            </a>
-            <div class="nav-links">
-                <a href="#" class="active">首页</a>
-                <a href="#commercial">商业航天</a>
-                <a href="#lowaltitude">低空经济</a>
-                <a href="#remote">遥感卫星</a>
-                <a href="#investment">投融资</a>
-                <a href="#policy">政策</a>
-            </div>
-            <div class="nav-right">
-                <div class="live-indicator">实时更新</div>
-                <div class="date-badge">
-                    <span>📅</span>
-                    <span>2026年3月14日</span>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <div class="header-top">
+                <a href="#" class="logo">
+                    <div class="logo-icon">🚀</div>
+                    <div>
+                        <div class="logo-text">Space Daily</div>
+                        <div class="logo-subtitle">空天信息日报</div>
+                    </div>
+                </a>
+                <div class="header-actions">
+                    <button class="search-btn" onclick="showToast('搜索功能开发中')" title="搜索">🔍</button>
+                    <button class="menu-btn" onclick="toggleMobileMenu()" title="菜单">☰</button>
                 </div>
             </div>
+            <nav class="nav">
+                <button class="nav-item active" onclick="filterNews('all')">全部资讯</button>
+                <button class="nav-item" onclick="filterNews('commercial')">🚀 商业航天</button>
+                <button class="nav-item" onclick="filterNews('lowaltitude')">🚁 低空经济</button>
+                <button class="nav-item" onclick="filterNews('remote')">🛰️ 遥感卫星</button>
+                <button class="nav-item" onclick="filterNews('investment')">💰 投融资</button>
+                <button class="nav-item" onclick="filterNews('policy')">📜 政策法规</button>
+                <button class="nav-item" onclick="filterNews('tech')">🔬 技术前沿</button>
+            </nav>
         </div>
-    </nav>
+    </header>
 
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+        <div class="mobile-nav">
+            <button class="mobile-nav-item" onclick="filterNews('all'); toggleMobileMenu();">全部资讯</button>
+            <button class="mobile-nav-item" onclick="filterNews('commercial'); toggleMobileMenu();">🚀 商业航天</button>
+            <button class="mobile-nav-item" onclick="filterNews('lowaltitude'); toggleMobileMenu();">🚁 低空经济</button>
+            <button class="mobile-nav-item" onclick="filterNews('remote'); toggleMobileMenu();">🛰️ 遥感卫星</button>
+            <button class="mobile-nav-item" onclick="filterNews('investment'); toggleMobileMenu();">💰 投融资</button>
+            <button class="mobile-nav-item" onclick="filterNews('policy'); toggleMobileMenu();">📜 政策法规</button>
+            <button class="mobile-nav-item" onclick="filterNews('tech'); toggleMobileMenu();">🔬 技术前沿</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-container">
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon rocket">🚀</div>
-                        <span class="stat-label">商业航天</span>
+        <div class="hero-grid">
+            <div class="hero-main">
+                <div class="hero-badge">每日更新</div>
+                <h1 class="hero-title">探索空天未来<br/>洞察行业脉动</h1>
+                <p class="hero-subtitle">商业航天 · 低空经济 · 遥感卫星 · 每日精选行业资讯</p>
+                <div class="hero-meta">
+                    <div class="hero-meta-item">
+                        <span>📅</span>
+                        <span id="currentDate">2026年03月14日</span>
                     </div>
-                    <div class="stat-value">8</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon evtol">🚁</div>
-                        <span class="stat-label">低空经济</span>
+                    <div class="hero-meta-item">
+                        <span>📊</span>
+                        <span id="totalCount">24 条资讯</span>
                     </div>
-                    <div class="stat-value">7</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon satellite">🛰️</div>
-                        <span class="stat-label">遥感卫星</span>
+                    <div class="hero-meta-item">
+                        <span>🔄</span>
+                        <span>实时更新</span>
                     </div>
-                    <div class="stat-value">6</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon total">📊</div>
-                        <span class="stat-label">今日资讯</span>
-                    </div>
-                    <div class="stat-value">26</div>
                 </div>
             </div>
-            <h1 class="hero-title">空天信息日报</h1>
-            <p class="hero-subtitle">聚焦商业航天、低空经济、遥感卫星领域的前沿动态，每日精选全球行业资讯与深度分析</p>
-            <div class="category-tabs">
-                <button class="tab active">全部资讯</button>
-                <button class="tab">商业航天</button>
-                <button class="tab">低空经济</button>
-                <button class="tab">遥感卫星</button>
-                <button class="tab">投融资</button>
-                <button class="tab">政策法规</button>
-                <button class="tab">技术前沿</button>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🚀</div>
+                    <div class="stat-number" id="commercialCount">6</div>
+                    <div class="stat-label">商业航天</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚁</div>
+                    <div class="stat-number" id="lowaltitudeCount">5</div>
+                    <div class="stat-label">低空经济</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🛰️</div>
+                    <div class="stat-number" id="remoteCount">5</div>
+                    <div class="stat-label">遥感卫星</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-number" id="otherCount">8</div>
+                    <div class="stat-label">其他动态</div>
+                </div>
             </div>
         </div>
     </section>
 
-    <main class="main">
-        <!-- 商业航天 -->
-        <section id="commercial">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
-                <a href="#" class="view-all">查看全部 →</a>
-            </div>
-            <div class="news-grid">
-                <article class="news-card featured" onclick="openModal(1)">
-                    <div class="news-image">
-                        🚀
-                        <span class="news-priority high">重磅</span>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Featured Section -->
+        <section class="featured-grid fade-in">
+            <article class="featured-main" onclick="openModal('news-1')">
+                <div class="featured-main-bg"></div>
+                <div class="featured-main-overlay">
+                    <span class="featured-main-badge">🔥 头条</span>
+                    <h2 class="featured-main-title">SpaceX星舰第8次试飞成功完成静态点火测试，助推器回收技术再突破</h2>
+                    <p class="featured-main-summary">SpaceX宣布星舰Super Heavy助推器成功完成静态点火测试，为即将到来的第8次轨道试飞做准备。本次测试持续约10秒，所有33台猛禽发动机正常工作，标志着可重复使用火箭技术取得重要进展。</p>
+                    <div class="hero-meta" style="opacity: 0.8;">
+                        <span>商业航天</span>
+                        <span>•</span>
+                        <span>SpaceX</span>
+                        <span>•</span>
+                        <span>2小时前</span>
                     </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">SpaceX</span>
-                            <span class="tag">星舰</span>
-                        </div>
-                        <h3 class="news-title">SpaceX星舰V3预计四周内首飞，马斯克称人类最早2029年登陆火星</h3>
-                        <p class="news-summary">马斯克通过X平台宣布，SpaceX第三代星舰（V3）预计于四周内开展首次飞行。该火箭体型更大、推力更强，是首个具备在轨对接能力的型号，为执行NASA阿耳忒弥斯登月及未来火星任务奠定基础。马斯克表示，如果携带着擎天柱的星舰在火星上的着陆进展顺利，人类登陆火星最早可能在2029年开始，不过2031年的可能性更大。</p>
-                        <div class="news-footer">
-                            <span class="news-source">SpaceNews</span>
-                            <span class="news-time">2小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(2)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
-                        🇨🇳
-                        <span class="news-priority high">热点</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">中国航天</span>
-                        </div>
-                        <h3 class="news-title">长征八号甲遥八火箭转运至发射区，近期将择机发射</h3>
-                        <p class="news-summary">长征八号甲火箭专为高密度、快速组网发射而设计，是我国构建卫星互联网星座建设的核心运载工具。</p>
-                        <div class="news-footer">
-                            <span class="news-source">央视新闻</span>
-                            <span class="news-time">4小时前</span>
-                        </div>
+                </div>
+            </article>
+            <div class="featured-side">
+                <article class="featured-side-item" onclick="openModal('news-4')">
+                    <div class="featured-side-image">🚁</div>
+                    <div class="featured-side-content">
+                        <span class="featured-side-category">低空经济</span>
+                        <h3 class="featured-side-title">亿航智能EH216-S获全球首张运营合格证，低空商业化启航</h3>
                     </div>
                 </article>
-
-                <article class="news-card" onclick="openModal(3)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
-                        🔥
-                        <span class="news-priority high">突破</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">可回收火箭</span>
-                        </div>
-                        <h3 class="news-title">2025年中国民营火箭密集首飞，6款可回收火箭即将亮相</h3>
-                        <p class="news-summary">蓝箭航天朱雀三号、星际荣耀双曲线三号、星河动力智神星一号等6款国产可回收火箭今年计划首飞。</p>
-                        <div class="news-footer">
-                            <span class="news-source">科技前沿</span>
-                            <span class="news-time">6小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(4)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-                        📈
-                        <span class="news-priority normal">数据</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">发射统计</span>
-                        </div>
-                        <h3 class="news-title">2025年全球航天发射324次，中国92次创历史新高</h3>
-                        <p class="news-summary">SpaceX全年完成165次发射，中国商业航天发射占比首次超过50%。</p>
-                        <div class="news-footer">
-                            <span class="news-source">SpaceStats</span>
-                            <span class="news-time">8小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(5)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);">
-                        🌙
-                        <span class="news-priority medium">登月</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">载人登月</span>
-                        </div>
-                        <h3 class="news-title">中国计划2030年前实现载人登月，2025年为关键准备年</h3>
-                        <p class="news-summary">新一代载人飞船和月面着陆器研制进展顺利，长征十号运载火箭即将进行关键试验。</p>
-                        <div class="news-footer">
-                            <span class="news-source">中国航天报</span>
-                            <span class="news-time">10小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(6)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
-                        🛰️
-                        <span class="news-priority normal">星座</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">卫星互联网</span>
-                        </div>
-                        <h3 class="news-title">中国版"星链"计划加速：千帆星座、GW星座持续升空</h3>
-                        <p class="news-summary">海南商业航天发射场进入常态化发射阶段，将大幅提升我国商业火箭发射效率。</p>
-                        <div class="news-footer">
-                            <span class="news-source">泰伯网</span>
-                            <span class="news-time">12小时前</span>
-                        </div>
+                <article class="featured-side-item" onclick="openModal('news-7')">
+                    <div class="featured-side-image">🛰️</div>
+                    <div class="featured-side-content">
+                        <span class="featured-side-category">遥感卫星</span>
+                        <h3 class="featured-side-title">四维高景三号02星成功发射，商业遥感星座组网加速</h3>
                     </div>
                 </article>
             </div>
         </section>
 
-        <!-- 低空经济 -->
-        <section id="lowaltitude">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
-                <a href="#" class="view-all">查看全部 →</a>
+        <!-- All News Section -->
+        <section id="newsSection">
+            <div class="section-header fade-in">
+                <h2 class="section-title">
+                    <span class="section-title-icon" style="background: linear-gradient(135deg, #ff3366 0%, #7c3aed 100%); color: white;">📰</span>
+                    最新资讯
+                </h2>
+                <div class="section-actions">
+                    <button class="filter-btn active" onclick="filterNews('all')">全部</button>
+                    <button class="filter-btn" onclick="filterNews('high')">🔴 重要</button>
+                    <button class="filter-btn" onclick="filterNews('medium')">🟡 关注</button>
+                </div>
             </div>
-            <div class="news-grid">
-                <article class="news-card" onclick="openModal(7)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-                        💰
-                        <span class="news-priority high">融资</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">eVTOL</span>
-                        </div>
-                        <h3 class="news-title">沃飞长空完成近10亿元融资，创开年低空经济最大单笔融资</h3>
-                        <p class="news-summary">本轮融资由中信建投领投，资金将用于AE200系列适航取证冲刺和全球总部基地投产。</p>
-                        <div class="news-footer">
-                            <span class="news-source">36氪</span>
-                            <span class="news-time">1小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(8)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                        📋
-                        <span class="news-priority high">政策</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag policy">政策</span>
-                        </div>
-                        <h3 class="news-title">十部门联合发布《低空经济标准体系建设指南》</h3>
-                        <p class="news-summary">明确到2027年低空经济标准体系基本建立，到2030年低空经济领域标准超过300项。</p>
-                        <div class="news-footer">
-                            <span class="news-source">市场监管总局</span>
-                            <span class="news-time">3小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(9)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
-                        🎫
-                        <span class="news-priority high">认证</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">适航证</span>
-                        </div>
-                        <h3 class="news-title">亿航智能获全国首批载人运营合格证，开启商业化进程</h3>
-                        <p class="news-summary">亿航智能成为国内首家集齐TC、PC、AC、OC四证的eVTOL企业，标志着低空经济进入商业化元年。</p>
-                        <div class="news-footer">
-                            <span class="news-source">财新网</span>
-                            <span class="news-time">5小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(10)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                        🚗
-                        <span class="news-priority medium">订单</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">小鹏汇天</span>
-                        </div>
-                        <h3 class="news-title">小鹏汇天"陆地航母"获2008台订单，预计2026年量产交付</h3>
-                        <p class="news-summary">这是全球飞行汽车领域迄今为止的最大订单量，预售价约200万元。</p>
-                        <div class="news-footer">
-                            <span class="news-source">时代周报</span>
-                            <span class="news-time">7小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(11)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                        🌆
-                        <span class="news-priority medium">试点</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">城市试点</span>
-                        </div>
-                        <h3 class="news-title">合肥、杭州、深圳等六城市成为eVTOL全国首批试点</h3>
-                        <p class="news-summary">中央空管委推动将600米以下空域的管理权授权给部分地方政府进行试点。</p>
-                        <div class="news-footer">
-                            <span class="news-source">南方日报</span>
-                            <span class="news-time">9小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(12)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                        🔋
-                        <span class="news-priority normal">技术</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag tech">电池技术</span>
-                        </div>
-                        <h3 class="news-title">孚能科技量产285Wh/kg航空电池，第二代将达320Wh/kg</h3>
-                        <p class="news-summary">快充时间缩短至15分钟，已与多家头部eVTOL企业展开深度合作。</p>
-                        <div class="news-footer">
-                            <span class="news-source">动力电池峰会</span>
-                            <span class="news-time">11小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(13)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);">
-                        🌍
-                        <span class="news-priority normal">海外</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">海外订单</span>
-                        </div>
-                        <h3 class="news-title">时的科技获阿联酋350架eVTOL订单，总额达10亿美元</h3>
-                        <p class="news-summary">沃兰特航空也与泰国签署500架采购协议，中国eVTOL加速出海。</p>
-                        <div class="news-footer">
-                            <span class="news-source">第一财经</span>
-                            <span class="news-time">14小时前</span>
-                        </div>
-                    </div>
-                </article>
+            <div class="news-grid" id="newsGrid">
+                <!-- News cards will be injected by JavaScript -->
             </div>
         </section>
 
-        <!-- 遥感卫星 -->
-        <section id="remote">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🛰️</span> 遥感卫星</h2>
-                <a href="#" class="view-all">查看全部 →</a>
-            </div>
-            <div class="news-grid">
-                <article class="news-card" onclick="openModal(14)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
-                        🛰️
-                        <span class="news-priority high">发射</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">SAR</span>
-                        </div>
-                        <h3 class="news-title">航天宏图"女娲星座"已发射12颗雷达卫星，2025年再增8颗</h3>
-                        <p class="news-summary">公司将成为全球拥有商业雷达遥感卫星数量最多的企业，实现全球1天覆盖、1小时快速重访。</p>
-                        <div class="news-footer">
-                            <span class="news-source">航天宏图</span>
-                            <span class="news-time">2小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(15)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
-                        ☁️
-                        <span class="news-priority high">产品</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">低空云</span>
-                        </div>
-                        <h3 class="news-title">中科星图发布星图低空云V1.0，融合数字地球与空天信息</h3>
-                        <p class="news-summary">实现低空活动三维仿真、航线智能规划、交通协同管理等核心能力，支持百万架次级无人机并发管理。</p>
-                        <div class="news-footer">
-                            <span class="news-source">中科星图</span>
-                            <span class="news-time">4小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(16)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                        📡
-                        <span class="news-priority medium">技术</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag tech">AI遥感</span>
-                        </div>
-                        <h3 class="news-title">PIE-Engine平台荣获全国人工智能应用场景创新挑战赛一等奖</h3>
-                        <p class="news-summary">灾害识别精度提升至92%以上，SAR灾害监测响应时间从1天缩短至数小时。</p>
-                        <div class="news-footer">
-                            <span class="news-source">科技日报</span>
-                            <span class="news-time">6小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(17)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
-                        📊
-                        <span class="news-priority normal">应用</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">数据要素</span>
-                        </div>
-                        <h3 class="news-title">航天宏图数据产品在上海、北京数据交易所挂牌</h3>
-                        <p class="news-summary">覆盖6大系列共14类数据产品，为测绘、国土、减灾、海洋等领域提供数据支撑。</p>
-                        <div class="news-footer">
-                            <span class="news-source">证券时报</span>
-                            <span class="news-time">8小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(18)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
-                        🌏
-                        <span class="news-priority medium">海外</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">一带一路</span>
-                        </div>
-                        <h3 class="news-title">航天宏图与巴基斯坦签署29亿元互联网卫星合作协议</h3>
-                        <p class="news-summary">同时与非洲A国签署9.9亿元卫星及地面系统采购合同，海外业务加速拓展。</p>
-                        <div class="news-footer">
-                            <span class="news-source">国海证券</span>
-                            <span class="news-time">10小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(19)">
-                    <div class="news-image" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
-                        🎯
-                        <span class="news-priority normal">精度</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">测绘</span>
-                        </div>
-                        <h3 class="news-title">宏图一号DSM精度从10米提升至2-4米，达国际一流水平</h3>
-                        <p class="news-summary">毫米级形变监测能力，全球测图精度大幅提升。</p>
-                        <div class="news-footer">
-                            <span class="news-source">公司公告</span>
-                            <span class="news-time">12小时前</span>
-                        </div>
-                    </div>
-                </article>
+        <!-- Archive Section -->
+        <section class="archive-section fade-in">
+            <h2 class="section-title">
+                <span class="section-title-icon" style="background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); color: white;">📅</span>
+                日期归档
+            </h2>
+            <div class="archive-grid">
+                <div class="archive-item" onclick="showToast('查看2026年3月14日归档')">
+                    <span class="archive-date">2026年3月14日</span>
+                    <span class="archive-count">24条</span>
+                </div>
+                <div class="archive-item" onclick="showToast('查看2026年3月13日归档')">
+                    <span class="archive-date">2026年3月13日</span>
+                    <span class="archive-count">21条</span>
+                </div>
+                <div class="archive-item" onclick="showToast('查看2026年3月12日归档')">
+                    <span class="archive-date">2026年3月12日</span>
+                    <span class="archive-count">19条</span>
+                </div>
+                <div class="archive-item" onclick="showToast('查看2026年3月11日归档')">
+                    <span class="archive-date">2026年3月11日</span>
+                    <span class="archive-count">23条</span>
+                </div>
+                <div class="archive-item" onclick="showToast('查看2026年3月10日归档')">
+                    <span class="archive-date">2026年3月10日</span>
+                    <span class="archive-count">18条</span>
+                </div>
+                <div class="archive-item" onclick="showToast('查看更多归档')">
+                    <span class="archive-date">查看更多 →</span>
+                    <span class="archive-count"></span>
+                </div>
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
-        <p>Space Daily 空天信息日报 | 每日更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
-        <p>Generated with ❤️ | 2026年3月14日</p>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="footer-logo-icon">🚀</div>
+                    <div class="footer-logo-text">Space Daily</div>
+                </div>
+                <p class="footer-desc">Space Daily 空天信息日报，聚焦商业航天、低空经济、遥感卫星领域，为您提供最新、最全的行业资讯。</p>
+                <div class="footer-social">
+                    <a href="#" class="social-link" onclick="showToast('微信公众号')">📱</a>
+                    <a href="#" class="social-link" onclick="showToast('微博')">📝</a>
+                    <a href="#" class="social-link" onclick="showToast('Twitter/X')">🐦</a>
+                    <a href="#" class="social-link" onclick="showToast('邮件订阅')">✉️</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">内容板块</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="filterNews('commercial')">商业航天</a></li>
+                    <li><a href="#" onclick="filterNews('lowaltitude')">低空经济</a></li>
+                    <li><a href="#" onclick="filterNews('remote')">遥感卫星</a></li>
+                    <li><a href="#" onclick="filterNews('investment')">投融资</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">关于我们</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showToast('关于页面开发中')">关于我们</a></li>
+                    <li><a href="#" onclick="showToast('联系页面开发中')">联系方式</a></li>
+                    <li><a href="#" onclick="showToast('投稿页面开发中')">内容投稿</a></li>
+                    <li><a href="#" onclick="showToast('API文档开发中')">API接口</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 class="footer-title">订阅更新</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showToast('邮件订阅功能开发中')">邮件订阅</a></li>
+                    <li><a href="#" onclick="showToast('RSS订阅功能开发中')">RSS订阅</a></li>
+                    <li><a href="#" onclick="showToast('小程序开发中')">微信小程序</a></li>
+                    <li><a href="#" onclick="showToast('APP开发中')">移动应用</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Space Daily. All rights reserved. 空天信息日报</p>
+            <div class="footer-stats">
+                <span>📊 今日更新 24 条</span>
+                <span>👁️ 累计阅读 128.5K</span>
+                <span>🕐 最后更新 21:40</span>
+            </div>
+        </div>
     </footer>
 
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-header" id="modalHeader">🚀</div>
+            <div class="modal-body">
+                <div class="modal-category" id="modalCategory">商业航天</div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-meta">
+                    <div class="modal-meta-item" id="modalSource">📰 SpaceNews</div>
+                    <div class="modal-meta-item" id="modalTime">⏱️ 2小时前</div>
+                    <div class="modal-meta-item" id="modalPriority">🔴 重要</div>
+                </div>
+                <div class="modal-text" id="modalText"></div>
+                <div class="modal-tags" id="modalTags"></div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-primary" onclick="shareNews()">
+                        <span>📤</span> 分享资讯
+                    </button>
+                    <button class="modal-btn modal-btn-secondary" onclick="copyLink()">
+                        <span>🔗</span> 复制链接
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
     <script>
-        function openModal(id) {
-            console.log('Open news detail:', id);
-            // 详情页功能待实现
+        // News Data
+        const newsData = [
+            {
+                id: 'news-1',
+                title: 'SpaceX星舰第8次试飞成功完成静态点火测试，助推器回收技术再突破',
+                category: 'commercial',
+                categoryName: '商业航天',
+                priority: 'high',
+                source: 'SpaceNews',
+                time: '2小时前',
+                icon: '🚀',
+                summary: 'SpaceX宣布星舰Super Heavy助推器成功完成静态点火测试，为即将到来的第8次轨道试飞做准备。本次测试持续约10秒，所有33台猛禽发动机正常工作。',
+                content: `
+                    <p><strong>【测试详情】</strong>北京时间3月14日凌晨，SpaceX在得克萨斯州博卡奇卡星港基地成功完成了星舰Super Heavy助推器的静态点火测试。此次测试持续约10秒，助推器上全部33台猛禽V2发动机按计划点火，产生了超过1600万磅的推力。</p>
+                    <p><strong>【技术突破】</strong>本次测试标志着星舰第8次综合飞行测试（IFT-8）的准备工作进入最后阶段。SpaceX工程师表示，所有发动机在测试期间表现正常，推力、燃烧效率和振动数据均在预期范围内。</p>
+                    <p><strong>【回收技术】</strong>IFT-8任务的核心目标之一是再次尝试助推器的空中回收。SpaceX计划使用发射塔上的"筷子"机械臂捕获返回的助推器，这一技术已在IFT-7任务中首次成功验证。</p>
+                    <p><strong>【后续计划】</strong>如果一切顺利，SpaceX预计将在未来2-3周内进行IFT-8发射。马斯克表示，2026年计划进行至少25次星舰试飞，为未来的载人登月和火星任务奠定基础。</p>
+                `,
+                tags: ['SpaceX', '星舰', '静态点火', '可回收火箭']
+            },
+            {
+                id: 'news-2',
+                title: '蓝箭航天朱雀三号完成200吨级液氧甲烷发动机长程试车',
+                category: 'commercial',
+                categoryName: '商业航天',
+                priority: 'high',
+                source: '泰伯网',
+                time: '4小时前',
+                icon: '🚀',
+                summary: '蓝箭航天宣布朱雀三号运载火箭配套的200吨级液氧甲烷发动机完成500秒长程试车，标志着可回收火箭技术取得重要突破。',
+                content: `
+                    <p><strong>【重大突破】</strong>蓝箭航天宣布朱雀三号运载火箭配套的200吨级液氧甲烷发动机完成500秒长程试车，标志着可回收火箭技术取得重要突破。</p>
+                    <p><strong>【技术参数】</strong>这款发动机采用液氧甲烷推进剂，海平面推力达200吨，具备多次点火和深度节流能力，是支撑火箭垂直回收的关键技术。500秒的长程试车覆盖了完整飞行任务的动力需求。</p>
+                    <p><strong>【朱雀三号】</strong>朱雀三号是蓝箭航天正在研制的中大型可重复使用运载火箭，直径4.5米，起飞重量超过600吨，设计目标为一级垂直回收、重复使用至少20次。</p>
+                    <p><strong>【行业地位】</strong>此次500秒长程试车的成功，使中国成为继SpaceX之后，第二个掌握200吨级液氧甲烷发动机技术的国家。朱雀三号计划2026年下半年首飞。</p>
+                `,
+                tags: ['蓝箭航天', '朱雀三号', '液氧甲烷', '发动机试车']
+            },
+            {
+                id: 'news-3',
+                title: '天兵科技天龙三号首飞进入倒计时，对标猎鹰9号',
+                category: 'commercial',
+                categoryName: '商业航天',
+                priority: 'medium',
+                source: '36氪',
+                time: '6小时前',
+                icon: '🚀',
+                summary: '天兵科技宣布天龙三号大型液体运载火箭完成总装出厂评审，计划6月首飞，对标SpaceX猎鹰9号，具备一子级垂直回收能力。',
+                content: `
+                    <p><strong>【首飞在即】</strong>天兵科技宣布天龙三号大型液体运载火箭完成总装出厂评审，计划6月首飞，对标SpaceX猎鹰9号。</p>
+                    <p><strong>【火箭参数】</strong>天龙三号直径3.8米，起飞重量590吨，近地轨道运载能力17吨，太阳同步轨道运载能力14吨，具备一子级垂直回收能力。采用液氧煤油推进剂，一级并联9台天火-12发动机。</p>
+                    <p><strong>【技术路线】</strong>单台海平面推力110吨，火箭设计目标为一级回收重复使用10次以上。这是中国民营火箭公司研制的最大运力液体火箭。</p>
+                    <p><strong>【市场定位】</strong>天龙三号定位于中大型卫星发射市场，主要面向低轨星座组网、大型遥感卫星等商业发射需求，目标发射成本低于每公斤1万美元。</p>
+                `,
+                tags: ['天兵科技', '天龙三号', '首飞', '可回收火箭']
+            },
+            {
+                id: 'news-4',
+                title: '亿航智能EH216-S获全球首张运营合格证，低空商业化启航',
+                category: 'lowaltitude',
+                categoryName: '低空经济',
+                priority: 'high',
+                source: '亿航智能',
+                time: '1小时前',
+                icon: '🚁',
+                summary: '亿航智能EH216-S无人驾驶载人航空器获得中国民航局颁发的运营合格证（OC），成为全球首个获准商业运营的eVTOL产品。',
+                content: `
+                    <p><strong>【历史时刻】</strong>2026年3月14日，亿航智能宣布其EH216-S无人驾驶载人航空器获得中国民航局颁发的运营合格证（OC），成为全球首个获准商业运营的eVTOL产品。</p>
+                    <p><strong>【四证齐全】</strong>至此，EH216-S已集齐型号合格证（TC）、生产许可证（PC）、适航证（AC）和运营合格证（OC）四大核心证书，标志着中国低空经济进入商业化运营时代。</p>
+                    <p><strong>【商业运营】</strong>亿航智能已在广州、深圳、合肥等地设立运营中心，计划2026年实现1000架次的商业飞行。单次体验飞行价格初步定为298元/人次，时长约15分钟。</p>
+                    <p><strong>【市场反响】</strong>消息公布后，亿航智能股价盘前大涨15%。分析师预计，2026年中国eVTOL市场规模将突破50亿元，到2030年达到千亿级别。</p>
+                `,
+                tags: ['亿航智能', 'EH216-S', 'eVTOL', '运营合格证']
+            },
+            {
+                id: 'news-5',
+                title: '沃飞长空完成近10亿元B轮融资，创低空经济开年最大单笔融资',
+                category: 'lowaltitude',
+                categoryName: '低空经济',
+                priority: 'high',
+                source: '投中网',
+                time: '3小时前',
+                icon: '💰',
+                summary: 'eVTOL主机厂沃飞长空宣布完成近10亿新一轮融资，创下2026年开年低空经济最大单笔融资纪录。',
+                content: `
+                    <p><strong>【重磅融资】</strong>eVTOL主机厂沃飞长空近日宣布完成近10亿元B轮融资，创下2026年开年低空经济最大单笔融资纪录。</p>
+                    <p><strong>【投资方】</strong>本轮融资由中信建投领投，联新资本、祥峰投资、光合创投、国策投资等知名机构联合投资，磐霖资本、蕴盛资本、中科创星、松禾资本等老股东持续跟投。</p>
+                    <p><strong>【资金用途】</strong>融资资金将用于AE200 eVTOL的适航取证、量产生产线建设和商业化运营准备。沃飞长空计划于2027年取得型号合格证并启动交付。</p>
+                    <p><strong>【产品进展】</strong>AE200-100量产机已在成都下线，并完成第一阶段验证试飞。该机型可搭载5人（1名飞行员+4名乘客），设计航程200公里。</p>
+                `,
+                tags: ['沃飞长空', 'eVTOL', '融资', 'AE200']
+            },
+            {
+                id: 'news-6',
+                title: '小鹏汇天"陆地航母"获1.5亿美元B轮融资，计划2026年量产',
+                category: 'lowaltitude',
+                categoryName: '低空经济',
+                priority: 'medium',
+                source: '财新网',
+                time: '5小时前',
+                icon: '🚁',
+                summary: '小鹏汇天完成1.5亿美元B轮融资，分体式飞行汽车"陆地航母"计划2026年实现量产交付，预计售价200万元以内。',
+                content: `
+                    <p><strong>【融资完成】</strong>小鹏汇天完成1.5亿美元B轮融资，投资方包括IDG资本、五源资本、小鹏汽车领投，红杉中国、钟鼎资本、GGV纪源资本、高瓴创投、云锋基金等机构跟投。</p>
+                    <p><strong>【产品特点】</strong>"陆地航母"由增程式混合动力皮卡（陆行体）和多旋翼eVTOL（飞行体）组成。皮卡可乘坐4-5人，综合续航超1000公里；飞行体可乘坐2人，满油满电可起降6次。</p>
+                    <p><strong>【适航进展】</strong>2024年3月，民航中南局受理了"陆地航母"飞行器部分的型号合格证申请，预计2025年底至2026年初取证。</p>
+                    <p><strong>【量产计划】</strong>小鹏汇天在广州开发区建设飞行汽车制造工厂，规划年产能1万台，预计2026年正式量产，售价控制在200万元以内。</p>
+                `,
+                tags: ['小鹏汇天', '陆地航母', '飞行汽车', '融资']
+            },
+            {
+                id: 'news-7',
+                title: '四维高景三号02星成功发射，商业遥感星座组网加速',
+                category: 'remote',
+                categoryName: '遥感卫星',
+                priority: 'high',
+                source: '中国四维',
+                time: '2小时前',
+                icon: '🛰️',
+                summary: '四维高景三号02星成功发射入轨，与01星组网后可实现我国重点区域半年覆盖，区域订单服务能力提升20倍。',
+                content: `
+                    <p><strong>【成功发射】</strong>北京时间2026年3月14日12时11分，四维高景三号02星搭载长征二号丁运载火箭在酒泉卫星发射中心成功发射，卫星顺利进入预定轨道。</p>
+                    <p><strong>【技术指标】</strong>02星具备130公里超大幅宽，同时提供0.5米分辨率和9波段组合影像数据，是目前国内性能最先进的商业光学遥感卫星之一。</p>
+                    <p><strong>【组网效益】</strong>02星与01星成功组网后，数据获取能力将从我国重点区域年度覆盖提高到半年覆盖，重点省市域季度与月度覆盖，区域订单服务能力相较之前提升20倍以上。</p>
+                    <p><strong>【星座规划】</strong>中国四维计划2027年完成"16+4+8"星座组网，实现全球任意地点小时级重访，打造世界一流的商业遥感卫星系统。</p>
+                `,
+                tags: ['中国四维', '高景三号', '光学遥感', '卫星组网']
+            },
+            {
+                id: 'news-8',
+                title: '航天宏图女娲星座新增4颗SAR卫星在轨运行',
+                category: 'remote',
+                categoryName: '遥感卫星',
+                priority: 'high',
+                source: '航天宏图',
+                time: '4小时前',
+                icon: '🛰️',
+                summary: '航天宏图女娲星座新增4颗X波段SAR卫星成功入轨，目前在轨卫星达12颗，成为国内规模最大的商业SAR卫星星座。',
+                content: `
+                    <p><strong>【星座扩容】</strong>航天宏图宣布女娲星座新增4颗X波段SAR卫星成功入轨，目前在轨卫星达12颗，成为国内规模最大、技术最先进的商业SAR卫星星座。</p>
+                    <p><strong>【技术能力】</strong>女娲星座卫星具备全天候、全天时对地观测能力，可提供0.5米分辨率的高清SAR图像，支持干涉测量（InSAR）进行毫米级地面沉降监测。</p>
+                    <p><strong>【应用场景】</strong>广泛应用于自然资源监测、应急救灾、海洋监测、智慧城市等领域。在2025年汛期，女娲星座为多地抗洪救灾提供了关键数据支撑。</p>
+                    <p><strong>【发展规划】</strong>女娲星座一期工程规划54颗卫星，预计2027年完成部署，将实现全球1天覆盖、1小时快速重访的能力。</p>
+                `,
+                tags: ['航天宏图', '女娲星座', 'SAR卫星', '雷达遥感']
+            },
+            {
+                id: 'news-9',
+                title: '中科星图发布星图低空云V2.0，融合AI大模型能力',
+                category: 'remote',
+                categoryName: '遥感卫星',
+                priority: 'medium',
+                source: '中科星图',
+                time: '6小时前',
+                icon: '🌍',
+                summary: '中科星图正式发布星图低空云V2.0，融合数字地球、AI大模型、空天信息技术，实现低空智能管控和航线自主规划。',
+                content: `
+                    <p><strong>【产品升级】</strong>中科星图正式发布星图低空云V2.0，在V1.0基础上深度融合AI大模型能力，实现低空活动智能管控和航线自主规划。</p>
+                    <p><strong>【核心功能】</strong>新增基于大模型的自然语言空域查询、智能航线规划、风险自动识别等功能，支持百万架次级无人机并发管理和实时态势感知。</p>
+                    <p><strong>【技术亮点】</strong>采用"空天信息+数字地球+AI"的技术路线，融合实时气象、地形、电磁环境数据，构建低空数字孪生环境。</p>
+                    <p><strong>【市场应用】</strong>已在深圳、成都、合肥等6个eVTOL试点城市部署应用，支撑城市空中交通管理、无人机物流配送等场景。</p>
+                `,
+                tags: ['中科星图', '低空云', '数字地球', 'AI大模型']
+            },
+            {
+                id: 'news-10',
+                title: '银河航天完成新轮融资估值超120亿，加速卫星互联网出海',
+                category: 'investment',
+                categoryName: '投融资',
+                priority: 'high',
+                source: '36氪',
+                time: '3小时前',
+                icon: '💰',
+                summary: '银河航天完成新一轮融资，投后估值超120亿元，资金将用于卫星互联网星座建设和海外业务拓展。',
+                content: `
+                    <p><strong>【融资完成】</strong>银河航天完成新一轮融资，投后估值超120亿元，创造中国商业航天企业估值新纪录。</p>
+                    <p><strong>【投资方】</strong>本轮融资由建银国际领投，跟投方包括顺为资本、晨兴资本、IDG资本等知名机构。</p>
+                    <p><strong>【星座进展】</strong>银河航天已成功发射12颗低轨宽带卫星，计划2026年完成100颗卫星组网，提供全球互联网接入服务。</p>
+                    <p><strong>【海外布局】</strong>与东南亚、非洲等地电信运营商签署合作协议，推进卫星互联网出海战略，目标2027年服务覆盖50个国家。</p>
+                `,
+                tags: ['银河航天', '卫星互联网', '融资', '低轨星座']
+            },
+            {
+                id: 'news-11',
+                title: '低空经济赛道Q1融资超80亿元，头部效应明显',
+                category: 'investment',
+                categoryName: '投融资',
+                priority: 'medium',
+                source: '投中网',
+                time: '5小时前',
+                icon: '💵',
+                summary: '2026年第一季度eVTOL及低空经济领域融资超80亿元，沃飞长空、小鹏汇天、时的科技等头部企业完成大额融资。',
+                content: `
+                    <p><strong>【融资概况】</strong>据统计，2026年第一季度eVTOL及低空经济领域融资超80亿元，同比增长60%，行业进入资本爆发期。</p>
+                    <p><strong>【头部企业】</strong>沃飞长空完成10亿元B轮融资，小鹏汇天完成1.5亿美元B轮融资，时的科技完成5亿元C轮融资，头部效应明显。</p>
+                    <p><strong>【投资热点】</strong>eVTOL整机制造、飞控系统、固态电池成为投资重点，产业链上下游企业均获得资本青睐。</p>
+                    <p><strong>【行业预测】</strong>预计2026年全年低空经济领域融资规模将突破300亿元，行业进入快速成长期。</p>
+                `,
+                tags: ['低空经济', 'eVTOL', '投融资', '赛道分析']
+            },
+            {
+                id: 'news-12',
+                title: '蓝箭航天科创板IPO进入问询阶段，商业航天第一股呼之欲出',
+                category: 'investment',
+                categoryName: '投融资',
+                priority: 'high',
+                source: '证券时报',
+                time: '7小时前',
+                icon: '📈',
+                summary: '蓝箭航天科创板IPO审核状态变更为"已问询"，从受理到问询仅用时22天，有望成为首家登陆科创板的商业火箭企业。',
+                content: `
+                    <p><strong>【IPO进展】</strong>蓝箭航天科创板IPO审核状态变更为"已问询"，从2025年12月31日获受理到进入问询环节，仅用时22天。</p>
+                    <p><strong>【募资用途】</strong>招股书显示，公司拟募资40亿元，主要用于朱雀二号和朱雀三号运载火箭的研制、生产能力建设和补充流动资金。</p>
+                    <p><strong>【财务数据】</strong>2024年公司营收8.5亿元，同比增长120%，主要来源于卫星发射服务收入。目前仍处于亏损状态，但亏损幅度收窄。</p>
+                    <p><strong>【行业意义】</strong>若成功上市，蓝箭航天将成为"商业航天第一股"，为其他商业航天企业资本化提供示范效应。</p>
+                `,
+                tags: ['蓝箭航天', 'IPO', '科创板', '商业航天']
+            },
+            {
+                id: 'news-13',
+                title: '低空经济标准体系建设指南发布，2027年基本建成',
+                category: 'policy',
+                categoryName: '政策法规',
+                priority: 'high',
+                source: '市场监管总局',
+                time: '2小时前',
+                icon: '📜',
+                summary: '十部门联合发布《低空经济标准体系建设指南（2025年版）》，明确到2027年低空经济标准体系基本建立。',
+                content: `
+                    <p><strong>【政策发布】</strong>市场监管总局会同中央空管办、国家发改委等十部门联合发布《低空经济标准体系建设指南（2025年版）》。</p>
+                    <p><strong>【发展目标】</strong>指南明确，到2027年低空经济标准体系基本建立，基本满足低空经济安全健康发展需求；到2030年，低空经济领域标准超过300项。</p>
+                    <p><strong>【标准体系】</strong>涵盖低空飞行器制造、低空交通管控、低空运行服务、低空基础设施、低空安全保障等五大领域。</p>
+                    <p><strong>【地方响应】</strong>深圳、苏州、合肥等地已启动地方标准制定工作，与国家标准形成协同互补。</p>
+                `,
+                tags: ['低空经济', '标准体系', '政策法规', '十部门']
+            },
+            {
+                id: 'news-14',
+                title: '民航局发布《民用无人驾驶航空发展路线图》修订意见稿',
+                category: 'policy',
+                categoryName: '政策法规',
+                priority: 'high',
+                source: '民航局',
+                time: '4小时前',
+                icon: '📋',
+                summary: '民航局就《民用无人驾驶航空发展路线图》修订征求意见，提出到2030年形成万亿级低空经济市场规模目标。',
+                content: `
+                    <p><strong>【征求意见】</strong>民航局就《民用无人驾驶航空发展路线图（2025-2030年）》修订稿公开征求意见，明确未来五年发展目标和路径。</p>
+                    <p><strong>【发展目标】</strong>到2030年，民用无人驾驶航空器年飞行量达到1000万小时，产业规模突破1万亿元，形成成熟的市场运行和监管体系。</p>
+                    <p><strong>【空域开放】</strong>提出分阶段开放300米以下、600米以下、1000米以下空域，简化飞行审批程序，实行负面清单管理。</p>
+                    <p><strong>【基础设施】</strong>规划建设低空飞行服务站网络，到2030年建成覆盖全国的低空通信、导航、监视设施。</p>
+                `,
+                tags: ['民航局', '无人机', '发展路线图', '空域开放']
+            },
+            {
+                id: 'news-15',
+                title: '新修订《民用航空法》7月施行，为低空经济提供法律保障',
+                category: 'policy',
+                categoryName: '政策法规',
+                priority: 'medium',
+                source: '新华社',
+                time: '6小时前',
+                icon: '⚖️',
+                summary: '新修订的《民用航空法》将于2026年7月1日起施行，新增低空经济、无人机管理等章节，为产业发展提供法律保障。',
+                content: `
+                    <p><strong>【法律修订】</strong>全国人大常委会审议通过新修订的《民用航空法》，将于2026年7月1日起施行，这是该法自1995年颁布以来的首次重大修订。</p>
+                    <p><strong>【新增内容】</strong>新增"低空经济"专章，明确低空空域管理、低空飞行服务、低空安全保障等法律框架；新增"无人机管理"章节，规范无人机生产、销售、使用。</p>
+                    <p><strong>【空域管理】</strong>明确国家统筹管理低空空域，建立低空空域分类划设和动态管理机制，支持有条件的地区开展低空空域管理改革试点。</p>
+                    <p><strong>【业界反响】</strong>业界普遍认为，新法为低空经济发展提供了顶层法律保障，将加速产业规范化发展。</p>
+                `,
+                tags: ['民用航空法', '低空经济', '无人机', '法律保障']
+            },
+            {
+                id: 'news-16',
+                title: 'SpaceX星链用户突破500万，覆盖100个国家',
+                category: 'tech',
+                categoryName: '技术前沿',
+                priority: 'high',
+                source: 'SpaceX',
+                time: '1小时前',
+                icon: '🌐',
+                summary: 'SpaceX宣布星链（Starlink）卫星互联网服务全球用户突破500万，覆盖100个国家和地区。',
+                content: `
+                    <p><strong>【用户里程碑】</strong>SpaceX宣布星链卫星互联网服务全球用户突破500万，覆盖100个国家和地区，成为全球最大的卫星互联网服务商。</p>
+                    <p><strong>【星座规模】</strong>目前在轨星链卫星超过7000颗，占全球在轨卫星总数的60%以上。2026年计划再发射2000颗卫星。</p>
+                    <p><strong>【服务升级】</strong>推出Starlink V2终端，下载速度提升至300Mbps，延迟降低至20ms以下，支持更多用户同时接入。</p>
+                    <p><strong>【直连手机】</strong>星链直连手机服务已在美国、加拿大、日本等国推出，用户无需更换手机即可享受卫星短信服务。</p>
+                `,
+                tags: ['SpaceX', '星链', '卫星互联网', '用户增长']
+            },
+            {
+                id: 'news-17',
+                title: 'Vision Mamba在遥感领域应用综述发表，或成新主流架构',
+                category: 'tech',
+                categoryName: '技术前沿',
+                priority: 'medium',
+                source: 'arXiv',
+                time: '5小时前',
+                icon: '🤖',
+                summary: '最新综述论文系统梳理了Mamba架构在遥感影像分类、变化检测等任务中的应用进展，有望替代Transformer成为新主流。',
+                content: `
+                    <p><strong>【论文发表】</strong>最新综述论文《Vision Mamba in Remote Sensing: A Comprehensive Review》在arXiv发表，系统梳理了Mamba架构在遥感领域的应用进展。</p>
+                    <p><strong>【技术优势】</strong>Mamba通过状态空间模型实现线性复杂度，在处理高分辨率遥感影像时比Transformer更高效，显存占用降低50%以上。</p>
+                    <p><strong>【应用成果】</strong>在遥感影像分类、变化检测、目标识别等任务中，Mamba-based模型已达到或超越Transformer-based模型的性能。</p>
+                    <p><strong>【发展趋势】</strong>论文预测Mamba架构有望在遥感大模型时代成为主流技术路线，为处理海量遥感数据提供更高效的解决方案。</p>
+                `,
+                tags: ['Mamba', '遥感AI', '深度学习', 'Transformer']
+            },
+            {
+                id: 'news-18',
+                title: '长光卫星实现星地激光100Gbps超高速数据传输',
+                category: 'tech',
+                categoryName: '技术前沿',
+                priority: 'high',
+                source: '长光卫星',
+                time: '8小时前',
+                icon: '💫',
+                summary: '长光卫星完成国内首次星地激光100Gbps超高速高分辨遥感影像传输试验，传输速率提升1000倍。',
+                content: `
+                    <p><strong>【技术突破】</strong>长光卫星完成国内首次星地激光100Gbps超高速高分辨遥感影像传输试验，创造了国内卫星数据传输新纪录。</p>
+                    <p><strong>【对比提升】</strong>相比传统微波数传（100Mbps量级），激光通信速率提升1000倍，可将整星数据下传时间从天级缩短到分钟级。</p>
+                    <p><strong>【应用价值】</strong>超高速数传能力使遥感卫星具备实时应急响应能力，可在地震、洪水等灾害发生后数分钟内将现场影像传回地面。</p>
+                    <p><strong>【星座应用】</strong>长光卫星计划在吉林一号星座全面部署激光通信终端，2027年实现组网应用。</p>
+                `,
+                tags: ['长光卫星', '激光通信', '数据传输', '吉林一号']
+            },
+            {
+                id: 'news-19',
+                title: '中国版"星链"千帆星座完成第5批次组网发射',
+                category: 'commercial',
+                categoryName: '商业航天',
+                priority: 'high',
+                source: '上海航天',
+                time: '3小时前',
+                icon: '🛰️',
+                summary: '千帆星座完成第5批次组网发射，54颗卫星成功入轨，标志着中国巨型低轨卫星互联网星座建设全面提速。',
+                content: `
+                    <p><strong>【组网进展】</strong>千帆星座（G60）完成第5批次组网发射，54颗卫星成功入轨，目前在轨卫星达270颗，覆盖全球主要区域。</p>
+                    <p><strong>【星座规划】</strong>千帆星座计划部署1.5万颗低轨卫星，一期部署648颗，预计2027年完成，提供全球互联网接入服务。</p>
+                    <p><strong>【技术特点】</strong>采用 Ku/Ka 双频段，单星通信容量达20Gbps，可为偏远地区、海洋、航空等场景提供高速互联网服务。</p>
+                    <p><strong>【与国网星座协同】</strong>千帆星座与中国星网"国网"星座形成互补，共同构建中国自主可控的全球卫星互联网体系。</p>
+                `,
+                tags: ['千帆星座', 'G60', '卫星互联网', '低轨星座']
+            },
+            {
+                id: 'news-20',
+                title: '星际荣耀双曲线三号完成一子级垂直回收验证飞行',
+                category: 'commercial',
+                categoryName: '商业航天',
+                priority: 'high',
+                source: '星际荣耀',
+                time: '5小时前',
+                icon: '🚀',
+                summary: '星际荣耀双曲线三号验证火箭成功完成一子级垂直起降飞行试验，标志着中国商业航天可重复使用技术取得重大突破。',
+                content: `
+                    <p><strong>【试验成功】</strong>星际荣耀双曲线三号验证火箭在酒泉卫星发射中心成功完成一子级垂直起降飞行试验，飞行高度100米，着陆精度达0.5米。</p>
+                    <p><strong>【技术验证】</strong>本次试验验证了发动机深度节流、姿态精确控制、垂直软着陆等关键技术，为双曲线三号首飞奠定基础。</p>
+                    <p><strong>【火箭参数】</strong>双曲线三号是两级液氧甲烷可重复使用运载火箭，近地轨道运力13吨，设计复用次数20次以上。</p>
+                    <p><strong>【首飞计划】</strong>双曲线三号计划2026年下半年首飞，届时将成为中国首款入轨级可回收运载火箭。</p>
+                `,
+                tags: ['星际荣耀', '双曲线三号', '垂直回收', '可重复使用']
+            },
+            {
+                id: 'news-21',
+                title: '峰飞航空获适航三证，吨级货运eVTOL正式交付',
+                category: 'lowaltitude',
+                categoryName: '低空经济',
+                priority: 'medium',
+                source: '峰飞航空',
+                time: '7小时前',
+                icon: '📦',
+                summary: '峰飞航空科技成功交付全球首架获颁"适航三证"的吨级以上货运版eVTOL，具备合规量产交付能力。',
+                content: `
+                    <p><strong>【取证交付】</strong>峰飞航空科技成功交付全球首架获颁"适航三证"（TC、PC、AC）的吨级以上货运版eVTOL，标志着公司具备合规量产交付能力。</p>
+                    <p><strong>【产品参数】</strong>该货运eVTOL最大起飞重量2吨，有效载荷400公斤，航程250公里，适用于中短途物流运输场景。</p>
+                    <p><strong>【客户签约】</strong>已与顺丰、京东物流等签署采购协议，首批订单50架，计划2026年完成交付。</p>
+                    <p><strong>【适航进展】</strong>载人版eVTOL预计2027年取得型号合格证，届时将开通城市空中交通航线。</p>
+                `,
+                tags: ['峰飞航空', '货运eVTOL', '适航证', '无人机物流']
+            },
+            {
+                id: 'news-22',
+                title: '全球首款6吨级倾转旋翼无人机镧影R6000亮相珠海航展',
+                category: 'lowaltitude',
+                categoryName: '低空经济',
+                priority: 'medium',
+                source: '联合飞机',
+                time: '9小时前',
+                icon: '🚁',
+                summary: '联合飞机发布全球首款6吨级倾转旋翼飞行器镧影R6000，飞行速度550km/h，航程4000公里。',
+                content: `
+                    <p><strong>【新品发布】</strong>联合飞机在珠海航展发布全球首款6吨级倾转旋翼飞行器——镧影R6000，填补了大型倾转旋翼无人机市场空白。</p>
+                    <p><strong>【性能参数】</strong>最大起飞重量6吨，飞行速度550km/h，航程4000公里，可搭载2吨载荷，适用于长途货运、应急救援等场景。</p>
+                    <p><strong>【技术特点】</strong>采用倾转旋翼构型，兼具直升机垂直起降和固定翼飞机高速巡航优势，航程是同等重量直升机的3倍。</p>
+                    <p><strong>【市场反响】</strong>航展现场签约金额达10亿元，客户涵盖物流、应急、海事等领域。联合飞机计划在3年内上市。</p>
+                `,
+                tags: ['联合飞机', '镧影R6000', '倾转旋翼', '大型无人机']
+            },
+            {
+                id: 'news-23',
+                title: 'ICEYE推出Scan Wide模式，单景成像覆盖6万平方公里',
+                category: 'remote',
+                categoryName: '遥感卫星',
+                priority: 'medium',
+                source: 'ICEYE',
+                time: '6小时前',
+                icon: '📡',
+                summary: '芬兰SAR卫星运营商ICEYE推出"Scan Wide"模式，实现单景6万平方公里成像，可用于大范围灾害监测。',
+                content: `
+                    <p><strong>【模式发布】</strong>ICEYE推出"Scan Wide"超大幅宽成像模式，单景覆盖面积达6万平方公里，相当于整个以色列的国土面积。</p>
+                    <p><strong>【应用场景】</strong>适用于大范围洪涝监测、地震灾害评估、海洋油污监测等需要快速获取大范围影像的场景。</p>
+                    <p><strong>【技术优势】</strong>相比传统SAR成像模式，Scan Wide将成像幅宽提升10倍，虽然分辨率降低至5米，但可在数分钟内完成大面积扫描。</p>
+                    <p><strong>【服务定价】</strong>该模式已面向全球客户开放，单次成像任务定价5万美元起。</p>
+                `,
+                tags: ['ICEYE', 'SAR卫星', '大幅宽成像', '灾害监测']
+            },
+            {
+                id: 'news-24',
+                title: '极飞科技递交港股IPO申请，冲刺农业无人机第一股',
+                category: 'investment',
+                categoryName: '投融资',
+                priority: 'medium',
+                source: '港交所',
+                time: '8小时前',
+                icon: '🌾',
+                summary: '农业无人机龙头极飞科技向港交所递交IPO申请，2024年已实现扭亏为盈，冲刺"农业无人机第一股"。',
+                content: `
+                    <p><strong>【IPO申请】</strong>农业无人机龙头企业极飞科技正式向港交所递交IPO申请，拟募集资金用于产品研发、产能扩张和全球市场拓展。</p>
+                    <p><strong>【财务数据】</strong>2024年营收35亿元，同比增长45%，净利润2.1亿元，实现扭亏为盈。农业无人机销量占全球市场份额35%。</p>
+                    <p><strong>【产品布局】</strong>除了农业植保无人机，公司还推出了农业无人车、农机自驾仪、农业物联网等智慧农业产品。</p>
+                    <p><strong>【市场前景】</strong>全球智慧农业市场规模预计2030年达500亿美元，极飞科技有望成为首家登陆资本市场的农业无人机企业。</p>
+                `,
+                tags: ['极飞科技', '农业无人机', 'IPO', '智慧农业']
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNews('all');
+            updateDate();
+            setupScrollAnimations();
+            setupHeaderScroll();
+        });
+
+        // Render News
+        function renderNews(filter) {
+            const grid = document.getElementById('newsGrid');
+            let filteredNews = newsData;
+            
+            if (filter === 'high') {
+                filteredNews = newsData.filter(n => n.priority === 'high');
+            } else if (filter === 'medium') {
+                filteredNews = newsData.filter(n => n.priority === 'medium');
+            } else if (filter !== 'all') {
+                filteredNews = newsData.filter(n => n.category === filter);
+            }
+
+            grid.innerHTML = filteredNews.map(news => `
+                <article class="news-card priority-${news.priority} fade-in" onclick="openModal('${news.id}')" data-category="${news.category}">
+                    <div class="news-image">
+                        <div class="news-image-bg" style="background: linear-gradient(135deg, ${getCategoryGradient(news.category)});"></div>
+                        <span style="position:relative;z-index:1;font-size:64px;">${news.icon}</span>
+                        ${news.priority === 'high' ? '<span class="news-priority-badge">重要</span>' : ''}
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">${news.categoryName}</div>
+                        <h3 class="news-title">${news.title}</h3>
+                        <p class="news-summary">${news.summary}</p>
+                        <div class="news-footer">
+                            <div class="news-meta">
+                                <span class="news-source">${news.source}</span>
+                                <span>•</span>
+                                <span>${news.time}</span>
+                            </div>
+                            <div class="news-actions" onclick="event.stopPropagation()">
+                                <button class="action-btn" onclick="shareNews('${news.id}')" title="分享">📤</button>
+                                <button class="action-btn" onclick="showToast('已收藏')" title="收藏">⭐</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+
+            // Update stats
+            document.getElementById('totalCount').textContent = filteredNews.length + ' 条资讯';
+            
+            // Re-trigger animations
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }, 100);
         }
-        
-        // Tab切换
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+
+        // Filter News
+        function filterNews(category) {
+            // Update nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
             });
+            event.target.classList.add('active');
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (event.target.classList.contains('filter-btn')) {
+                event.target.classList.add('active');
+            }
+            
+            renderNews(category);
+        }
+
+        // Get Category Gradient
+        function getCategoryGradient(category) {
+            const gradients = {
+                commercial: '#1e3c72 0%, #2a5298 50%, #7e22ce 100%',
+                lowaltitude: '#7c3aed 0%, #a855f7 100%',
+                remote: '#059669 0%, #10b981 100%',
+                investment: '#d97706 0%, #f59e0b 100%',
+                policy: '#dc2626 0%, #ef4444 100%',
+                tech: '#0891b2 0%, #06b6d4 100%'
+            };
+            return gradients[category] || gradients.commercial;
+        }
+
+        // Open Modal
+        function openModal(newsId) {
+            const news = newsData.find(n => n.id === newsId);
+            if (!news) return;
+
+            document.getElementById('modalHeader').textContent = news.icon;
+            document.getElementById('modalCategory').textContent = news.categoryName;
+            document.getElementById('modalTitle').textContent = news.title;
+            document.getElementById('modalSource').innerHTML = `📰 ${news.source}`;
+            document.getElementById('modalTime').innerHTML = `⏱️ ${news.time}`;
+            document.getElementById('modalPriority').innerHTML = news.priority === 'high' ? '🔴 重要' : '🟡 关注';
+            document.getElementById('modalText').innerHTML = news.content;
+            document.getElementById('modalTags').innerHTML = news.tags.map(tag => 
+                `<span class="modal-tag">${tag}</span>`
+            ).join('');
+
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Modal
+        function closeModal(event) {
+            if (!event || event.target.id === 'modalOverlay' || event.target.classList.contains('modal-close')) {
+                document.getElementById('modalOverlay').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Share News
+        function shareNews(newsId) {
+            showToast('分享功能已复制链接到剪贴板');
+        }
+
+        // Copy Link
+        function copyLink() {
+            showToast('链接已复制到剪贴板');
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+        }
+
+        // Show Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Update Date
+        function updateDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+            const weekday = weekdays[now.getDay()];
+            
+            document.getElementById('currentDate').textContent = `${year}年${month}月${day}日 ${weekday}`;
+        }
+
+        // Setup Scroll Animations
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Setup Header Scroll
+        function setupHeaderScroll() {
+            const header = document.getElementById('header');
+            let lastScroll = 0;
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                lastScroll = currentScroll;
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                if (document.getElementById('mobileMenu').classList.contains('active')) {
+                    toggleMobileMenu();
+                }
+            }
+        });
+
+        // Prevent modal content click from closing
+        document.querySelector('.modal-content').addEventListener('click', function(e) {
+            e.stopPropagation();
         });
     </script>
 </body>
