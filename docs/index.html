@@ -98,6 +98,46 @@
             border-radius: 50%;
             animation: pulse 2s infinite;
         }
+        /* Search Box */
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-box input {
+            width: 280px;
+            padding: 10px 40px 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card);
+            color: var(--text);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            font-size: 16px;
+            pointer-events: none;
+        }
+        .no-results {
+            text-align: center;
+            padding: 60px 24px;
+            color: var(--text-muted);
+            font-size: 16px;
+            display: none;
+        }
+        .no-results.show {
+            display: block;
+        }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -347,6 +387,10 @@
                 <a href="#lowaltitude">低空经济</a>
                 <a href="#remote">遥感卫星</a>
                 <a href="#international">国际动态</a>
+            </div>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索新闻..." onkeyup="searchNews()">
+                <span class="search-icon">🔍</span>
             </div>
             <div class="live-indicator">实时更新 | 2026年3月14日</div>
         </div>
@@ -754,5 +798,41 @@
         <p>Space Daily 空天信息日报 | 每日更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
         <p>2026年3月14日 | 共52条资讯</p>
     </footer>
+
+    <script>
+        function searchNews() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('.news-card');
+            const sections = document.querySelectorAll('.section');
+            let hasResults = false;
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.news-title').textContent.toLowerCase();
+                const summary = card.querySelector('.news-summary').textContent.toLowerCase();
+                const tags = card.querySelectorAll('.tag');
+                let tagText = '';
+                tags.forEach(tag => tagText += tag.textContent.toLowerCase() + ' ');
+                
+                if (title.includes(filter) || summary.includes(filter) || tagText.includes(filter)) {
+                    card.style.display = '';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // 检查每个section是否有可见的新闻
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.news-card:not([style*="display: none"])');
+                const sectionTitle = section.querySelector('.section-header');
+                if (visibleCards.length === 0 && filter !== '') {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = '';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
