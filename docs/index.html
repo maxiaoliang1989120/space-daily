@@ -954,6 +954,9 @@
                 <input type="text" id="searchInput" placeholder="搜索新闻..." onkeyup="searchNews()">
                 <span class="search-icon">🔍</span>
             </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+            </div>
             <div class="live-indicator">实时更新 | 2026年3月15日</div>
         </div>
     </nav>
@@ -1116,10 +1119,11 @@
                 <h2 class="section-title"><span class="icon">🔥</span> 今日头条</h2>
             </div>
             <div class="news-grid">
-                <article class="news-card featured" onclick="openModal(this)" data-link="https://weekly.caixin.com/2026-03-07/102420532.html" data-category="commercial" data-date="2026-03-15">
+                <article class="news-card featured" onclick="openModal(this)" data-link="https://weekly.caixin.com/2026-03-07/102420532.html" data-category="commercial" data-date="2026-03-15" data-id="news-1">
                     <div class="news-image" style="background: var(--gradient-1);">
                         🚀
                         <span class="news-priority hot">里程碑</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-1')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1136,10 +1140,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-link="https://www.jiemian.com/article/11826453.html" data-category="lowaltitude" data-date="2026-03-14">
+                <article class="news-card" onclick="openModal(this)" data-link="https://www.jiemian.com/article/11826453.html" data-category="lowaltitude" data-date="2026-03-14" data-id="news-2">
                     <div class="news-image" style="background: var(--gradient-2);">
                         🚁
                         <span class="news-priority new">量产倒计时</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-2')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1164,10 +1169,11 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-15" data-link="https://www.cnsa.gov.cn/n6758823/n6758838/c10726402/content.html">
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-15" data-link="https://www.cnsa.gov.cn/n6758823/n6758838/c10726402/content.html" data-id="news-3">
                     <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
                         📊
                         <span class="news-priority hot">数据</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-3')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1183,10 +1189,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-14" data-link="http://www.news.cn/finance/20250317/b1748ebcf06c4af3b4af02d4ef4d6504/c.html">
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-14" data-link="http://www.news.cn/finance/20250317/b1748ebcf06c4af3b4af02d4ef4d6504/c.html" data-id="news-4">
                     <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
                         🎯
                         <span class="news-priority new">突破</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-4')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1202,10 +1209,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-13" data-link="https://www.news.cn/tech/20260112/fcfaf74691dc49d9b1d7d99cac61b3bb/c.html">
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-13" data-link="https://www.news.cn/tech/20260112/fcfaf74691dc49d9b1d7d99cac61b3bb/c.html" data-id="news-5">
                     <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
                         🌐
                         <span class="news-priority new">争夺</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-5')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1221,10 +1229,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-12" data-link="https://www.21jingji.com/article/20260123/herald/eea4b64e56ac4ac6617b19f481dcf641.html">
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-12" data-link="https://www.21jingji.com/article/20260123/herald/eea4b64e56ac4ac6617b19f481dcf641.html" data-id="news-6">
                     <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
                         💰
                         <span class="news-priority hot">资本</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-6')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1240,10 +1249,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-11" data-link="https://www.caixin.com/2026-03-11/102421761.html">
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-11" data-link="https://www.caixin.com/2026-03-11/102421761.html" data-id="news-7">
                     <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                         🛰️
                         <span class="news-priority new">出海</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-7')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1259,10 +1269,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-10" data-link="https://www.taibo.cn/newsflashes/30830032">
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-10" data-link="https://www.taibo.cn/newsflashes/30830032" data-id="news-8">
                     <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
                         🔬
                         <span class="news-priority hot">新品</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-8')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1287,10 +1298,11 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-15" data-link="https://www.jiemian.com/article/11826453.html">
+                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-15" data-link="https://www.jiemian.com/article/11826453.html" data-id="news-9">
                     <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
                         🏭
                         <span class="news-priority hot">量产</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-9')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1306,10 +1318,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-13" data-link="https://www.sc.chinanews.com.cn/cjbd/2025-03-26/225801.html">
+                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-13" data-link="https://www.sc.chinanews.com.cn/cjbd/2025-03-26/225801.html" data-id="news-10">
                     <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
                         🤝
                         <span class="news-priority hot">合作</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-10')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1325,10 +1338,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-12" data-link="https://www.caixin.com/2024-08-03/102223265.html">
+                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-12" data-link="https://www.caixin.com/2024-08-03/102223265.html" data-id="news-11">
                     <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
                         🔋
                         <span class="news-priority new">投资</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-11')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1353,10 +1367,11 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-15" data-link="https://cloud.tencent.com/developer/news/2139965">
+                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-15" data-link="https://cloud.tencent.com/developer/news/2139965" data-id="news-12">
                     <div class="news-image" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
                         🌍
                         <span class="news-priority hot">组网完成</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-12')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1372,10 +1387,11 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-14" data-link="https://www.xitu-tech.com/news/planet-labs-pelican-2-superdoves-ai-earth-observation/">
+                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-14" data-link="https://www.xitu-tech.com/news/planet-labs-pelican-2-superdoves-ai-earth-observation/" data-id="news-13">
                     <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
                         📡
                         <span class="news-priority new">发射</span>
+                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-13')" title="收藏">♡</button>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
@@ -1503,7 +1519,7 @@
     </div>
 
     <script>
-        // Version: 20260315-1 - Force refresh
+        // Version: 20260315-2 - Filter Functionality Update
         function searchNews() {
             const input = document.getElementById('searchInput');
             const filter = input.value.toLowerCase();
@@ -1799,29 +1815,30 @@
                     bar.style.width = progress;
                 }, 500);
             });
+            
+            // 初始化筛选功能
+            initFilters();
         });
 
-        // ============================================
-        // 筛选功能 - Navigation Star (NAVSTAR) 🧭
-        // ============================================
-        
-        // 状态管理
-        const filterState = {
-            dateFilter: 'all',
-            categoryFilter: 'all',
-            displayedCount: 20,
-            allCards: []
-        };
+        // ==================== 筛选功能 ====================
+        const ITEMS_PER_PAGE = 20; // 默认显示20条
+        let currentDateFilter = 'all';
+        let currentCategoryFilter = 'all';
+        let allNewsCards = [];
+        let filteredCards = [];
 
         // 初始化筛选功能
         function initFilters() {
+            // 获取所有新闻卡片
+            allNewsCards = Array.from(document.querySelectorAll('.news-card'));
+            
             // 绑定日期筛选按钮事件
             const dateButtons = document.querySelectorAll('#dateFilter .filter-btn');
             dateButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
                     dateButtons.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    filterState.dateFilter = this.dataset.date;
+                    currentDateFilter = this.getAttribute('data-date');
                     applyFilters();
                 });
             });
@@ -1832,71 +1849,111 @@
                 btn.addEventListener('click', function() {
                     categoryButtons.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    filterState.categoryFilter = this.dataset.category;
+                    currentCategoryFilter = this.getAttribute('data-category');
                     applyFilters();
                 });
             });
 
-            // 收集所有新闻卡片
-            filterState.allCards = Array.from(document.querySelectorAll('.news-card'));
+            // 首次应用筛选
+            applyFilters();
+        }
+
+        // 检查日期是否匹配
+        function checkDateMatch(cardDate, filter) {
+            if (filter === 'all') return true;
+            if (!cardDate) return true;
+            
+            const cardDateObj = new Date(cardDate);
+            const referenceDate = new Date('2026-03-15'); // 以日报日期为基准
+            
+            if (filter === 'last7') {
+                const sevenDaysAgo = new Date(referenceDate);
+                sevenDaysAgo.setDate(referenceDate.getDate() - 7);
+                return cardDateObj >= sevenDaysAgo;
+            } else if (filter === 'last30') {
+                const thirtyDaysAgo = new Date(referenceDate);
+                thirtyDaysAgo.setDate(referenceDate.getDate() - 30);
+                return cardDateObj >= thirtyDaysAgo;
+            } else if (filter === '2026-03') {
+                return cardDate.startsWith('2026-03');
+            } else if (filter === '2026-02') {
+                return cardDate.startsWith('2026-02');
+            }
+            return true;
         }
 
         // 应用筛选
         function applyFilters() {
-            const { dateFilter, categoryFilter } = filterState;
-            const now = new Date('2026-03-15'); // 当前日期
-            
-            // 重置显示计数
-            filterState.displayedCount = 0;
-            
-            filterState.allCards.forEach(card => {
-                const cardCategory = card.dataset.category;
-                const cardDate = card.dataset.date;
+            // 先筛选出符合条件的卡片
+            filteredCards = allNewsCards.filter(card => {
+                const cardCategory = card.getAttribute('data-category');
+                const cardDate = card.getAttribute('data-date');
                 
-                // 分类筛选
-                const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
+                // 分类匹配
+                const categoryMatch = currentCategoryFilter === 'all' || cardCategory === currentCategoryFilter;
                 
-                // 日期筛选
-                let dateMatch = true;
-                if (dateFilter !== 'all') {
-                    if (dateFilter === 'last7') {
-                        const cardDateObj = new Date(cardDate);
-                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                        dateMatch = diffDays <= 7;
-                    } else if (dateFilter === 'last30') {
-                        const cardDateObj = new Date(cardDate);
-                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                        dateMatch = diffDays <= 30;
-                    } else if (dateFilter === '2026-03') {
-                        dateMatch = cardDate.startsWith('2026-03');
-                    } else if (dateFilter === '2026-02') {
-                        dateMatch = cardDate.startsWith('2026-02');
-                    }
-                }
+                // 日期匹配
+                const dateMatch = checkDateMatch(cardDate, currentDateFilter);
                 
-                // 同时满足两个筛选条件
-                const shouldShow = categoryMatch && dateMatch;
-                
-                if (shouldShow) {
-                    card.classList.remove('hidden');
-                    // 只显示前20条
-                    if (filterState.displayedCount >= 20) {
-                        card.classList.add('hidden');
-                    }
-                    filterState.displayedCount++;
-                } else {
-                    card.classList.add('hidden');
-                }
+                return categoryMatch && dateMatch;
             });
-
-            // 更新加载更多按钮状态
-            updateLoadMoreButton();
             
-            // 更新各section的显示状态
+            // 隐藏所有卡片
+            allNewsCards.forEach(card => {
+                card.classList.add('hidden');
+            });
+            
+            // 显示前20条
+            showCards(0, Math.min(ITEMS_PER_PAGE, filteredCards.length));
+            
+            // 更新UI
+            updateLoadMoreButton();
             updateSectionsVisibility();
+            updateNoResultsMessage();
         }
 
-        // 更新section显示状态
+        // 显示指定范围的卡片
+        function showCards(start, end) {
+            for (let i = start; i < end && i < filteredCards.length; i++) {
+                filteredCards[i].classList.remove('hidden');
+            }
+        }
+
+        // 加载更多功能
+        function loadMore() {
+            const currentlyShown = filteredCards.filter(card => !card.classList.contains('hidden')).length;
+            const remaining = filteredCards.length - currentlyShown;
+            const toShow = Math.min(ITEMS_PER_PAGE, remaining);
+            
+            showCards(currentlyShown, currentlyShown + toShow);
+            updateLoadMoreButton();
+        }
+
+        // 更新加载更多按钮状态
+        function updateLoadMoreButton() {
+            const btn = document.getElementById('loadMoreBtn');
+            const noMoreText = document.getElementById('noMoreText');
+            
+            if (!btn) return;
+            
+            const currentlyShown = filteredCards.filter(card => !card.classList.contains('hidden')).length;
+            const total = filteredCards.length;
+            
+            if (total === 0 || currentlyShown >= total) {
+                btn.classList.add('hidden');
+                if (noMoreText) {
+                    noMoreText.style.display = total === 0 ? 'none' : 'block';
+                }
+            } else {
+                btn.classList.remove('hidden');
+                btn.textContent = `加载更多 (${currentlyShown}/${total})`;
+                if (noMoreText) {
+                    noMoreText.style.display = 'none';
+                }
+            }
+        }
+
+        // 更新各section的显示状态
         function updateSectionsVisibility() {
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => {
@@ -1909,136 +1966,27 @@
             });
         }
 
-        // 加载更多功能
-        function loadMore() {
-            const { dateFilter, categoryFilter } = filterState;
-            const now = new Date('2026-03-15');
-            let visibleCount = 0;
-            let shownCount = 0;
+        // 更新无结果提示
+        function updateNoResultsMessage() {
+            let noResultsEl = document.getElementById('noResultsMsg');
             
-            filterState.allCards.forEach(card => {
-                if (card.classList.contains('hidden') && !card.classList.contains('filtered-out')) {
-                    const cardCategory = card.dataset.category;
-                    const cardDate = card.dataset.date;
-                    
-                    // 检查是否满足当前筛选条件
-                    const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
-                    let dateMatch = true;
-                    
-                    if (dateFilter !== 'all') {
-                        if (dateFilter === 'last7') {
-                            const cardDateObj = new Date(cardDate);
-                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                            dateMatch = diffDays <= 7;
-                        } else if (dateFilter === 'last30') {
-                            const cardDateObj = new Date(cardDate);
-                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                            dateMatch = diffDays <= 30;
-                        } else if (dateFilter === '2026-03') {
-                            dateMatch = cardDate.startsWith('2026-03');
-                        } else if (dateFilter === '2026-02') {
-                            dateMatch = cardDate.startsWith('2026-02');
-                        }
-                    }
-                    
-                    if (categoryMatch && dateMatch) {
-                        visibleCount++;
-                        if (shownCount < 10) { // 每次加载10条
-                            card.classList.remove('hidden');
-                            shownCount++;
-                        }
-                    }
-                } else if (!card.classList.contains('hidden')) {
-                    const cardCategory = card.dataset.category;
-                    const cardDate = card.dataset.date;
-                    
-                    const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
-                    let dateMatch = true;
-                    
-                    if (dateFilter !== 'all') {
-                        if (dateFilter === 'last7') {
-                            const cardDateObj = new Date(cardDate);
-                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                            dateMatch = diffDays <= 7;
-                        } else if (dateFilter === 'last30') {
-                            const cardDateObj = new Date(cardDate);
-                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                            dateMatch = diffDays <= 30;
-                        } else if (dateFilter === '2026-03') {
-                            dateMatch = cardDate.startsWith('2026-03');
-                        } else if (dateFilter === '2026-02') {
-                            dateMatch = cardDate.startsWith('2026-02');
-                        }
-                    }
-                    
-                    if (categoryMatch && dateMatch) {
-                        visibleCount++;
-                    }
+            if (!noResultsEl) {
+                noResultsEl = document.createElement('div');
+                noResultsEl.id = 'noResultsMsg';
+                noResultsEl.className = 'no-results';
+                noResultsEl.innerHTML = '<p>😕 没有找到符合条件的新闻</p><p style="font-size: 14px; margin-top: 8px;">请尝试调整筛选条件</p>';
+                const main = document.querySelector('main.main');
+                if (main) {
+                    main.appendChild(noResultsEl);
                 }
-            });
+            }
             
-            updateLoadMoreButton();
-            
-            // 滚动到页面底部
-            document.getElementById('loadMoreContainer').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // 更新加载更多按钮状态
-        function updateLoadMoreButton() {
-            const btn = document.getElementById('loadMoreBtn');
-            const noMoreText = document.getElementById('noMoreText');
-            const { dateFilter, categoryFilter } = filterState;
-            const now = new Date('2026-03-15');
-            
-            let totalMatching = 0;
-            let currentlyShown = 0;
-            
-            filterState.allCards.forEach(card => {
-                const cardCategory = card.dataset.category;
-                const cardDate = card.dataset.date;
-                
-                const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
-                let dateMatch = true;
-                
-                if (dateFilter !== 'all') {
-                    if (dateFilter === 'last7') {
-                        const cardDateObj = new Date(cardDate);
-                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                        dateMatch = diffDays <= 7;
-                    } else if (dateFilter === 'last30') {
-                        const cardDateObj = new Date(cardDate);
-                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
-                        dateMatch = diffDays <= 30;
-                    } else if (dateFilter === '2026-03') {
-                        dateMatch = cardDate.startsWith('2026-03');
-                    } else if (dateFilter === '2026-02') {
-                        dateMatch = cardDate.startsWith('2026-02');
-                    }
-                }
-                
-                if (categoryMatch && dateMatch) {
-                    totalMatching++;
-                    if (!card.classList.contains('hidden')) {
-                        currentlyShown++;
-                    }
-                }
-            });
-            
-            if (currentlyShown >= totalMatching) {
-                btn.classList.add('hidden');
-                noMoreText.style.display = 'block';
+            if (filteredCards.length === 0) {
+                noResultsEl.classList.add('show');
             } else {
-                btn.classList.remove('hidden');
-                noMoreText.style.display = 'none';
-                btn.textContent = `加载更多 (${currentlyShown}/${totalMatching})`;
+                noResultsEl.classList.remove('show');
             }
         }
-
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            initFilters();
-            applyFilters();
-        });
     </script>
 </body>
 </html>
