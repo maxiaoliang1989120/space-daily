@@ -2735,8 +2735,16 @@
             // Add highlight
             card.classList.add('highlighted');
 
-            // Scroll to card
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Scroll to card - only if not already in viewport
+            const rect = card.getBoundingClientRect();
+            const isInViewport = rect.top >= 100 && rect.bottom <= window.innerHeight - 100;
+            
+            if (!isInViewport) {
+                // Smooth scroll with offset to keep some context
+                const offset = 150;
+                const cardTop = card.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: cardTop, behavior: 'smooth' });
+            }
 
             // Remove highlight after 3 seconds
             setTimeout(() => {
