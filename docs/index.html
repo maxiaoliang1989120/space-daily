@@ -87,6 +87,29 @@
         .nav-links a:hover, .nav-links a.active {
             color: var(--text);
         }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .theme-toggle:hover {
+            border-color: var(--accent);
+            background: var(--card-hover);
+        }
         .live-indicator {
             display: flex;
             align-items: center;
@@ -727,6 +750,181 @@
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-to-top:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+        /* RSS Subscribe Button */
+        .rss-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: #f97316;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            text-decoration: none;
+        }
+        .rss-btn:hover {
+            border-color: #f97316;
+            background: rgba(249, 115, 22, 0.1);
+            transform: translateY(-2px);
+        }
+        /* Favorite Button */
+        .favorite-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0,0,0,0.5);
+            color: var(--text);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+        .favorite-btn:hover {
+            background: rgba(0,0,0,0.7);
+            transform: scale(1.1);
+        }
+        .favorite-btn.active {
+            color: #ef4444;
+        }
+        .favorite-btn.active:hover {
+            color: #dc2626;
+        }
+        /* Modal Actions */
+        .modal-action-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .modal-action-btn {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card-hover);
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .modal-action-btn:hover {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+        .modal-action-btn.favorite {
+            color: var(--text);
+        }
+        .modal-action-btn.favorite.active {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast.success {
+            border-color: #10b981;
+        }
+        .toast.error {
+            border-color: #ef4444;
+        }
+        /* Light Theme Variables */
+        body.light-theme {
+            --primary: #fafafa;
+            --secondary: #f5f5f7;
+            --accent: #6366f1;
+            --accent-light: #4f46e5;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --card: #ffffff;
+            --card-hover: #f3f4f6;
+        }
+        body.light-theme .navbar {
+            background: rgba(255, 255, 255, 0.95);
+        }
+        body.light-theme .filter-bar {
+            background: rgba(245, 245, 247, 0.98);
+        }
+        body.light-theme .news-card:hover {
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        }
+        body.light-theme .back-to-top,
+        body.light-theme .rss-btn {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
         .progress-detail {
             font-size: 12px;
             color: var(--text-muted);
@@ -1155,7 +1353,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)"  data-link="https://cloud.tencent.com/developer/news/2139965">
+                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-15" data-link="https://cloud.tencent.com/developer/news/2139965">
                     <div class="news-image" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
                         🌍
                         <span class="news-priority hot">组网完成</span>
@@ -1174,7 +1372,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)"  data-link="https://www.xitu-tech.com/news/planet-labs-pelican-2-superdoves-ai-earth-observation/">
+                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-14" data-link="https://www.xitu-tech.com/news/planet-labs-pelican-2-superdoves-ai-earth-observation/">
                     <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
                         📡
                         <span class="news-priority new">发射</span>
@@ -1193,7 +1391,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)"  data-link="https://finance.sina.com.cn/tech/roll/2025-03-12/doc-inepkvpc8655395.shtml">
+                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-13" data-link="https://finance.sina.com.cn/tech/roll/2025-03-12/doc-inepkvpc8655395.shtml">
                     <div class="news-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
                         🌐
                         <span class="news-priority new">组网</span>
@@ -1212,7 +1410,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-link="https://www.caixin.com/2026-03-11/102421761.html">
+                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-12" data-link="https://www.caixin.com/2026-03-11/102421761.html">
                     <div class="news-image" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
                         🚀
                         <span class="news-priority hot">出海</span>
@@ -1231,7 +1429,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)"  data-link="https://www.sohu.com/a/983590154_122531443">
+                <article class="news-card" onclick="openModal(this)" data-category="international" data-date="2026-03-14" data-link="https://www.sohu.com/a/983590154_122531443">
                     <div class="news-image" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
                         📊
                         <span class="news-priority new">数据</span>
@@ -1250,7 +1448,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)"  data-link="https://baike.baidu.com/item/NASA-ISRO%E5%90%88%E6%88%90%E5%AD%94%E5%BE%84%E9%9B%B7%E8%BE%BE/66266238">
+                <article class="news-card" onclick="openModal(this)" data-category="international" data-date="2026-03-11" data-link="https://baike.baidu.com/item/NASA-ISRO%E5%90%88%E6%88%90%E5%AD%94%E5%BE%84%E9%9B%B7%E8%BE%BE/66266238">
                     <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
                         🔬
                         <span class="news-priority new">技术</span>
@@ -1271,6 +1469,12 @@
             </div>
         </section>
     </main>
+
+    <!-- 加载更多 -->
+    <div class="load-more-container" id="loadMoreContainer">
+        <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">加载更多</button>
+        <p class="no-more" id="noMoreText" style="display: none; color: var(--text-muted); font-size: 14px;">已显示全部内容</p>
+    </div>
 
     <footer class="footer">
         <p>Space Daily 空天信息日报 | 每日更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
@@ -1595,6 +1799,245 @@
                     bar.style.width = progress;
                 }, 500);
             });
+        });
+
+        // ============================================
+        // 筛选功能 - Navigation Star (NAVSTAR) 🧭
+        // ============================================
+        
+        // 状态管理
+        const filterState = {
+            dateFilter: 'all',
+            categoryFilter: 'all',
+            displayedCount: 20,
+            allCards: []
+        };
+
+        // 初始化筛选功能
+        function initFilters() {
+            // 绑定日期筛选按钮事件
+            const dateButtons = document.querySelectorAll('#dateFilter .filter-btn');
+            dateButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    dateButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterState.dateFilter = this.dataset.date;
+                    applyFilters();
+                });
+            });
+
+            // 绑定分类筛选按钮事件
+            const categoryButtons = document.querySelectorAll('#categoryFilter .filter-btn');
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterState.categoryFilter = this.dataset.category;
+                    applyFilters();
+                });
+            });
+
+            // 收集所有新闻卡片
+            filterState.allCards = Array.from(document.querySelectorAll('.news-card'));
+        }
+
+        // 应用筛选
+        function applyFilters() {
+            const { dateFilter, categoryFilter } = filterState;
+            const now = new Date('2026-03-15'); // 当前日期
+            
+            // 重置显示计数
+            filterState.displayedCount = 0;
+            
+            filterState.allCards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                const cardDate = card.dataset.date;
+                
+                // 分类筛选
+                const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
+                
+                // 日期筛选
+                let dateMatch = true;
+                if (dateFilter !== 'all') {
+                    if (dateFilter === 'last7') {
+                        const cardDateObj = new Date(cardDate);
+                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                        dateMatch = diffDays <= 7;
+                    } else if (dateFilter === 'last30') {
+                        const cardDateObj = new Date(cardDate);
+                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                        dateMatch = diffDays <= 30;
+                    } else if (dateFilter === '2026-03') {
+                        dateMatch = cardDate.startsWith('2026-03');
+                    } else if (dateFilter === '2026-02') {
+                        dateMatch = cardDate.startsWith('2026-02');
+                    }
+                }
+                
+                // 同时满足两个筛选条件
+                const shouldShow = categoryMatch && dateMatch;
+                
+                if (shouldShow) {
+                    card.classList.remove('hidden');
+                    // 只显示前20条
+                    if (filterState.displayedCount >= 20) {
+                        card.classList.add('hidden');
+                    }
+                    filterState.displayedCount++;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            // 更新加载更多按钮状态
+            updateLoadMoreButton();
+            
+            // 更新各section的显示状态
+            updateSectionsVisibility();
+        }
+
+        // 更新section显示状态
+        function updateSectionsVisibility() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.news-card:not(.hidden)');
+                if (visibleCards.length === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = '';
+                }
+            });
+        }
+
+        // 加载更多功能
+        function loadMore() {
+            const { dateFilter, categoryFilter } = filterState;
+            const now = new Date('2026-03-15');
+            let visibleCount = 0;
+            let shownCount = 0;
+            
+            filterState.allCards.forEach(card => {
+                if (card.classList.contains('hidden') && !card.classList.contains('filtered-out')) {
+                    const cardCategory = card.dataset.category;
+                    const cardDate = card.dataset.date;
+                    
+                    // 检查是否满足当前筛选条件
+                    const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
+                    let dateMatch = true;
+                    
+                    if (dateFilter !== 'all') {
+                        if (dateFilter === 'last7') {
+                            const cardDateObj = new Date(cardDate);
+                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                            dateMatch = diffDays <= 7;
+                        } else if (dateFilter === 'last30') {
+                            const cardDateObj = new Date(cardDate);
+                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                            dateMatch = diffDays <= 30;
+                        } else if (dateFilter === '2026-03') {
+                            dateMatch = cardDate.startsWith('2026-03');
+                        } else if (dateFilter === '2026-02') {
+                            dateMatch = cardDate.startsWith('2026-02');
+                        }
+                    }
+                    
+                    if (categoryMatch && dateMatch) {
+                        visibleCount++;
+                        if (shownCount < 10) { // 每次加载10条
+                            card.classList.remove('hidden');
+                            shownCount++;
+                        }
+                    }
+                } else if (!card.classList.contains('hidden')) {
+                    const cardCategory = card.dataset.category;
+                    const cardDate = card.dataset.date;
+                    
+                    const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
+                    let dateMatch = true;
+                    
+                    if (dateFilter !== 'all') {
+                        if (dateFilter === 'last7') {
+                            const cardDateObj = new Date(cardDate);
+                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                            dateMatch = diffDays <= 7;
+                        } else if (dateFilter === 'last30') {
+                            const cardDateObj = new Date(cardDate);
+                            const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                            dateMatch = diffDays <= 30;
+                        } else if (dateFilter === '2026-03') {
+                            dateMatch = cardDate.startsWith('2026-03');
+                        } else if (dateFilter === '2026-02') {
+                            dateMatch = cardDate.startsWith('2026-02');
+                        }
+                    }
+                    
+                    if (categoryMatch && dateMatch) {
+                        visibleCount++;
+                    }
+                }
+            });
+            
+            updateLoadMoreButton();
+            
+            // 滚动到页面底部
+            document.getElementById('loadMoreContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 更新加载更多按钮状态
+        function updateLoadMoreButton() {
+            const btn = document.getElementById('loadMoreBtn');
+            const noMoreText = document.getElementById('noMoreText');
+            const { dateFilter, categoryFilter } = filterState;
+            const now = new Date('2026-03-15');
+            
+            let totalMatching = 0;
+            let currentlyShown = 0;
+            
+            filterState.allCards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                const cardDate = card.dataset.date;
+                
+                const categoryMatch = categoryFilter === 'all' || cardCategory === categoryFilter;
+                let dateMatch = true;
+                
+                if (dateFilter !== 'all') {
+                    if (dateFilter === 'last7') {
+                        const cardDateObj = new Date(cardDate);
+                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                        dateMatch = diffDays <= 7;
+                    } else if (dateFilter === 'last30') {
+                        const cardDateObj = new Date(cardDate);
+                        const diffDays = (now - cardDateObj) / (1000 * 60 * 60 * 24);
+                        dateMatch = diffDays <= 30;
+                    } else if (dateFilter === '2026-03') {
+                        dateMatch = cardDate.startsWith('2026-03');
+                    } else if (dateFilter === '2026-02') {
+                        dateMatch = cardDate.startsWith('2026-02');
+                    }
+                }
+                
+                if (categoryMatch && dateMatch) {
+                    totalMatching++;
+                    if (!card.classList.contains('hidden')) {
+                        currentlyShown++;
+                    }
+                }
+            });
+            
+            if (currentlyShown >= totalMatching) {
+                btn.classList.add('hidden');
+                noMoreText.style.display = 'block';
+            } else {
+                btn.classList.remove('hidden');
+                noMoreText.style.display = 'none';
+                btn.textContent = `加载更多 (${currentlyShown}/${totalMatching})`;
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initFilters();
+            applyFilters();
         });
     </script>
 </body>
