@@ -6,6 +6,13 @@
     <title>Space Daily | 空天信息日报 - 2026年3月15日</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Leaflet.js for News Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet MarkerCluster -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -658,6 +665,141 @@
 
         .news-card.hidden {
             display: none !important;
+        }
+
+        /* News Map Section */
+        .news-map-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .news-map-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .news-map-title {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .news-map-stats {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        #newsMap {
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: #1a1a2e;
+        }
+        
+        [data-theme="light"] #newsMap {
+            background: #f1f5f9;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Custom Map Markers */
+        .custom-marker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px !important;
+            height: 36px !important;
+            border-radius: 50%;
+            font-size: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border: 3px solid white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .custom-marker:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000 !important;
+        }
+        
+        .marker-launch {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .marker-company {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        
+        .marker-market {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .marker-cluster {
+            background: var(--accent);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Map Popup Styles */
+        .leaflet-popup-content-wrapper {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+        }
+        
+        .leaflet-popup-content {
+            margin: 12px 16px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .leaflet-popup-tip {
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+        
+        .map-popup-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            cursor: pointer;
+            color: var(--accent-light);
+        }
+        
+        .map-popup-title:hover {
+            text-decoration: underline;
+        }
+        
+        .map-popup-location {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* News card highlight */
+        .news-card.highlighted {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+            animation: pulseHighlight 2s infinite;
+        }
+        
+        @keyframes pulseHighlight {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); }
+            50% { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.1); }
         }
 
         /* Data Dashboard */
@@ -1363,6 +1505,15 @@
                     <span class="filter-stats" id="filterStats">显示 <strong>0</strong> 条新闻</span>
                 </div>
             </div>
+        </section>
+
+        <!-- 新闻地图区域 -->
+        <section class="news-map-section">
+            <div class="news-map-header">
+                <h2 class="news-map-title"><span>🗺️</span> 新闻地图</h2>
+                <span class="news-map-stats" id="mapStats"></span>
+            </div>
+            <div id="newsMap"></div>
         </section>
 
         <!-- 数据看板区域 -->
@@ -2275,6 +2426,388 @@
     <div class="toast" id="toast"></div>
 
     <script>
+        // ========== Location Database ==========
+        const locationDB = {
+            // 中国发射场
+            '酒泉卫星发射中心': { lat: 40.9675, lng: 100.2983, type: 'launch', region: '中国' },
+            '酒泉': { lat: 40.9675, lng: 100.2983, type: 'launch', region: '中国' },
+            '文昌航天发射场': { lat: 19.6145, lng: 110.9510, type: 'launch', region: '中国' },
+            '文昌': { lat: 19.6145, lng: 110.9510, type: 'launch', region: '中国' },
+            '太原卫星发射中心': { lat: 38.8491, lng: 111.6080, type: 'launch', region: '中国' },
+            '太原': { lat: 38.8491, lng: 111.6080, type: 'launch', region: '中国' },
+            '西昌卫星发射中心': { lat: 28.2460, lng: 102.0261, type: 'launch', region: '中国' },
+            '西昌': { lat: 28.2460, lng: 102.0261, type: 'launch', region: '中国' },
+            '海南商业航天发射场': { lat: 19.6145, lng: 110.9510, type: 'launch', region: '中国' },
+            // 公司总部/城市
+            '北京': { lat: 39.9042, lng: 116.4074, type: 'company', region: '中国' },
+            '上海': { lat: 31.2304, lng: 121.4737, type: 'company', region: '中国' },
+            '深圳': { lat: 22.5431, lng: 114.0579, type: 'company', region: '中国' },
+            '广州': { lat: 23.1291, lng: 113.2644, type: 'company', region: '中国' },
+            '成都': { lat: 30.5728, lng: 104.0668, type: 'company', region: '中国' },
+            '西安': { lat: 34.3416, lng: 108.9398, type: 'company', region: '中国' },
+            '合肥': { lat: 31.8206, lng: 117.2272, type: 'company', region: '中国' },
+            '无锡': { lat: 31.4912, lng: 120.3119, type: 'company', region: '中国' },
+            '杭州': { lat: 30.2741, lng: 120.1551, type: 'company', region: '中国' },
+            '武汉': { lat: 30.5928, lng: 114.3055, type: 'company', region: '中国' },
+            '南京': { lat: 32.0603, lng: 118.7969, type: 'company', region: '中国' },
+            '青岛': { lat: 36.0671, lng: 120.3826, type: 'company', region: '中国' },
+            '大连': { lat: 38.9140, lng: 121.6147, type: 'company', region: '中国' },
+            '沈阳': { lat: 41.8057, lng: 123.4315, type: 'company', region: '中国' },
+            '天津': { lat: 39.1252, lng: 117.1904, type: 'company', region: '中国' },
+            '重庆': { lat: 29.5630, lng: 106.5516, type: 'company', region: '中国' },
+            // 国际发射场
+            '卡纳维拉尔角': { lat: 28.3922, lng: -80.6077, type: 'launch', region: '美国' },
+            '范登堡空军基地': { lat: 34.7420, lng: -120.5728, type: 'launch', region: '美国' },
+            '肯尼迪航天中心': { lat: 28.5721, lng: -80.6480, type: 'launch', region: '美国' },
+            '星舰基地': { lat: 25.9972, lng: -97.1550, type: 'launch', region: '美国' },
+            '博卡奇卡': { lat: 25.9972, lng: -97.1550, type: 'launch', region: '美国' },
+            // 国际城市/公司
+            '加州': { lat: 36.7783, lng: -119.4179, type: 'company', region: '美国' },
+            '加利福尼亚': { lat: 36.7783, lng: -119.4179, type: 'company', region: '美国' },
+            '佛罗里达': { lat: 27.7663, lng: -81.6868, type: 'launch', region: '美国' },
+            '德克萨斯': { lat: 31.9686, lng: -99.9018, type: 'company', region: '美国' },
+            '德州': { lat: 31.9686, lng: -99.9018, type: 'company', region: '美国' },
+            '西雅图': { lat: 47.6062, lng: -122.3321, type: 'company', region: '美国' },
+            '洛杉矶': { lat: 34.0522, lng: -118.2437, type: 'company', region: '美国' },
+            '旧金山': { lat: 37.7749, lng: -122.4194, type: 'company', region: '美国' },
+            '硅谷': { lat: 37.4419, lng: -122.1430, type: 'company', region: '美国' },
+            '纽约': { lat: 40.7128, lng: -74.0060, type: 'company', region: '美国' },
+            '华盛顿': { lat: 38.9072, lng: -77.0369, type: 'company', region: '美国' },
+            '休斯顿': { lat: 29.7604, lng: -95.3698, type: 'company', region: '美国' },
+            // 国际市场
+            '巴西': { lat: -14.2350, lng: -51.9253, type: 'market', region: '南美' },
+            '马来西亚': { lat: 4.2105, lng: 101.9758, type: 'market', region: '东南亚' },
+            '印度': { lat: 20.5937, lng: 78.9629, type: 'company', region: '亚洲' },
+            '新德里': { lat: 28.6139, lng: 77.2090, type: 'company', region: '亚洲' },
+            '柏林': { lat: 52.5200, lng: 13.4050, type: 'company', region: '欧洲' },
+            '德国': { lat: 51.1657, lng: 10.4515, type: 'company', region: '欧洲' },
+            '伦敦': { lat: 51.5074, lng: -0.1278, type: 'company', region: '欧洲' },
+            '英国': { lat: 55.3781, lng: -3.4360, type: 'company', region: '欧洲' },
+            '法国': { lat: 46.2276, lng: 2.2137, type: 'company', region: '欧洲' },
+            '巴黎': { lat: 48.8566, lng: 2.3522, type: 'company', region: '欧洲' },
+            '日本': { lat: 36.2048, lng: 138.2529, type: 'company', region: '亚洲' },
+            '东京': { lat: 35.6762, lng: 139.6503, type: 'company', region: '亚洲' },
+            '韩国': { lat: 35.9078, lng: 127.7669, type: 'company', region: '亚洲' },
+            '首尔': { lat: 37.5665, lng: 126.9780, type: 'company', region: '亚洲' },
+            '新加坡': { lat: 1.3521, lng: 103.8198, type: 'company', region: '东南亚' },
+            '澳大利亚': { lat: -25.2744, lng: 133.7751, type: 'company', region: '大洋洲' },
+            '悉尼': { lat: -33.8688, lng: 151.2093, type: 'company', region: '大洋洲' },
+            '加拿大': { lat: 56.1304, lng: -106.3468, type: 'company', region: '北美' },
+            '多伦多': { lat: 43.6532, lng: -79.3832, type: 'company', region: '北美' },
+            '墨西哥': { lat: 23.6345, lng: -102.5528, type: 'market', region: '北美' },
+            '阿根廷': { lat: -38.4161, lng: -63.6167, type: 'market', region: '南美' },
+            '智利': { lat: -35.6751, lng: -71.5430, type: 'market', region: '南美' },
+            '南非': { lat: -30.5595, lng: 22.9375, type: 'market', region: '非洲' },
+            '埃及': { lat: 26.8206, lng: 30.8025, type: 'market', region: '非洲' },
+            '阿联酋': { lat: 23.4241, lng: 53.8478, type: 'market', region: '中东' },
+            '迪拜': { lat: 25.2048, lng: 55.2708, type: 'market', region: '中东' },
+            '沙特': { lat: 23.8859, lng: 45.0792, type: 'market', region: '中东' },
+            '以色列': { lat: 31.0461, lng: 34.8516, type: 'company', region: '中东' },
+            '泰国': { lat: 15.8700, lng: 100.9925, type: 'market', region: '东南亚' },
+            '越南': { lat: 14.0583, lng: 108.2772, type: 'market', region: '东南亚' },
+            '印尼': { lat: -0.7893, lng: 113.9213, type: 'market', region: '东南亚' },
+            '印度尼西亚': { lat: -0.7893, lng: 113.9213, type: 'market', region: '东南亚' },
+            '菲律宾': { lat: 12.8797, lng: 121.7740, type: 'market', region: '东南亚' },
+            '俄罗斯': { lat: 61.5240, lng: 105.3188, type: 'company', region: '欧洲/亚洲' },
+            '莫斯科': { lat: 55.7558, lng: 37.6173, type: 'company', region: '欧洲/亚洲' },
+            '拜科努尔': { lat: 45.9646, lng: 63.3052, type: 'launch', region: '哈萨克斯坦' },
+        };
+
+        // Extract location from news title and summary
+        function extractLocation(newsTitle, newsSummary) {
+            const text = (newsTitle + ' ' + newsSummary).toLowerCase();
+            
+            for (const [name, data] of Object.entries(locationDB)) {
+                if (text.includes(name.toLowerCase())) {
+                    return { name, ...data };
+                }
+            }
+            
+            // Special pattern matching for companies and their locations
+            const companyLocations = [
+                { pattern: /space[\s-]?x|马斯克|星舰|starlink/i, location: '德克萨斯' },
+                { pattern: /蓝箭航天/i, location: '北京' },
+                { pattern: /天兵科技/i, location: '北京' },
+                { pattern: /星际荣耀/i, location: '北京' },
+                { pattern: /星河动力/i, location: '北京' },
+                { pattern: /中科宇航/i, location: '北京' },
+                { pattern: /深蓝航天/i, location: '无锡' },
+                { pattern: /小鹏汇天/i, location: '广州' },
+                { pattern: /沃飞长空/i, location: '成都' },
+                { pattern: /亿航|ehang/i, location: '广州' },
+                { pattern: /峰飞航空/i, location: '上海' },
+                { pattern: /追觅|芯际穿越/i, location: '苏州' },
+                { pattern: /planet[\s-]?labs/i, location: '旧金山' },
+                { pattern: /maxar/i, location: '丹佛' },
+                { pattern: /oneweb/i, location: '伦敦' },
+                { pattern: /eutelsat/i, location: '巴黎' },
+            ];
+            
+            for (const { pattern, location } of companyLocations) {
+                if (pattern.test(text)) {
+                    const locData = locationDB[location];
+                    if (locData) {
+                        return { name: location, ...locData };
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        // News Map Variables
+        let newsMap = null;
+        let markers = [];
+        let markerClusterGroup = null;
+
+        // Initialize News Map
+        function initNewsMap() {
+            const mapContainer = document.getElementById('newsMap');
+            if (!mapContainer) return;
+
+            // Create map instance
+            newsMap = L.map('newsMap', {
+                center: [30, 0],
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 18,
+                scrollWheelZoom: false,
+                attributionControl: false
+            });
+
+            // Add attribution control in bottom right
+            L.control.attribution({ position: 'bottomright' }).addTo(newsMap);
+
+            // Add CartoDB Dark Matter tiles
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(newsMap);
+
+            // Initialize marker cluster group
+            markerClusterGroup = L.markerClusterGroup({
+                maxClusterRadius: 50,
+                iconCreateFunction: function(cluster) {
+                    return L.divIcon({
+                        html: '<div class="marker-cluster">' + cluster.getChildCount() + '</div>',
+                        className: 'custom-cluster-icon',
+                        iconSize: L.point(40, 40)
+                    });
+                },
+                spiderfyOnMaxZoom: true,
+                showCoverageOnHover: false,
+                zoomToBoundsOnClick: true
+            });
+
+            newsMap.addLayer(markerClusterGroup);
+
+            // Add markers for news cards
+            updateMapMarkers();
+
+            // Update map stats
+            updateMapStats();
+        }
+
+        // Get marker icon HTML based on type
+        function getMarkerIcon(type) {
+            const icons = {
+                launch: '🚀',
+                company: '🏢',
+                market: '🌍'
+            };
+            return icons[type] || '📍';
+        }
+
+        // Get marker CSS class based on type
+        function getMarkerClass(type) {
+            return `custom-marker marker-${type}`;
+        }
+
+        // Create custom marker icon
+        function createCustomIcon(type) {
+            const icon = getMarkerIcon(type);
+            const className = getMarkerClass(type);
+            return L.divIcon({
+                html: `<div class="${className}">${icon}</div>`,
+                className: 'custom-marker-wrapper',
+                iconSize: [36, 36],
+                iconAnchor: [18, 18],
+                popupAnchor: [0, -20]
+            });
+        }
+
+        // Update map markers based on visible news cards
+        function updateMapMarkers() {
+            if (!newsMap || !markerClusterGroup) return;
+
+            // Clear existing markers
+            markerClusterGroup.clearLayers();
+            markers = [];
+
+            const newsCards = document.querySelectorAll('.news-card:not(.hidden):not([style*="display: none"])');
+            const locationGroups = new Map();
+
+            newsCards.forEach(card => {
+                const title = card.querySelector('.news-title')?.textContent || '';
+                const summary = card.querySelector('.news-summary')?.textContent || '';
+                const location = extractLocation(title, summary);
+
+                if (location) {
+                    // Add location data to card for reference
+                    card.dataset.lat = location.lat;
+                    card.dataset.lng = location.lng;
+                    card.dataset.locationName = location.name;
+                    card.dataset.locationType = location.type;
+
+                    // Group by location for clustering
+                    const locKey = `${location.lat},${location.lng}`;
+                    if (!locationGroups.has(locKey)) {
+                        locationGroups.set(locKey, {
+                            location,
+                            cards: []
+                        });
+                    }
+                    locationGroups.get(locKey).cards.push(card);
+                }
+            });
+
+            // Create markers for each location
+            locationGroups.forEach(({ location, cards }) => {
+                const marker = L.marker([location.lat, location.lng], {
+                    icon: createCustomIcon(location.type)
+                });
+
+                // Create popup content
+                const popupContent = createPopupContent(cards, location);
+                marker.bindPopup(popupContent, {
+                    maxWidth: 300,
+                    className: 'news-map-popup'
+                });
+
+                // Click handler - scroll to first card
+                marker.on('click', function() {
+                    if (cards.length > 0) {
+                        highlightNewsCard(cards[0]);
+                    }
+                });
+
+                marker.cards = cards;
+                marker.locationData = location;
+                markers.push(marker);
+                markerClusterGroup.addLayer(marker);
+            });
+
+            // Update map stats
+            updateMapStats();
+        }
+
+        // Create popup content for markers
+        function createPopupContent(cards, location) {
+            const typeLabels = {
+                launch: '发射场',
+                company: '公司',
+                market: '市场'
+            };
+
+            let content = `
+                <div class="map-popup-location">📍 ${location.name} · ${typeLabels[location.type] || location.type}</div>
+            `;
+
+            cards.slice(0, 3).forEach((card, index) => {
+                const title = card.querySelector('.news-title')?.textContent || '';
+                const shortTitle = title.length > 30 ? title.substring(0, 30) + '...' : title;
+                content += `<div class="map-popup-title" onclick="scrollToNewsCard('${card.dataset.id}')">${index + 1}. ${shortTitle}</div>`;
+            });
+
+            if (cards.length > 3) {
+                content += `<div class="map-popup-location">还有 ${cards.length - 3} 条相关新闻...</div>`;
+            }
+
+            return content;
+        }
+
+        // Scroll to and highlight a news card
+        function highlightNewsCard(card) {
+            // Remove previous highlights
+            document.querySelectorAll('.news-card.highlighted').forEach(c => c.classList.remove('highlighted'));
+
+            // Add highlight
+            card.classList.add('highlighted');
+
+            // Scroll to card
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Remove highlight after 3 seconds
+            setTimeout(() => {
+                card.classList.remove('highlighted');
+            }, 3000);
+        }
+
+        // Scroll to specific news card by ID
+        function scrollToNewsCard(newsId) {
+            const card = document.querySelector(`.news-card[data-id="${newsId}"]`);
+            if (card) {
+                highlightNewsCard(card);
+            }
+        }
+
+        // Focus map on a specific location
+        function focusMapOnLocation(lat, lng) {
+            if (!newsMap) return;
+            newsMap.setView([lat, lng], 6, { animate: true, duration: 1 });
+
+            // Find and open popup for marker at this location
+            markers.forEach(marker => {
+                const mLat = marker.getLatLng().lat;
+                const mLng = marker.getLatLng().lng;
+                if (Math.abs(mLat - lat) < 0.001 && Math.abs(mLng - lng) < 0.001) {
+                    marker.openPopup();
+                }
+            });
+        }
+
+        // Update map statistics display
+        function updateMapStats() {
+            const statsEl = document.getElementById('mapStats');
+            if (statsEl) {
+                const visibleMarkers = markers.length;
+                const totalNews = document.querySelectorAll('.news-card:not(.hidden):not([style*="display: none"])').length;
+                statsEl.innerHTML = `<strong>${visibleMarkers}</strong> 个地点 · <strong>${totalNews}</strong> 条新闻`;
+            }
+        }
+
+        // Add click handlers to news cards for map interaction
+        function initNewsCardMapInteraction() {
+            document.querySelectorAll('.news-card').forEach(card => {
+                // Check if already has location data
+                const title = card.querySelector('.news-title')?.textContent || '';
+                const summary = card.querySelector('.news-summary')?.textContent || '';
+                const location = extractLocation(title, summary);
+
+                if (location) {
+                    card.dataset.lat = location.lat;
+                    card.dataset.lng = location.lng;
+
+                    // Add click handler to focus map
+                    card.addEventListener('click', function(e) {
+                        // Only trigger if not clicking favorite button
+                        if (!e.target.closest('.favorite-btn')) {
+                            focusMapOnLocation(location.lat, location.lng);
+                        }
+                    });
+                }
+            });
+        }
+
+        // Override applyFilters to also update map
+        const originalApplyFilters = applyFilters;
+        applyFilters = function() {
+            originalApplyFilters();
+            // Update map markers after filter change
+            setTimeout(updateMapMarkers, 100);
+        };
+
         // Version: 20260315-2 - Enhanced with favorites, sharing, theme toggle, back to top
         
         // Theme Management
@@ -2536,6 +3069,8 @@
             initFavorites();
             initBackToTop();
             initCharts();
+            initNewsMap();
+            initNewsCardMapInteraction();
             
             // Initialize filter stats
             const cards = document.querySelectorAll('.news-card');
