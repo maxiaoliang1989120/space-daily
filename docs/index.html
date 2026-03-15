@@ -545,6 +545,121 @@
             }
         }
         
+        /* Filter Section */
+        .filter-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            background: var(--secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 60px;
+        }
+
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        .filter-stats {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .filter-stats strong {
+            color: var(--accent-light);
+        }
+
+        /* Load More Button */
+        .load-more-container {
+            display: flex;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        .load-more-btn {
+            padding: 14px 48px;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent-light);
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .load-more-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--shadow);
+        }
+
+        .load-more-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .load-more-btn.hidden {
+            display: none;
+        }
+
+        .news-card.hidden {
+            display: none !important;
+        }
+
         /* Data Dashboard */
         .dashboard-section {
             max-width: 1400px;
@@ -1112,7 +1227,62 @@
             display: none !important;
         }
         
-        /* Toast Notification */
+        /* Filter Section */
+        .filter-section {
+            background: var(--secondary);
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-tab:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .filter-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
         .toast {
             position: fixed;
             bottom: 80px;
@@ -1224,6 +1394,58 @@
             </div>
         </section>
 
+        <!-- 筛选器区域 -->
+        <section class="filter-section">
+            <div class="filter-container">
+                <div class="filter-row">
+                    <span class="filter-label">日期</span>
+                    <div class="filter-tags" id="dateFilters">
+                        <button class="filter-btn active" data-date="all" onclick="filterByDate('all')">全部</button>
+                        <button class="filter-btn" data-date="7days" onclick="filterByDate('7days')">最近7天</button>
+                        <button class="filter-btn" data-date="30days" onclick="filterByDate('30days')">最近30天</button>
+                        <button class="filter-btn" data-date="2026-03" onclick="filterByDate('2026-03')">2026年3月</button>
+                        <button class="filter-btn" data-date="2026-02" onclick="filterByDate('2026-02')">2026年2月</button>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <span class="filter-label">分类</span>
+                    <div class="filter-tags" id="categoryFilters">
+                        <button class="filter-btn active" data-category="all" onclick="filterByCategory('all')">全部</button>
+                        <button class="filter-btn" data-category="commercial" onclick="filterByCategory('commercial')">商业航天</button>
+                        <button class="filter-btn" data-category="lowaltitude" onclick="filterByCategory('lowaltitude')">低空经济</button>
+                        <button class="filter-btn" data-category="remote" onclick="filterByCategory('remote')">遥感卫星</button>
+                        <button class="filter-btn" data-category="international" onclick="filterByCategory('international')">国际动态</button>
+                    </div>
+                    <span class="filter-stats" id="filterStats">显示 <strong>0</strong> 条新闻</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 筛选器区域 -->
+        <section class="filter-section">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <span class="filter-label">时间:</span>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">全部</button>
+                        <button class="filter-tab" data-filter="7d">最近7天</button>
+                        <button class="filter-tab" data-filter="30d">最近30天</button>
+                        <button class="filter-tab" data-filter="2026-03">2026年3月</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">分类:</span>
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-category="all">全部</button>
+                        <button class="filter-tab" data-category="commercial">商业航天</button>
+                        <button class="filter-tab" data-category="lowaltitude">低空经济</button>
+                        <button class="filter-tab" data-category="remote">遥感卫星</button>
+                        <button class="filter-tab" data-category="international">国际动态</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- 数据看板区域 -->
         <section class="dashboard-section">
             <h2 class="dashboard-title"><span>📊</span> 航天数据洞察</h2>
@@ -1301,12 +1523,12 @@
 
         <main class="main">
             <!-- 头条新闻 -->
-            <section class="section">
+            <section class="section" id="headlines">
                 <div class="section-header">
                     <h2 class="section-title"><span class="icon">🔥</span> 今日头条</h2>
                 </div>
-                <div class="news-grid">
-                    <article class="news-card featured" data-id="news-1" onclick="openModal(this)">
+                <div class="news-grid" id="headlinesGrid">
+                    <article class="news-card featured" data-id="news-1" data-category="commercial" data-date="2026-03-15" onclick="openModal(this)">
                         <div class="news-image" style="background: var(--gradient-1);">
                             🚀
                             <span class="news-priority hot">里程碑</span>
@@ -1327,7 +1549,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-2" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-2" data-category="lowaltitude" data-date="2026-03-15" onclick="openModal(this)">
                         <div class="news-image" style="background: var(--gradient-2);">
                             🚁
                             <span class="news-priority new">量产倒计时</span>
@@ -1355,8 +1577,8 @@
                     <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
                     <a href="#" class="view-all">查看全部 →</a>
                 </div>
-                <div class="news-grid">
-                    <article class="news-card" data-id="news-3" onclick="openModal(this)">
+                <div class="news-grid" id="commercialGrid">
+                    <article class="news-card" data-id="news-3" data-category="commercial" data-date="2026-03-15" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
                             📊
                             <span class="news-priority hot">数据</span>
@@ -1376,7 +1598,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-4" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-4" data-category="commercial" data-date="2026-03-14" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
                             🎯
                             <span class="news-priority new">突破</span>
@@ -1396,7 +1618,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-5" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-5" data-category="commercial" data-date="2026-03-13" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
                             🌐
                             <span class="news-priority new">争夺</span>
@@ -1416,7 +1638,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-6" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-6" data-category="commercial" data-date="2026-03-12" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
                             💰
                             <span class="news-priority hot">资本</span>
@@ -1436,7 +1658,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-7" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-7" data-category="commercial" data-date="2026-03-11" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                             🛰️
                             <span class="news-priority new">出海</span>
@@ -1456,7 +1678,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-8" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-8" data-category="commercial" data-date="2026-03-10" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
                             🔬
                             <span class="news-priority hot">新品</span>
@@ -1484,8 +1706,8 @@
                     <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
                     <a href="#" class="view-all">查看全部 →</a>
                 </div>
-                <div class="news-grid">
-                    <article class="news-card" data-id="news-9" onclick="openModal(this)">
+                <div class="news-grid" id="lowaltitudeGrid">
+                    <article class="news-card" data-id="news-9" data-category="lowaltitude" data-date="2026-03-15" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
                             🏭
                             <span class="news-priority hot">量产</span>
@@ -1505,7 +1727,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-10" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-10" data-category="lowaltitude" data-date="2026-03-14" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
                             🤝
                             <span class="news-priority hot">合作</span>
@@ -1525,7 +1747,7 @@
                         </div>
                     </article>
 
-                    <article class="news-card" data-id="news-11" onclick="openModal(this)">
+                    <article class="news-card" data-id="news-11" data-category="lowaltitude" data-date="2026-03-13" onclick="openModal(this)">
                         <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
                             🔋
                             <span class="news-priority new">投资</span>
@@ -2188,6 +2410,43 @@
                             ticks: { color: '#9ca3af', font: { size: 12 } }
                         }
                     }
+                }
+            });
+        
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab[data-filter]');
+        const categoryTabs = document.querySelectorAll('.filter-tab[data-category]');
+        let currentFilter = 'all';
+        let currentCategory = 'all';
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                applyFilters();
+            });
+        });
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCategory = tab.dataset.category;
+                applyFilters();
+            });
+        });
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('.news-card');
+            cards.forEach(card => {
+                const cardCategory = card.dataset.category;
+                let showByCategory = currentCategory === 'all' || cardCategory === currentCategory;
+                
+                if (showByCategory) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
                 }
             });
         }
