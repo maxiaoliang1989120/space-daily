@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>Space Daily | 空天信息日报</title>
+<link>https://spacedaily.example.com</link>
+<description>聚焦商业航天、低空经济、遥感卫星领域的前沿动态</description>
+<language>zh-CN</language>
+<lastBuildDate>Sun, 15 Mar 2026 00:00:00 GMT</lastBuildDate>
+<atom:link href="https://spacedaily.example.com/feed.xml" rel="self" type="application/rss+xml"/>
+
+<item>
+<title>SpaceX 2025年营收155亿美元，2026年将超越NASA全部预算</title>
+<link>https://weekly.caixin.com/2026-03-07/102420532.html</link>
+<guid isPermaLink="true">https://weekly.caixin.com/2026-03-07/102420532.html</guid>
+<pubDate>Sun, 15 Mar 2026 00:00:00 GMT</pubDate>
+<category>商业航天</category>
+<description>马斯克公开披露，SpaceX 2025财年营收约155亿美元，其中火箭发射服务是主要收入来源。这标志着商业航天从补充角色跳跃成为主力军。</description>
+</item>
+
+<item>
+<title>小鹏汇天"陆地航母"批量试产下线，累计订单7000+台</title>
+<link>https://www.jiemian.com/article/11826453.html</link>
+<guid isPermaLink="true">https://www.jiemian.com/article/11826453.html</guid>
+<pubDate>Sat, 14 Mar 2026 00:00:00 GMT</pubDate>
+<category>低空经济</category>
+<description>3月5日，小鹏汇天广州黄埔工厂试产下线5台"陆地航母"飞行器并启动编队试飞。全球首条飞行汽车量产线满产状态下每30分钟可下线一台飞行器。</description>
+</item>
+
+<item>
+<title>2025年中国商业航天发射50次创新高，占全年发射总数54%</title>
+<link>https://www.cnsa.gov.cn/n6758823/n6758838/c10726402/content.html</link>
+<guid isPermaLink="true">https://www.cnsa.gov.cn/n6758823/n6758838/c10726402/content.html</guid>
+<pubDate>Sun, 15 Mar 2026 00:00:00 GMT</pubDate>
+<category>商业航天</category>
+<description>国家航天局发布数据：2025年中国商业航天完成发射50次，入轨商业卫星311颗，占全年入轨卫星总数的84%。</description>
+</item>
+
+<item>
+<title>朱雀三号首次挑战入轨回收，中国可回收火箭迈出关键一步</title>
+<link>http://www.news.cn/finance/20250317/b1748ebcf06c4af3b4af02d4ef4d6504/c.html</link>
+<guid isPermaLink="true">http://www.news.cn/finance/20250317/b1748ebcf06c4af3b4af02d4ef4d6504/c.html</guid>
+<pubDate>Fri, 13 Mar 2026 00:00:00 GMT</pubDate>
+<category>商业航天</category>
+<description>2025年底，蓝箭航天朱雀三号VTVL-1试验箭进行10公里级垂直起降飞行试验，虽然回收阶段未能成功，但这是中国首次挑战可重复使用火箭入轨回收。</description>
+</item>
+
+<item>
+<title>Maxar WorldView Legion星座组网完成，重访周期提升至15次/天</title>
+<link>https://cloud.tencent.com/developer/news/2139965</link>
+<guid isPermaLink="true">https://cloud.tencent.com/developer/news/2139965</guid>
+<pubDate>Sun, 15 Mar 2026 00:00:00 GMT</pubDate>
+<category>遥感卫星</category>
+<description>2025年2月，SpaceX成功发射Maxar最后两颗WorldView Legion卫星，完成六星星座组网。该星座实现亚米级分辨率，对特定地区重访周期提升至15次/天。</description>
+</item>
+
+</channel>
+</rss>

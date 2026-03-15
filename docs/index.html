@@ -1511,12 +1511,33 @@
             <div class="modal-footer">
                 <span class="modal-source" id="modalSource"></span>
                 <div class="modal-actions">
+                    <div class="modal-action-row">
+                        <button class="modal-action-btn favorite" id="modalFavoriteBtn" onclick="toggleModalFavorite()">
+                            <span id="modalFavoriteIcon">♡</span> <span id="modalFavoriteText">收藏</span>
+                        </button>
+                        <button class="modal-action-btn" onclick="shareNews()">
+                            📤 分享
+                        </button>
+                    </div>
                     <a id="modalLink" href="#" target="_blank" class="modal-action modal-link" style="display:none;">查看原文 →</a>
                     <button class="modal-action" onclick="closeModal()">关闭</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- RSS Subscribe Button -->
+    <a href="feed.xml" class="rss-btn" title="RSS订阅" target="_blank">
+        📡
+    </a>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="返回顶部">
+        ↑
+    </button>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
     <script>
         // Version: 20260315-2 - Filter Functionality Update
@@ -1555,12 +1576,177 @@
         }
 
         // Modal Functions
+        let currentNewsId = null;
+
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('spaceDailyTheme') || 'dark';
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeToggle');
+            
+            if (body.classList.contains('light-theme')) {
+                body.classList.remove('light-theme');
+                localStorage.setItem('spaceDailyTheme', 'dark');
+                btn.textContent = '🌙';
+            } else {
+                body.classList.add('light-theme');
+                localStorage.setItem('spaceDailyTheme', 'light');
+                btn.textContent = '☀️';
+            }
+        }
+
+        // Favorites Management
+        function getFavorites() {
+            return JSON.parse(localStorage.getItem('spaceDailyFavorites') || '[]');
+        }
+
+        function saveFavorites(favorites) {
+            localStorage.setItem('spaceDailyFavorites', JSON.stringify(favorites));
+        }
+
+        function toggleFavorite(event, newsId) {
+            event.stopPropagation();
+            const favorites = getFavorites();
+            const index = favorites.indexOf(newsId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('已取消收藏', 'success');
+            } else {
+                favorites.push(newsId);
+                showToast('已添加到收藏', 'success');
+            }
+            
+            saveFavorites(favorites);
+            updateFavoriteButtons();
+        }
+
+        function toggleModalFavorite() {
+            if (!currentNewsId) return;
+            
+            const favorites = getFavorites();
+            const index = favorites.indexOf(currentNewsId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('已取消收藏', 'success');
+            } else {
+                favorites.push(currentNewsId);
+                showToast('已添加到收藏', 'success');
+            }
+            
+            saveFavorites(favorites);
+            updateFavoriteButtons();
+            updateModalFavoriteButton();
+        }
+
+        function updateFavoriteButtons() {
+            const favorites = getFavorites();
+            document.querySelectorAll('.favorite-btn').forEach(btn => {
+                const onclick = btn.getAttribute('onclick');
+                const match = onclick.match(/toggleFavorite\(event, ['"](.+?)['"]\)/);
+                if (match) {
+                    const newsId = match[1];
+                    if (favorites.includes(newsId)) {
+                        btn.classList.add('active');
+                        btn.innerHTML = '♥';
+                    } else {
+                        btn.classList.remove('active');
+                        btn.innerHTML = '♡';
+                    }
+                }
+            });
+        }
+
+        function updateModalFavoriteButton() {
+            const favorites = getFavorites();
+            const btn = document.getElementById('modalFavoriteBtn');
+            const icon = document.getElementById('modalFavoriteIcon');
+            const text = document.getElementById('modalFavoriteText');
+            
+            if (favorites.includes(currentNewsId)) {
+                btn.classList.add('active');
+                icon.textContent = '♥';
+                text.textContent = '已收藏';
+            } else {
+                btn.classList.remove('active');
+                icon.textContent = '♡';
+                text.textContent = '收藏';
+            }
+        }
+
+        // Share Function
+        async function shareNews() {
+            const title = document.getElementById('modalTitle').textContent;
+            const url = document.getElementById('modalLink').href;
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: title,
+                        text: title,
+                        url: url
+                    });
+                } catch (err) {
+                    console.log('Share cancelled');
+                }
+            } else {
+                // Fallback: copy to clipboard
+                try {
+                    await navigator.clipboard.writeText(`${title} - ${url}`);
+                    showToast('链接已复制到剪贴板', 'success');
+                } catch (err) {
+                    showToast('复制失败，请手动复制', 'error');
+                }
+            }
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Back to Top
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        function initBackToTop() {
+            const btn = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+        }
+
         function openModal(card) {
             const title = card.querySelector('.news-title').textContent;
             const summary = card.querySelector('.news-summary').textContent;
             const source = card.querySelector('.news-source').textContent;
             const tags = card.querySelectorAll('.tag');
             const link = card.getAttribute('data-link');
+            currentNewsId = card.getAttribute('data-id');
             
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalSummary').textContent = summary;
@@ -1582,6 +1768,9 @@
                 tagsHtml += '<span class="tag ' + tagClass + '" style="margin-right:8px;">' + tag.textContent + '</span>';
             });
             document.getElementById('modalMeta').innerHTML = tagsHtml;
+            
+            // Update favorite button in modal
+            updateModalFavoriteButton();
             
             document.getElementById('newsModal').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1987,6 +2176,18 @@
                 noResultsEl.classList.remove('show');
             }
         }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme
+            initTheme();
+            
+            // Initialize favorite buttons state
+            updateFavoriteButtons();
+            
+            // Initialize back to top button
+            initBackToTop();
+        });
     </script>
 </body>
 </html>
