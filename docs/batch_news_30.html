@@ -1,0 +1,233 @@
+<!-- 批量补充: 30条新闻 2026-03-16 -->
+<script>
+// 商业航天10条
+const commercialNews = [
+    {
+        id: 'news-60', title: '星际荣耀双曲线三号完成二级发动机长程试车', category: 'commercial', date: '2026-03-16',
+        source: '科创板日报/财联社', summary: '星际荣耀双曲线三号二级发动机完成300秒长程试车，覆盖入轨飞行全程。该火箭采用9台焦点二号液氧甲烷发动机并联方案，计划2026年底首飞并挑战海上回收。',
+        tags: ['商业航天', '星际荣耀', '可回收火箭'], priority: 'new', priorityText: '试车成功', icon: '🔥', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+    },
+    {
+        id: 'news-61', title: '星河动力谷神星一号实现连续16次成功发射', category: 'commercial', date: '2026-03-15',
+        source: '证券时报/科技日报', summary: '星河动力谷神星一号固体运载火箭完成第16次发射任务，实现连续16次成功，刷新中国民营火箭连胜纪录。智神星一号液体火箭即将首飞，计划开展轨道级回收验证。',
+        tags: ['商业航天', '星河动力', '发射纪录'], priority: 'hot', priorityText: '里程碑', icon: '🚀', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+    },
+    {
+        id: 'news-62', title: '天兵科技完成B+轮融资，投后估值超120亿元', category: 'commercial', date: '2026-03-14',
+        source: '36氪/投中网', summary: '天兵科技完成数亿元B+轮融资，由中信聚信领投，投后估值突破120亿元。天龙三号大型液体火箭已完成总装，计划2026年首飞并实现一箭36星发射能力。',
+        tags: ['商业航天', '天兵科技', '融资'], priority: 'hot', priorityText: '高估值', icon: '💰', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+    },
+    {
+        id: 'news-63', title: '海南商业航天发射场二号工位完成合练', category: 'commercial', date: '2026-03-13',
+        source: '央视新闻/海南日报', summary: '海南商业航天发射场二号工位完成全系统合练，具备执行发射任务条件。该工位是国内首个液体火箭专用发射工位，将支持天兵、蓝箭等民营火箭公司高频发射需求。',
+        tags: ['商业航天', '海南商发', '基础设施'], priority: 'new', priorityText: '合练成功', icon: '🏗️', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)'
+    },
+    {
+        id: 'news-64', title: '深蓝航天星云一号完成静态点火试验', category: 'commercial', date: '2026-03-12',
+        source: '澎湃/界面新闻', summary: '深蓝航天星云一号可回收运载火箭完成全箭静态点火试验，验证了一级动力系统与控制系统匹配性。该火箭采用针栓式液氧煤油发动机，计划2026年开展海上回收首飞。',
+        tags: ['商业航天', '深蓝航天', '试验成功'], priority: 'new', priorityText: '点火成功', icon: '🔥', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+    },
+    {
+        id: 'news-65', title: '中国星网发布2026年发射计划：将发射超500颗卫星', category: 'commercial', date: '2026-03-11',
+        source: '财新/C114', summary: '中国星网发布2026年度发射计划，预计全年发射超500颗低轨卫星，加速GW星座组网。千帆星座同步推进，两大星座合计在轨卫星年底有望突破1500颗，形成全球服务能力。',
+        tags: ['商业航天', '星网', '卫星组网'], priority: 'hot', priorityText: '重磅计划', icon: '🛰️', gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)'
+    },
+    {
+        id: 'news-66', title: '东方空间引力二号完成方案设计评审', category: 'commercial', date: '2026-03-10',
+        source: '泰伯网/航小宇', summary: '东方空间引力二号中大型可回收火箭完成方案设计评审，进入工程研制阶段。该火箭起飞重量700吨，低轨运力15吨，采用10台原力-85液氧煤油发动机，计划2027年首飞。',
+        tags: ['商业航天', '东方空间', '设计评审'], priority: 'new', priorityText: '新进展', icon: '📐', gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
+    },
+    {
+        id: 'news-67', title: '航天科技集团发布商业航天发展路线图', category: 'commercial', date: '2026-03-09',
+        source: '中国航天报/新华网', summary: '航天科技集团发布商业航天发展路线图，明确2026-2030年发展目标。计划年均发射能力突破100次，打造可重复使用火箭产品线，形成年产50发火箭、1000颗卫星的制造能力。',
+        tags: ['商业航天', '政策', '发展规划'], priority: 'hot', priorityText: '路线图', icon: '📋', gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
+    },
+    {
+        id: 'news-68', title: '翎客航天完成火箭发动机全系统试车', category: 'commercial', date: '2026-03-08',
+        source: '科技日报/36氪', summary: '翎客航天新一代可重复使用火箭发动机完成全系统试车，推力达到设计指标。公司专注液氧甲烷动力路线，计划2027年首飞新型可回收火箭，目标实现10次以上复用。',
+        tags: ['商业航天', '翎客航天', '发动机'], priority: 'new', priorityText: '试车成功', icon: '⚙️', gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+    },
+    {
+        id: 'news-69', title: '银河航天完成新一轮融资，估值超200亿元', category: 'commercial', date: '2026-03-07',
+        source: '财新/投中网', summary: '银河航天完成数亿元新一轮融资，投后估值突破200亿元，成为国内估值最高的民营卫星公司。公司卫星智能制造工厂年产能达150颗，已累计发射超20颗低轨宽带卫星。',
+        tags: ['商业航天', '银河航天', '融资'], priority: 'hot', priorityText: '独角兽', icon: '🦄', gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
+    }
+];
+
+// 低空经济10条
+const lowaltitudeNews = [
+    {
+        id: 'news-70', title: '亿航智能Q1营收同比增长超200%', category: 'lowaltitude', date: '2026-03-16',
+        source: '财新/证券时报', summary: '亿航智能发布2026年一季度业绩预告，营收同比增长超200%，EH216-S累计交付超300架。公司预计2026年全年交付量将突破1000架，成为首个实现规模化商业运营的eVTOL企业。',
+        tags: ['低空经济', '亿航智能', '财报'], priority: 'hot', priorityText: '业绩大增', icon: '📈', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)'
+    },
+    {
+        id: 'news-71', title: '峰飞航空V2000CG获颁型号合格证', category: 'lowaltitude', date: '2026-03-15',
+        source: '中国民航报/通航在线', summary: '峰飞航空2吨级eVTOL产品V2000CG获颁中国民航局型号合格证，成为全球首个获TC的吨级eVTOL。该产品最大起飞重量2000公斤，可搭载5名乘客或500公斤货物，航程250公里。',
+        tags: ['低空经济', '峰飞航空', '适航取证'], priority: 'hot', priorityText: '取证成功', icon: '✅', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+    },
+    {
+        id: 'news-72', title: '上海发布低空经济高质量发展行动方案', category: 'lowaltitude', date: '2026-03-14',
+        source: '上海发布/解放日报', summary: '上海市印发低空经济高质量发展行动方案，目标2027年低空经济规模突破800亿元，打造低空经济示范区。规划设置低空飞行航线超100条，建成起降点超200个，培育头部企业5-8家。',
+        tags: ['低空经济', '政策', '上海'], priority: 'hot', priorityText: '政策利好', icon: '📋', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+    },
+    {
+        id: 'news-73', title: '小鹏汇天与 UAE 签署50台飞行汽车采购协议', category: 'lowaltitude', date: '2026-03-13',
+        source: '界面新闻/财新', summary: '小鹏汇天与阿联酋合作伙伴签署50台陆地航母飞行汽车采购协议，订单金额超1亿美元。这是公司首个海外批量订单，计划2026年底开始交付，用于当地旅游观光和短途出行。',
+        tags: ['低空经济', '小鹏汇天', '出海'], priority: 'hot', priorityText: '海外订单', icon: '🌍', gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)'
+    },
+    {
+        id: 'news-74', title: '时的科技E20原型机完成倾转过渡飞行', category: 'lowaltitude', date: '2026-03-12',
+        source: '科技日报/通航在线', summary: '时的科技E20倾转旋翼eVTOL原型机成功完成倾转过渡飞行试验，从垂直起降模式平滑转换为固定翼巡航模式。该机型采用6倾转旋翼布局，设计航程200公里，载客4人。',
+        tags: ['低空经济', '时的科技', '技术突破'], priority: 'new', priorityText: '首飞成功', icon: '🚁', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+    },
+    {
+        id: 'news-75', title: '沃飞长空AE200完成全倾转飞行测试', category: 'lowaltitude', date: '2026-03-11',
+        source: '四川日报/封面新闻', summary: '沃飞长空AE200电动垂直起降航空器完成全倾转飞行测试，验证了从悬停到前飞的全模式转换能力。该机型预计2026年获颁型号合格证，2027年启动商业运营。',
+        tags: ['低空经济', '沃飞长空', '飞行测试'], priority: 'new', priorityText: '测试成功', icon: '🎯', gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
+    },
+    {
+        id: 'news-76', title: '广汽高域飞行汽车产业园动工建设', category: 'lowaltitude', date: '2026-03-10',
+        source: '南方日报/广州日报', summary: '广汽集团飞行汽车产业园在广州番禺正式动工，总投资50亿元，规划年产能1万台。产业园将涵盖研发中心、智能制造工厂和试飞测试基地，预计2027年投产。',
+        tags: ['低空经济', '广汽高域', '产业布局'], priority: 'new', priorityText: '开工', icon: '🏗️', gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
+    },
+    {
+        id: 'news-77', title: '大疆发布首款载重无人机FlyCart 30', category: 'lowaltitude', date: '2026-03-09',
+        source: '大疆官网/IT之家', summary: '大疆正式发布首款载重无人机FlyCart 30，最大载重30公斤，空载航程28公里。产品定位物流运输场景，支持货箱和空吊两种负载模式，为低空物流提供新解决方案。',
+        tags: ['低空经济', '大疆', '物流无人机'], priority: 'new', priorityText: '新品发布', icon: '🆕', gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
+    },
+    {
+        id: 'news-78', title: '深圳开通首条eVTOL城市空中交通航线', category: 'lowaltitude', date: '2026-03-08',
+        source: '深圳特区报/南方都市报', summary: '深圳首条eVTOL城市空中交通航线正式开通，从深圳湾至宝安国际机场飞行仅需15分钟，较地面交通节省1小时以上。亿航EH216-S执飞，票价暂定为单程580元。',
+        tags: ['低空经济', '深圳', '航线开通'], priority: 'hot', priorityText: '首航', icon: '✈️', gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+    },
+    {
+        id: 'news-79', title: '零重力飞机工业完成近亿元天使轮融资', category: 'lowaltitude', date: '2026-03-07',
+        source: '36氪/投资界', summary: '零重力飞机工业完成近亿元天使轮融资，由蓝驰创投领投。公司专注eVTOL整机研发，ZG-ONE机型已完成原型机下线，采用复合翼构型，设计航程300公里，计划2027年取证。',
+        tags: ['低空经济', '零重力', '融资'], priority: 'new', priorityText: '天使轮', icon: '💰', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+    }
+];
+
+// 遥感卫星/国际10条
+const remoteIntlNews = [
+    {
+        id: 'news-80', title: '长光卫星吉林一号星座在轨卫星突破200颗', category: 'remote', date: '2026-03-16',
+        source: '吉林日报/科技日报', summary: '长光卫星吉林一号星座成功发射第27次组网卫星，在轨卫星数量突破200颗，建成全球最大亚米级商业遥感卫星星座。星座可对全球任意地点实现每天25次重访，分辨率达0.5米。',
+        tags: ['遥感卫星', '长光卫星', '组网'], priority: 'hot', priorityText: '里程碑', icon: '🛰️', gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)'
+    },
+    {
+        id: 'news-81', title: 'SpaceX完成2026年第30次发射任务', category: 'remote', date: '2026-03-15',
+        source: 'SpaceX/NASA', summary: 'SpaceX完成2026年第30次轨道发射任务，将21颗星链V2 Mini卫星送入轨道。公司保持每2.5天一次发射的高频节奏，全年目标完成150次发射，星链在轨卫星超7500颗。',
+        tags: ['国际动态', 'SpaceX', '发射纪录'], priority: 'hot', priorityText: '高频发射', icon: '🚀', gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'
+    },
+    {
+        id: 'news-82', title: '中国四维商业遥感卫星星座建成', category: 'remote', date: '2026-03-14',
+        source: '中国航天报/新华网', summary: '中国四维商业遥感卫星星座正式建成，由28颗卫星组成，具备全球任意地点每天4次重访能力。星座可实现全色0.3米、多光谱1.2米分辨率成像，已服务全球50多个国家。',
+        tags: ['遥感卫星', '中国四维', '星座建成'], priority: 'hot', priorityText: '星座建成', icon: '🌐', gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+    },
+    {
+        id: 'news-83', title: 'Planet Labs发布新一代Pelican卫星首批图像', category: 'remote', date: '2026-03-13',
+        source: 'Planet Labs/Geospatial World', summary: 'Planet Labs发布新一代Pelican卫星首批高分辨率图像，分辨率达30厘米，具备每日30次重访能力。首批6颗Pelican卫星已完成部署，大幅提升对热点区域的监测能力。',
+        tags: ['国际动态', 'Planet Labs', '卫星影像'], priority: 'new', priorityText: '新影像', icon: '📸', gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+    },
+    {
+        id: 'news-84', title: '欧空局哨兵-1C卫星成功入轨', category: 'remote', date: '2026-03-12',
+        source: 'ESA/SpaceNews', summary: '欧空局哨兵-1C雷达卫星成功发射并入轨，将接替超期服役的哨兵-1A卫星。该卫星搭载C波段SAR载荷，可全天候全天时获取地表图像，服务环境监测和灾害应急。',
+        tags: ['国际动态', '欧空局', '雷达卫星'], priority: 'new', priorityText: '发射成功', icon: '🛰️', gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)'
+    },
+    {
+        id: 'news-85', title: '中科星图发布GEOVIS数字地球6.0版本', category: 'remote', date: '2026-03-11',
+        source: '中科星图/证券时报', summary: '中科星图正式发布GEOVIS数字地球6.0版本，集成超算数据、智能计算与空天信息服务能力。新版本支持PB级遥感数据实时处理和AI智能解译，已应用于自然资源、应急管理等十余个行业。',
+        tags: ['遥感卫星', '中科星图', '产品发布'], priority: 'new', priorityText: '新品发布', icon: '💻', gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+    },
+    {
+        id: 'news-86', title: 'Maxar与美军签署31亿美元卫星图像供应合同', category: 'remote', date: '2026-03-10',
+        source: 'Maxar/Defense News', summary: 'Maxar Technologies与美国国防部签署31亿美元卫星图像长期供应合同，为期10年。合同涵盖高分辨率光学和雷达卫星图像，支持美军全球作战和情报分析需求。',
+        tags: ['国际动态', 'Maxar', '国防合同'], priority: 'hot', priorityText: '大单', icon: '💵', gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
+    },
+    {
+        id: 'news-87', title: '我国成功发射宏图一号04组卫星', category: 'remote', date: '2026-03-09',
+        source: '新华社/央视', summary: '我国在酒泉卫星发射中心使用长征二号丁运载火箭，成功将宏图一号04组卫星发射升空。该组卫星为商业SAR卫星，具备全天时全天候成像能力，将服务于国土普查和应急减灾。',
+        tags: ['遥感卫星', '中国航天', '发射'], priority: 'new', priorityText: '发射成功', icon: '🚀', gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
+    },
+    {
+        id: 'news-88', title: 'Satellogic与AWS合建卫星数据处理中心', category: 'remote', date: '2026-03-08',
+        source: 'Satellogic/AWS', summary: '阿根廷Satellogic与亚马逊AWS宣布合作建设卫星数据处理中心，利用云计算加速遥感数据分发。Satellogic星座含30颗高光谱卫星，每日可获取超400万平方公里影像数据。',
+        tags: ['国际动态', 'Satellogic', '云服务'], priority: 'new', priorityText: '合作', icon: '🤝', gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+    },
+    {
+        id: 'news-89', title: '航天宏图发布2025年报：遥感业务增长80%', category: 'remote', date: '2026-03-07',
+        source: '航天宏图/上交所', summary: '航天宏图发布2025年度报告，商业遥感卫星应用业务营收同比增长80%，PIE-Engine平台注册用户突破50万。公司女娲星座在建，计划2027年完成54颗卫星组网。',
+        tags: ['遥感卫星', '航天宏图', '财报'], priority: 'new', priorityText: '业绩亮眼', icon: '📊', gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)'
+    }
+];
+
+// 合并所有新闻
+const batchNews = [...commercialNews, ...lowaltitudeNews, ...remoteIntlNews];
+
+// 标签映射
+const tagClassMap = {
+    '商业航天': 'commercial', '低空经济': 'lowaltitude', '遥感卫星': 'remote',
+    '国际动态': 'international', '政策': 'policy', '融资': 'investment',
+    'SpaceX': 'international', '中国航天': 'commercial', '卫星组网': 'commercial'
+};
+
+// 自动插入新闻
+(function() {
+    batchNews.forEach(news => {
+        const article = document.createElement('article');
+        article.className = 'news-card';
+        article.setAttribute('data-id', news.id);
+        article.setAttribute('data-category', news.category);
+        article.setAttribute('data-date', news.date);
+        article.setAttribute('onclick', 'openModal(this)');
+        
+        const tagsHtml = news.tags.map(tag => {
+            const tagClass = tagClassMap[tag] || 'commercial';
+            return `<span class="tag ${tagClass}">${tag}</span>`;
+        }).join('');
+        
+        article.innerHTML = `
+            <div class="news-image" style="background: ${news.gradient};">
+                ${news.icon}
+                <span class="news-priority ${news.priority}">${news.priorityText}</span>
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('${news.id}')" title="收藏">☆</button>
+            </div>
+            <div class="news-content">
+                <div class="news-meta">${tagsHtml}</div>
+                <h3 class="news-title">${news.title}</h3>
+                <p class="news-summary">${news.summary}</p>
+                <div class="news-footer">
+                    <span class="news-source">${news.source}</span>
+                    <span>刚刚</span>
+                </div>
+            </div>
+        `;
+        
+        let targetGrid;
+        if (news.category === 'commercial') {
+            targetGrid = document.getElementById('commercialGrid');
+        } else if (news.category === 'lowaltitude') {
+            targetGrid = document.getElementById('lowaltitudeGrid');
+        } else if (news.category === 'remote') {
+            const remoteSection = document.getElementById('remote');
+            if (remoteSection) targetGrid = remoteSection.querySelector('.news-grid');
+        }
+        
+        if (targetGrid) {
+            targetGrid.appendChild(article);
+        }
+    });
+    
+    // 更新统计数据
+    const statValues = document.querySelectorAll('.stat-value');
+    if (statValues.length >= 4) {
+        statValues[0].textContent = document.querySelectorAll('[data-category="commercial"]').length;
+        statValues[1].textContent = document.querySelectorAll('[data-category="lowaltitude"]').length;
+        statValues[2].textContent = document.querySelectorAll('[data-category="remote"]').length;
+        statValues[3].textContent = document.querySelectorAll('.news-card').length;
+    }
+    
+    console.log('[Space Daily] 已自动补充30条新闻：商业航天10条、低空经济10条、遥感/国际10条');
+})();
+</script>
