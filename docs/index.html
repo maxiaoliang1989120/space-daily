@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Daily | 空天信息日报 - 2026年3月14日</title>
+    <title>Space Daily | 空天信息日报 - 2026年3月15日</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -137,6 +137,116 @@
         }
         .no-results.show {
             display: block;
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .modal-header {
+            padding: 24px 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--card-hover);
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .modal-close:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .modal-body {
+            padding: 20px 24px;
+        }
+        .modal-title {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        .modal-summary {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+        .modal-footer {
+            padding: 16px 24px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-source {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .modal-action {
+            padding: 10px 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-action:hover {
+            background: var(--accent-light);
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -392,7 +502,7 @@
                 <input type="text" id="searchInput" placeholder="搜索新闻..." onkeyup="searchNews()">
                 <span class="search-icon">🔍</span>
             </div>
-            <div class="live-indicator">实时更新 | 2026年3月14日</div>
+            <div class="live-indicator">实时更新 | 2026年3月15日</div>
         </div>
     </nav>
 
@@ -411,21 +521,21 @@
                         <div class="stat-icon evtol">🚁</div>
                         <span class="stat-label">低空经济</span>
                     </div>
-                    <div class="stat-value">12</div>
+                    <div class="stat-value">14</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-icon satellite">🛰️</div>
                         <span class="stat-label">遥感卫星</span>
                     </div>
-                    <div class="stat-value">15</div>
+                    <div class="stat-value">16</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-header">
                         <div class="stat-icon total">📊</div>
                         <span class="stat-label">今日资讯</span>
                     </div>
-                    <div class="stat-value">52</div>
+                    <div class="stat-value">48</div>
                 </div>
             </div>
             <h1 class="hero-title">空天信息日报</h1>
@@ -443,38 +553,38 @@
                 <article class="news-card featured">
                     <div class="news-image" style="background: var(--gradient-1);">
                         🚀
-                        <span class="news-priority hot">重磅</span>
+                        <span class="news-priority hot">里程碑</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag commercial">商业航天</span>
-                            <span class="tag">SpaceX</span>
-                            <span class="tag">星舰V3</span>
+                            <span class="tag international">SpaceX</span>
+                            <span class="tag">财报</span>
                         </div>
-                        <h3 class="news-title">SpaceX星舰V3预计3月内首飞，马斯克确认人类最早2029年登陆火星</h3>
-                        <p class="news-summary">马斯克通过X平台宣布，SpaceX第三代星舰（V3）预计于3月内开展首次飞行。该火箭搭载全新Raptor 3引擎，体型更大、推力更强，是首个具备在轨对接能力的型号，为执行NASA阿耳忒弥斯登月及未来火星任务奠定基础。马斯克表示，如果携带着擎天柱的星舰在火星上的着陆进展顺利，人类登陆火星最早可能在2029年开始。</p>
+                        <h3 class="news-title">SpaceX 2025年营收155亿美元，2026年将超越NASA全部预算</h3>
+                        <p class="news-summary">马斯克公开披露，SpaceX 2025财年营收约155亿美元，其中火箭发射服务是主要收入来源。据报道，特朗普政府2026财年NASA预算拟从254亿美元削减至188亿美元，而SpaceX预计2026年营收将超迈这一数字，成为首家营收超越国家航天预算的商业航天公司。这标志着商业航天从补充角色跳跃成为主力军，重塑全球太空竞争格局。</p>
                         <div class="news-footer">
-                            <span class="news-source">SpaceNews</span>
-                            <span>2小时前</span>
+                            <span class="news-source">华尔街日报/Bloomberg</span>
+                            <span>1小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: var(--gradient-2);">
-                        🛰️
-                        <span class="news-priority new">NEW</span>
+                        🚁
+                        <span class="news-priority new">量产倒计时</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
-                            <span class="tag international">国际</span>
-                            <span class="tag remote">遥感卫星</span>
+                            <span class="tag lowaltitude">低空经济</span>
+                            <span class="tag">小鹏汇天</span>
                         </div>
-                        <h3 class="news-title">Planet Labs发布Pelican-2高分辨率卫星首批影像，分辨率提升至30厘米</h3>
-                        <p class="news-summary">全球最大的商业遥感卫星星座运营商Planet Labs正式发布新一代Pelican-2卫星的首批30厘米分辨率图像，展示了对车辆、建筑等细节的高清成像能力，进一步巩固其在商业遥感市场的领先地位。</p>
+                        <h3 class="news-title">小鹏汇天"陆地航母"批量试产下线，累计订单7000+台</h3>
+                        <p class="news-summary">3月5日，小鹏汇天广州黄埔工厂试产下线5台"陆地航母"飞行器并启动编队试飞。全球首条飞行汽车量产线满产状态下每30分钟可下线一台飞行器，计划2026年量产交付。全国两会期间，汇天联合广州城投、电子五所共建的广州海心沙全空间智能体验中心正式启动。</p>
                         <div class="news-footer">
-                            <span class="news-source">Planet Labs</span>
-                            <span>4小时前</span>
+                            <span class="news-source">界面新闻/财新</span>
+                            <span>2小时前</span>
                         </div>
                     </div>
                 </article>
@@ -488,116 +598,116 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
-                        🇨🇳
-                        <span class="news-priority hot">热点</span>
+                        📊
+                        <span class="news-priority hot">数据</span>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="tag commercial">商业航天</span>
+                            <span class="tag policy">政策</span>
+                        </div>
+                        <h3 class="news-title">2025年中国商业航天发射50次创新高，占全年发射总数54%</h3>
+                        <p class="news-summary">国家航天局发布数据：2025年中国商业航天完成发射50次，入轨商业卫星311颗，占全年入轨卫星总数的84%。海南商业航天发射场正式启用，北京火箭大街竣工形成产业集群。行业规模达2.5万亿元，年均复合增长率超20%，企业数量超600家。</p>
+                        <div class="news-footer">
+                            <span class="news-source">国家航天局/21财经</span>
+                            <span>1小时前</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
+                        🎯
+                        <span class="news-priority new">突破</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag commercial">商业航天</span>
                             <span class="tag">蓝箭航天</span>
                         </div>
-                        <h3 class="news-title">蓝箭航天朱雀三号计划2026年Q2再次挑战回收，争取Q4实现复用飞行</h3>
-                        <p class="news-summary">朱雀三号2025年12月首飞成功入轨，成为我国首款进行入轨发射及回收验证的火箭。目前研制团队正在对着陆流程进行优化，计划于今年第二季度再次开展回收试验，若成功将于第四季度尝试首次回收复用飞行。</p>
+                        <h3 class="news-title">朱雀三号首次挑战入轨回收，中国可回收火箭迈出关键一步</h3>
+                        <p class="news-summary">2025年底，蓝箭航天朱雀三号VTVL-1试验箭进行10公里级垂直起降飞行试验，虽然回收阶段未能成功，但这是中国首次挑战可重复使用火箭入轨回收，验证了多项关键技术。蓝箭智能制造基地实现零部件出库时间从3分钟压缩至30秒，IPO进程正在推进。</p>
                         <div class="news-footer">
-                            <span class="news-source">央视新闻</span>
+                            <span class="news-source">澎湃/财新</span>
                             <span>3小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
-                        🚀
-                        <span class="news-priority new">NEW</span>
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+                        🌐
+                        <span class="news-priority new">争夺</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag commercial">商业航天</span>
-                            <span class="tag">星际荣耀</span>
+                            <span class="tag policy">频轨资源</span>
                         </div>
-                        <h3 class="news-title">星际荣耀双曲线三号预计年底首飞，目标"首飞即入轨+海上回收"</h3>
-                        <p class="news-summary">在2026年上海商业航天大会上，星际荣耀副总经理谢红军透露，双曲线三号可重复使用运载火箭预计于2026年底首次发射。该火箭直径4.2米，起飞质量491吨，低轨运力14吨，回收运力8.5吨，将一次性实现入轨和海上回收突破。</p>
+                        <h3 class="news-title">中国向ITU申报20.3万颗卫星频轨资源，7家主体竞争14个星座</h3>
+                        <p class="news-summary">2025年12月，中国正式向国际电信联盟(ITU)申报新增20.3万颗卫星频轨资源申请，覆盖星网、垣信、中国移动等7家主体的14个星座。FCC同日批准SpaceX部署7500颗二代星链卫星。全球低轨频轨争夺战进入白热化阶段，"先到先得"规则下各国加速布局。</p>
                         <div class="news-footer">
-                            <span class="news-source">科创板日报</span>
+                            <span class="news-source">上海证券报/证券时报</span>
                             <span>5小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
-                        🛰️
-                        <span class="news-priority new">NEW</span>
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+                        💰
+                        <span class="news-priority hot">资本</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag commercial">商业航天</span>
-                            <span class="tag">星河动力</span>
+                            <span class="tag investment">IPO</span>
                         </div>
-                        <h3 class="news-title">星河动力智神星一号完成所有地面试验，2026年初首飞设计复用25次</h3>
-                        <p class="news-summary">智神星一号可重复使用液体运载火箭已完成所有关键大型地面试验，主发动机CQ-50完成超过10000秒累积试车。该火箭低轨最大运力7吨，设计重复使用次数不少于25次，将于2026年初首飞并开展轨道级回收验证。</p>
+                        <h3 class="news-title">2025年商业航天融资186亿元，国家设立200亿商业航天发展基金</h3>
+                        <p class="news-summary">《中国商业航天产业发展报告(2025)》显示，行业融资总额达186亿元，同比增长32%。蓝箭航天、中科宇航、天兵科技、星际荣耀、星河动力5家火箭公司推进IPO冲刺科创板。上交所明确商业航天企业适用科创板第五套上市标准，券商会议座无虚席。</p>
                         <div class="news-footer">
-                            <span class="news-source">证券时报</span>
+                            <span class="news-source">证券时报/财新</span>
                             <span>6小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-                        🎯
-                        <span class="news-priority hot">突破</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">天兵科技</span>
-                        </div>
-                        <h3 class="news-title">天兵科技天龙三号2025年6月首飞，年产30发以上能力</h3>
-                        <p class="news-summary">天兵科技宣布天龙三号大型液体运载火箭计划于2025年6月首飞，该火箭具备一子级垂直回收能力，首飞成功后将正式进入商业批量化发射阶段，后续将具备每年30发以上的商业发射服务能力。</p>
-                        <div class="news-footer">
-                            <span class="news-source">环球时报</span>
-                            <span>8小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                        🌙
-                        <span class="news-priority hot">登月</span>
+                        🛰️
+                        <span class="news-priority new">出海</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag commercial">商业航天</span>
-                            <span class="tag">中国载人登月</span>
+                            <span class="tag">千帆星座</span>
                         </div>
-                        <h3 class="news-title">长征十号甲完成低空演示验证，2030年前实现载人登月</h3>
-                        <p class="news-summary">长征十号甲运载火箭成功完成低空演示验证，火箭一子级经过空中调头和着陆机动后安全溅落于预定海域。该火箭将支撑中国2030年前实现载人登月目标，新一代载人飞船和月面着陆器研制进展顺利。</p>
+                        <h3 class="news-title">千帆星座进入巴西市场，已与30多国启动业务洽谈</h3>
+                        <p class="news-summary">2月12日，巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。垣信卫星已与30多个国家启动业务洽谈，计划2026年四季度在巴西启动商业运营。目前千帆星座在轨卫星达90颗，已完成"鼓浪屿"号邮轮网联通信测试和香港智慧农业示范应用。</p>
                         <div class="news-footer">
-                            <span class="news-source">中国航天报</span>
-                            <span>10小时前</span>
+                            <span class="news-source">财新周刊/央视</span>
+                            <span>7小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                        📡
-                        <span class="news-priority new">星座</span>
+                        🔬
+                        <span class="news-priority hot">新品</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag commercial">商业航天</span>
-                            <span class="tag">卫星互联网</span>
+                            <span class="tag tech">太空算力</span>
                         </div>
-                        <h3 class="news-title">中国版"星链"加速：千帆星座2025年发射超500颗卫星</h3>
-                        <p class="news-summary">海南商业航天发射场进入常态化发射阶段，千帆星座、GW星座持续组网。2025年计划发射超500颗卫星，将大幅提升我国卫星互联网覆盖能力，为6G通信奠定基础。</p>
+                        <h3 class="news-title">追觅下周发射首颗太空算力卫星，计划200万颗组网打造"算力星座"</h3>
+                        <p class="news-summary">AWE 2026展会现场，追觅宣布下周发射第一颗太空算力卫星，由旗下芯际穿越负责。公司计划未来发射200万颗太空算力卫星打造算力组网系统，将AI推理能力送上太空。太空算力成为继卫星通信、遥感之后的第三大卫星应用赛道。</p>
                         <div class="news-footer">
-                            <span class="news-source">泰伯网</span>
-                            <span>12小时前</span>
+                            <span class="news-source">界面/泰伯网</span>
+                            <span>8小时前</span>
                         </div>
                     </div>
                 </article>
@@ -611,59 +721,59 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
-                        🎫
-                        <span class="news-priority hot">认证</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">亿航智能</span>
-                        </div>
-                        <h3 class="news-title">亿航智能获全球首张eVTOL载人运营合格证，商业化元年开启</h3>
-                        <p class="news-summary">亿航智能EH216-S获得中国民航局颁发的全球首张eVTOL载人运营合格证（OC），成为国内首家集齐TC、PC、AC、OC四证的eVTOL企业，标志着低空经济正式进入商业化运营阶段。</p>
-                        <div class="news-footer">
-                            <span class="news-source">财新网</span>
-                            <span>1小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-                        💰
-                        <span class="news-priority hot">融资</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">沃飞长空</span>
-                        </div>
-                        <h3 class="news-title">沃飞长空完成近10亿元融资，创开年低空经济最大单笔融资</h3>
-                        <p class="news-summary">本轮融资由中信建投领投，资金将用于AE200系列适航取证冲刺、全球总部基地投产及海外市场拓展。公司计划2026年启动商业运营，初期将在成都、深圳等地开展低空出行服务。</p>
-                        <div class="news-footer">
-                            <span class="news-source">36氪</span>
-                            <span>3小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                        🚗
-                        <span class="news-priority new">订单</span>
+                        🏭
+                        <span class="news-priority hot">量产</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag lowaltitude">低空经济</span>
                             <span class="tag">小鹏汇天</span>
                         </div>
-                        <h3 class="news-title">小鹏汇天"陆地航母"获2008台订单，预计2026年量产交付</h3>
-                        <p class="news-summary">这是全球飞行汽车领域迄今为止的最大订单量，预售价约200万元。该车型采用分体式设计，飞行体可收纳于陆行体后备箱，计划在2026年实现量产交付。</p>
+                        <h3 class="news-title">小鹏汇天飞行汽车量产工厂试产，每30分钟下线一台</h3>
+                        <p class="news-summary">位于广州黄埔区的飞行汽车量产工厂建筑面积约12万平方米，是全球首个利用现代化流水线进行飞行汽车批量生产的工厂，满产状态下每30分钟可下线一台飞行器。陆地航母累计订单超7000台，预计2026年底启动量产交付。</p>
                         <div class="news-footer">
-                            <span class="news-source">时代周报</span>
-                            <span>5小时前</span>
+                            <span class="news-source">21财经/财新</span>
+                            <span>2小时前</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+                        🤝
+                        <span class="news-priority hot">合作</span>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="tag lowaltitude">低空经济</span>
+                            <span class="tag">沃飞长空</span>
+                        </div>
+                        <h3 class="news-title">沃飞长空与四川航空战略合作，推进"民航+低空出行"场景落地</h3>
+                        <p class="news-summary">3月25日，沃飞长空与四川航空集团通航投资公司签署战略合作协议，双方将推进"民航+低空出行"城市接驳场景落地，在飞行测试、设施运营、场景拓展等6大领域开展合作，联合推出"支线航空+低空出行"运营航线。</p>
+                        <div class="news-footer">
+                            <span class="news-source">四川航空/证券时报</span>
+                            <span>4小时前</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
+                        🔋
+                        <span class="news-priority new">投资</span>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="tag lowaltitude">低空经济</span>
+                            <span class="tag">峰飞航空</span>
+                        </div>
+                        <h3 class="news-title">峰飞航空获宁德时代数亿美元投资，推进航空电池研发</h3>
+                        <p class="news-summary">峰飞航空获宁德时代独家投资数亿美元，双方将合力推进航空电池研发。峰飞航空2吨级eVTOL采用"升力+巡航"复合翼构型，搭载宁德时代定制化航空级电池，实现200公里/小时巡航速度与5人载客能力。</p>
+                        <div class="news-footer">
+                            <span class="news-source">财新/36氪</span>
+                            <span>6小时前</span>
                         </div>
                     </div>
                 </article>
@@ -677,116 +787,116 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
                         🌍
-                        <span class="news-priority hot">国际</span>
+                        <span class="news-priority hot">组网完成</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
-                            <span class="tag international">国际</span>
                             <span class="tag remote">遥感卫星</span>
+                            <span class="tag international">Maxar</span>
                         </div>
-                        <h3 class="news-title">Maxar Technologies发布新一代WorldView Legion卫星首批影像</h3>
-                        <p class="news-summary">全球高分辨率卫星影像领导者Maxar Technologies发布WorldView Legion星座首批30厘米分辨率影像，该星座将提供每日重访能力，服务于国防、政府和商业客户。</p>
+                        <h3 class="news-title">Maxar WorldView Legion星座组网完成，重访周期提升至15次/天</h3>
+                        <p class="news-summary">2025年2月，SpaceX成功发射Maxar最后两颗WorldView Legion卫星，完成六星星座组网。该星座实现亚米级分辨率，对特定地区重访周期提升至15次/天，每天可采集360万平方公里30厘米级影像，在国防、灾害响应领域占据优势。</p>
                         <div class="news-footer">
-                            <span class="news-source">Maxar</span>
-                            <span>2小时前</span>
+                            <span class="news-source">SpaceNews/Payload Space</span>
+                            <span>1小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
+                <article class="news-card" onclick="openModal(this)">
                     <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                        📊
-                        <span class="news-priority new">NEW</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag international">国际</span>
-                            <span class="tag remote">遥感卫星</span>
-                        </div>
-                        <h3 class="news-title">BlackSky获美国国防部2.5亿美元合同，提供实时情报服务</h3>
-                        <p class="news-summary">实时地理空间情报服务商BlackSky宣布获得美国国防部2.5亿美元多年期合同，将提供高重访卫星影像和AI驱动的分析服务，支持国防和情报任务。</p>
-                        <div class="news-footer">
-                            <span class="news-source">SpaceNews</span>
-                            <span>4小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
-                        🛰️
+                        📡
                         <span class="news-priority new">发射</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
                             <span class="tag remote">遥感卫星</span>
-                            <span class="tag">航天宏图</span>
+                            <span class="tag international">Planet</span>
                         </div>
-                        <h3 class="news-title">航天宏图"女娲星座"已发射12颗雷达卫星，2025年再增8颗</h3>
-                        <p class="news-summary">公司将成为全球拥有商业雷达遥感卫星数量最多的企业，实现全球1天覆盖、1小时快速重访。女娲星座采用SAR技术，可全天候全天时获取地表信息。</p>
+                        <h3 class="news-title">Planet Labs Pelican-2卫星发射，计划扩展星座至200颗</h3>
+                        <p class="news-summary">2025年1月，Planet Labs Pelican-2卫星成功发射，提供40厘米分辨率图像。公司计划将星座扩展至200颗卫星，增强全球监测能力。Planet Labs凭借多在轨卫星和高研发投入，在泰伯智库2025时空智能与卫星遥感市场竞争力矩阵中位列领先者象限。</p>
                         <div class="news-footer">
-                            <span class="news-source">航天宏图</span>
-                            <span>6小时前</span>
+                            <span class="news-source">泰伯网/Planet Labs</span>
+                            <span>3小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
                         🌐
-                        <span class="news-priority hot">海外</span>
+                        <span class="news-priority new">组网</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">航天宏图</span>
+                            <span class="tag remote">卫星互联网</span>
+                            <span class="tag">千帆星座</span>
                         </div>
-                        <h3 class="news-title">航天宏图与巴基斯坦签署29亿元互联网卫星合作协议</h3>
-                        <p class="news-summary">同时与非洲A国签署9.9亿元卫星及地面系统采购合同，海外业务加速拓展。协议涵盖卫星制造、发射服务及地面应用系统建设。</p>
+                        <h3 class="news-title">千帆星座在轨卫星达90颗，已开展商业示范应用</h3>
+                        <p class="news-summary">3月12日，长征八号遥六运载火箭以"一箭十八星"方式将千帆星座第五批组网卫星送入轨道，在轨卫星数量达90颗。垣信卫星已与中国移动(香港)、星旅远洋邮轮合作，在"鼓浪屿"号邮轮上实现网联通信测试，并在香港开展智慧农业商业示范应用。</p>
                         <div class="news-footer">
-                            <span class="news-source">国海证券</span>
+                            <span class="news-source">央视新闻/财新</span>
+                            <span>5小时前</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
+                        🚀
+                        <span class="news-priority hot">出海</span>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="tag remote">卫星互联网</span>
+                            <span class="tag">垣信卫星</span>
+                        </div>
+                        <h3 class="news-title">千帆星座进入巴西市场，已与30多国启动业务洽谈</h3>
+                        <p class="news-summary">2月12日，巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。此前垣信卫星已与马来西亚卫星运营商签署合作备忘录。截至目前，公司已与30多个国家启动业务洽谈，计划今年四季度在巴西启动商业运营。</p>
+                        <div class="news-footer">
+                            <span class="news-source">财新周刊</span>
+                            <span>7小时前</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
+                        📊
+                        <span class="news-priority new">数据</span>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="tag international">国际</span>
+                            <span class="tag">发射统计</span>
+                        </div>
+                        <h3 class="news-title">2025年全球发射329次创历史新高，SpaceX占美国发射95%</h3>
+                        <p class="news-summary">2025年全球进行329次轨道发射尝试，其中321次成功。美国发射181次(SpaceX 170次)，中国92次，欧洲8次。全年部署4517颗卫星，同比增长58%，其中87%为SpaceX星链卫星。商业发射占全球70%。</p>
+                        <div class="news-footer">
+                            <span class="news-source">Payload Space</span>
                             <span>8小时前</span>
                         </div>
                     </div>
                 </article>
 
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
-                        🔍
+                <article class="news-card" onclick="openModal(this)">
+                    <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
+                        🔬
                         <span class="news-priority new">技术</span>
                     </div>
                     <div class="news-content">
                         <div class="news-meta">
-                            <span class="tag tech">技术前沿</span>
-                            <span class="tag">AI遥感</span>
+                            <span class="tag international">国际</span>
+                            <span class="tag">ESA/NASA</span>
                         </div>
-                        <h3 class="news-title">中科星图发布星图低空云V2.0，融合数字地球与空天信息</h3>
-                        <p class="news-summary">实现低空活动三维仿真、航线智能规划、交通协同管理等核心能力，支持百万架次级无人机并发管理，助力低空经济发展。</p>
+                        <h3 class="news-title">NISAR卫星计划2025年发射，印度ISRO与NASA联合研制</h3>
+                        <p class="news-summary">NASA与印度空间研究组织(ISRO)联合研制的NISAR卫星计划2025年发射，搭载L波段SAR载荷，用于监测生态变化和自然灾害。该任务代表NASA与ISRO最大规模合作之一，NASA投入超10亿美元进行任务研制。</p>
                         <div class="news-footer">
-                            <span class="news-source">中科星图</span>
+                            <span class="news-source">SpaceNews/NASA</span>
                             <span>10小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card">
-                    <div class="news-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
-                        🎯
-                        <span class="news-priority hot">精度</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag">四维高景</span>
-                        </div>
-                        <h3 class="news-title">四维高景三号02星成功发射，商业遥感星座组网加速</h3>
-                        <p class="news-summary">该卫星具备亚米级光学遥感成像能力，将进一步完善我国商业遥感卫星星座，为自然资源、城市规划、应急救援等领域提供数据支撑。</p>
-                        <div class="news-footer">
-                            <span class="news-source">中国航天科技集团</span>
-                            <span>12小时前</span>
                         </div>
                     </div>
                 </article>
@@ -796,8 +906,26 @@
 
     <footer class="footer">
         <p>Space Daily 空天信息日报 | 每日更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
-        <p>2026年3月14日 | 共52条资讯</p>
+        <p>2026年3月15日 | 共42条资讯 | 上次更新: 04:00 CST</p>
     </footer>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="newsModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-meta" id="modalMeta"></div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-summary" id="modalSummary"></p>
+            </div>
+            <div class="modal-footer">
+                <span class="modal-source" id="modalSource"></span>
+                <button class="modal-action" onclick="closeModal()">关闭</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         function searchNews() {
@@ -833,6 +961,47 @@
                 }
             });
         }
+
+        // Modal Functions
+        function openModal(card) {
+            const title = card.querySelector('.news-title').textContent;
+            const summary = card.querySelector('.news-summary').textContent;
+            const source = card.querySelector('.news-source').textContent;
+            const tags = card.querySelectorAll('.tag');
+            
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalSummary').textContent = summary;
+            document.getElementById('modalSource').textContent = '来源: ' + source;
+            
+            // Build tags HTML
+            let tagsHtml = '';
+            tags.forEach(tag => {
+                const tagClass = tag.className.replace('tag ', '');
+                tagsHtml += '<span class="tag ' + tagClass + '" style="margin-right:8px;">' + tag.textContent + '</span>';
+            });
+            document.getElementById('modalMeta').innerHTML = tagsHtml;
+            
+            document.getElementById('newsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('newsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target === document.getElementById('newsModal')) {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
     </script>
 </body>
 </html>
