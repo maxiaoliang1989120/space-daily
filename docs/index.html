@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Daily | 空天信息日报 - 2026年3月15日</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -544,6 +545,198 @@
             }
         }
         
+        /* Data Dashboard */
+        .dashboard-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 48px 24px;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        .chart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        
+        .chart-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+        
+        .chart-card.full-width {
+            grid-column: span 2;
+        }
+        
+        .chart-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .chart-icon.purple { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
+        .chart-icon.blue { background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%); }
+        .chart-icon.green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .chart-icon.orange { background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); }
+        
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 280px;
+        }
+        
+        .chart-container.large {
+            height: 320px;
+        }
+        
+        /* Progress Bar Styles for Satellite Constellation */
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding: 20px 0;
+        }
+        
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .progress-flag {
+            font-size: 16px;
+        }
+        
+        .progress-stats {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease;
+            position: relative;
+        }
+        
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-bar-fill.qianfan {
+            background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
+        }
+        
+        .progress-bar-fill.starlink {
+            background: linear-gradient(90deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        
+        .progress-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .progress-percentage {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-card.full-width {
+                grid-column: span 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 240px;
+            }
+            .chart-container.large {
+                height: 260px;
+            }
+            .dashboard-title {
+                font-size: 22px;
+            }
+        }
+        
         /* Main Content */
         .main {
             max-width: 1400px;
@@ -1028,6 +1221,81 @@
                 </div>
                 <h1 class="hero-title">空天信息日报</h1>
                 <p class="hero-subtitle">聚焦商业航天、低空经济、遥感卫星领域的前沿动态，覆盖 SpaceX、Planet Labs、蓝箭航天、星际荣耀等全球头部企业</p>
+            </div>
+        </section>
+
+        <!-- 数据看板区域 -->
+        <section class="dashboard-section">
+            <h2 class="dashboard-title"><span>📊</span> 航天数据洞察</h2>
+            <div class="dashboard-grid">
+                <!-- 2025年全球发射统计 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-icon purple">🚀</div>
+                        <span class="chart-title">2025年全球发射统计</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="launchChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- 商业航天融资趋势 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-icon green">💰</div>
+                        <span class="chart-title">商业航天融资趋势（亿元）</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="financeChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- 卫星星座部署进度 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-icon orange">🛰️</div>
+                        <span class="chart-title">卫星星座部署进度</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-name"><span class="progress-flag">🇨🇳</span> 千帆星座</span>
+                                <span class="progress-stats">90颗 / 14,000颗目标</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill qianfan" style="width: 0.64%;"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>完成率 <strong class="progress-percentage">0.64%</strong></span>
+                                <span>目标: 14000颗</span>
+                            </div>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-header">
+                                <span class="progress-name"><span class="progress-flag">🇺🇸</span> 星链 Starlink</span>
+                                <span class="progress-stats">7000+颗 / 42,000颗目标</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill starlink" style="width: 16.7%;"></div>
+                            </div>
+                            <div class="progress-details">
+                                <span>完成率 <strong class="progress-percentage">16.7%</strong></span>
+                                <span>目标: 42000颗</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 低空经济市场规模预测 -->
+                <div class="chart-card full-width">
+                    <div class="chart-header">
+                        <div class="chart-icon blue">📈</div>
+                        <span class="chart-title">低空经济市场规模预测（2024-2035年）</span>
+                    </div>
+                    <div class="chart-container large">
+                        <canvas id="lowAltitudeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1726,7 +1994,203 @@
             initTheme();
             initFavorites();
             initBackToTop();
+            initCharts();
         });
+        
+        // Chart.js Configuration - Dark Theme
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.borderColor = '#27272a';
+        Chart.defaults.font.family = "'Inter', 'Noto Sans SC', sans-serif";
+        
+        function initCharts() {
+            // 2025年全球发射统计柱状图
+            const launchCtx = document.getElementById('launchChart').getContext('2d');
+            new Chart(launchCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['美国', '中国', '欧洲', '其他'],
+                    datasets: [{
+                        label: '发射次数',
+                        data: [181, 92, 8, 48],
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(14, 165, 233, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(16, 185, 129, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(99, 102, 241, 1)',
+                            'rgba(14, 165, 233, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(16, 185, 129, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(24, 24, 27, 0.95)',
+                            titleColor: '#f1f1f4',
+                            bodyColor: '#f1f1f4',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const labels = ['SpaceX占170次', '占全年28%', '', ''];
+                                    return labels[context.dataIndex] || '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(39, 39, 42, 0.5)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#f1f1f4', font: { size: 13 } }
+                        }
+                    }
+                }
+            });
+            
+            // 商业航天融资趋势折线图
+            const financeCtx = document.getElementById('financeChart').getContext('2d');
+            new Chart(financeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [
+                        {
+                            label: '2025年',
+                            data: [12, 15, 18, 14, 22, 16, 19, 21, 15, 23, 11, 10],
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: 'rgba(16, 185, 129, 1)',
+                            pointBorderColor: '#fff',
+                            pointBorderWidth: 2,
+                            pointRadius: 4
+                        },
+                        {
+                            label: '2024年',
+                            data: [8, 10, 12, 11, 14, 10, 13, 12, 11, 14, 9, 8],
+                            borderColor: 'rgba(99, 102, 241, 0.5)',
+                            backgroundColor: 'rgba(99, 102, 241, 0.05)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: { color: '#f1f1f4', usePointStyle: true }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(24, 24, 27, 0.95)',
+                            titleColor: '#f1f1f4',
+                            bodyColor: '#f1f1f4',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(39, 39, 42, 0.5)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af', font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+            
+            // 低空经济市场规模预测面积图
+            const lowAltitudeCtx = document.getElementById('lowAltitudeChart').getContext('2d');
+            new Chart(lowAltitudeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034', '2035'],
+                    datasets: [{
+                        label: '市场规模（万亿元）',
+                        data: [0.67, 0.95, 1.32, 1.75, 2.25, 2.65, 2.95, 3.15, 3.3, 3.4, 3.45, 3.5],
+                        borderColor: 'rgba(14, 165, 233, 1)',
+                        backgroundColor: 'rgba(14, 165, 233, 0.15)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(14, 165, 233, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(24, 24, 27, 0.95)',
+                            titleColor: '#f1f1f4',
+                            bodyColor: '#f1f1f4',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return '市场规模: ' + context.parsed.y + ' 万亿元';
+                                },
+                                afterLabel: function(context) {
+                                    if (context.dataIndex === 0) return '当前: 6702亿元';
+                                    if (context.dataIndex === 11) return '预计增长422%';
+                                    return '';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 0,
+                            grid: { color: 'rgba(39, 39, 42, 0.5)' },
+                            ticks: {
+                                color: '#9ca3af',
+                                callback: function(value) {
+                                    return value + '万亿';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { color: 'rgba(39, 39, 42, 0.3)' },
+                            ticks: { color: '#9ca3af', font: { size: 12 } }
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
