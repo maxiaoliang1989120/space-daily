@@ -8,6 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -140,6 +141,108 @@
         }
         .no-results.show {
             display: block;
+        }
+        /* Filter Bar */
+        .filter-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: rgba(18, 18, 26, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 999;
+            padding: 16px 0;
+        }
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            white-space: nowrap;
+            min-width: 80px;
+        }
+        .filter-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--card);
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover {
+            border-color: var(--accent);
+            color: var(--text);
+        }
+        .filter-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        /* Load More Button */
+        .load-more-container {
+            text-align: center;
+            padding: 40px 24px;
+        }
+        .load-more-btn {
+            padding: 12px 32px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .load-more-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .load-more-btn.hidden {
+            display: none;
+        }
+        .news-card.hidden {
+            display: none !important;
+        }
+        /* Update hero margin for filter bar */
+        .hero {
+            margin-top: 160px;
+        }
+        @media (max-width: 768px) {
+            .filter-bar {
+                top: 64px;
+            }
+            .filter-group {
+                gap: 8px;
+            }
+            .filter-label {
+                min-width: auto;
+            }
+            .hero {
+                margin-top: 180px;
+            }
         }
         /* Modal Styles */
         .modal-overlay {
@@ -496,6 +599,143 @@
             .hero-title { font-size: 28px; }
             .stat-value { font-size: 28px; }
         }
+        
+        /* Dashboard */
+        .dashboard {
+            padding: 48px 24px;
+            background: var(--primary);
+            border-bottom: 1px solid var(--border);
+        }
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .dashboard-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .dashboard-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .chart-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        .chart-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
+        }
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .chart-badge {
+            padding: 4px 12px;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-light);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .chart-container {
+            position: relative;
+            height: 250px;
+        }
+        .chart-source {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 16px;
+            text-align: right;
+        }
+        
+        /* Progress Bars */
+        .progress-container {
+            padding: 8px 0;
+        }
+        .progress-item {
+            margin-bottom: 24px;
+        }
+        .progress-item:last-child {
+            margin-bottom: 0;
+        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .progress-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .progress-value {
+            font-size: 13px;
+            color: var(--accent-light);
+            font-weight: 500;
+        }
+        .progress-bar-bg {
+            height: 12px;
+            background: var(--secondary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: var(--progress);
+            background: var(--color);
+            border-radius: 6px;
+            transition: width 1.5s ease-out;
+            position: relative;
+        }
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .progress-detail {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        
+        @media (max-width: 1024px) {
+            .charts-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -519,6 +759,32 @@
             <div class="live-indicator">实时更新 | 2026年3月15日</div>
         </div>
     </nav>
+
+    <!-- 筛选栏 -->
+    <div class="filter-bar">
+        <div class="filter-container">
+            <div class="filter-group">
+                <span class="filter-label">📅 日期筛选</span>
+                <div class="filter-options" id="dateFilter">
+                    <button class="filter-btn active" data-date="all">全部</button>
+                    <button class="filter-btn" data-date="last7">最近7天</button>
+                    <button class="filter-btn" data-date="last30">最近30天</button>
+                    <button class="filter-btn" data-date="2026-03">2026年3月</button>
+                    <button class="filter-btn" data-date="2026-02">2026年2月</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">🏷️ 分类筛选</span>
+                <div class="filter-options" id="categoryFilter">
+                    <button class="filter-btn active" data-category="all">全部</button>
+                    <button class="filter-btn" data-category="commercial">商业航天</button>
+                    <button class="filter-btn" data-category="lowaltitude">低空经济</button>
+                    <button class="filter-btn" data-category="remote">遥感卫星</button>
+                    <button class="filter-btn" data-category="international">国际动态</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="hero">
         <div class="hero-container">
@@ -557,6 +823,94 @@
         </div>
     </section>
 
+    <!-- 数据看板 -->
+    <section class="dashboard">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">📊 航天数据看板</h2>
+                <p class="dashboard-subtitle">实时追踪全球航天产业发展态势</p>
+            </div>
+            <div class="charts-grid">
+                <!-- 2025年全球发射统计 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">🚀 2025年全球发射统计</h3>
+                        <span class="chart-badge">年度数据</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="launchChart"></canvas>
+                    </div>
+                    <p class="chart-source">数据来源：Payload Space / 国家航天局</p>
+                </div>
+
+                <!-- 商业航天融资趋势 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">💰 2025年商业航天融资趋势</h3>
+                        <span class="chart-badge">月度追踪</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="financingChart"></canvas>
+                    </div>
+                    <p class="chart-source">数据来源：《中国商业航天产业发展报告(2025)》</p>
+                </div>
+
+                <!-- 卫星星座部署进度 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">🛰️ 卫星星座部署进度</h3>
+                        <span class="chart-badge">实时对比</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span class="progress-name">🇨🇳 千帆星座</span>
+                                <span class="progress-value">90颗 / 14,000颗目标</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar" style="--progress: 0.64%; --color: linear-gradient(90deg, #6366f1, #8b5cf6);"></div>
+                            </div>
+                            <p class="progress-detail">已进入巴西等30+国家市场</p>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span class="progress-name">🇺🇸 星链 Starlink</span>
+                                <span class="progress-value">7,000+颗 / 42,000颗目标</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar" style="--progress: 16.7%; --color: linear-gradient(90deg, #0ea5e9, #06b6d4);"></div>
+                            </div>
+                            <p class="progress-detail">FCC批准7500颗二代卫星部署</p>
+                        </div>
+                        <div class="progress-item">
+                            <div class="progress-label">
+                                <span class="progress-name">🇨🇳 中国星网</span>
+                                <span class="progress-value">申报中 / 20.3万颗申请</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar" style="--progress: 5%; --color: linear-gradient(90deg, #10b981, #059669);"></div>
+                            </div>
+                            <p class="progress-detail">ITU申报20.3万颗频轨资源</p>
+                        </div>
+                    </div>
+                    <p class="chart-source">数据来源：ITU / FCC / 垣信卫星</p>
+                </div>
+
+                <!-- 低轨经济市场规模预测 -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">📈 低轨经济市场规模预测</h3>
+                        <span class="chart-badge">2024-2035</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                    <p class="chart-source">数据来源：行业研究报告 / CAGR 20%+</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <main class="main">
         <!-- 头条新闻 -->
         <section class="section">
@@ -564,7 +918,7 @@
                 <h2 class="section-title"><span class="icon">🔥</span> 今日头条</h2>
             </div>
             <div class="news-grid">
-                <article class="news-card featured">
+                <article class="news-card featured" data-category="commercial" data-date="2026-03-15">
                     <div class="news-image" style="background: var(--gradient-1);">
                         🚀
                         <span class="news-priority hot">里程碑</span>
@@ -584,7 +938,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" data-link="https://www.jiemian.com/article/11826453.html">
+                <article class="news-card" onclick="openModal(this)" data-link="https://www.jiemian.com/article/11826453.html" data-category="lowaltitude" data-date="2026-03-14">
                     <div class="news-image" style="background: var(--gradient-2);">
                         🚁
                         <span class="news-priority new">量产倒计时</span>
@@ -612,7 +966,7 @@
                 <a href="#" class="view-all">查看全部 →</a>
             </div>
             <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" >
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-15">
                     <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
                         📊
                         <span class="news-priority hot">数据</span>
@@ -631,7 +985,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" >
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-14">
                     <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
                         🎯
                         <span class="news-priority new">突破</span>
@@ -650,7 +1004,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" >
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-13">
                     <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
                         🌐
                         <span class="news-priority new">争夺</span>
@@ -669,7 +1023,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" >
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-12">
                     <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
                         💰
                         <span class="news-priority hot">资本</span>
@@ -688,7 +1042,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" >
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-11">
                     <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
                         🛰️
                         <span class="news-priority new">出海</span>
@@ -707,7 +1061,7 @@
                     </div>
                 </article>
 
-                <article class="news-card" onclick="openModal(this)" >
+                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-10">
                     <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
                         🔬
                         <span class="news-priority hot">新品</span>
@@ -1029,6 +1383,218 @@
             if (event.key === 'Escape') {
                 closeModal();
             }
+        });
+
+        // Chart.js Configuration - 深色主题
+        Chart.defaults.color = '#9ca3af';
+        Chart.defaults.borderColor = '#27272a';
+        Chart.defaults.font.family = "'Inter', 'Noto Sans SC', sans-serif";
+
+        // 2025年全球发射统计 - 柱状图
+        const launchCtx = document.getElementById('launchChart');
+        if (launchCtx) {
+            new Chart(launchCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['美国', '中国', '欧洲', '其他'],
+                    datasets: [{
+                        label: '发射次数',
+                        data: [181, 92, 8, 48],
+                        backgroundColor: [
+                            'rgba(14, 165, 233, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(16, 185, 129, 0.8)'
+                        ],
+                        borderColor: [
+                            '#0ea5e9',
+                            '#ef4444',
+                            '#6366f1',
+                            '#10b981'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#18181b',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            padding: 12,
+                            titleColor: '#f1f1f4',
+                            bodyColor: '#9ca3af',
+                            callbacks: {
+                                label: function(context) {
+                                    const total = 329;
+                                    const percentage = ((context.raw / total) * 100).toFixed(1);
+                                    return `${context.raw}次 (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#f1f1f4', font: { weight: '500' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 商业航天融资趋势 - 折线图
+        const financingCtx = document.getElementById('financingChart');
+        if (financingCtx) {
+            new Chart(financingCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [{
+                        label: '2025年融资额（亿元）',
+                        data: [12, 15, 18, 14, 16, 20, 15, 18, 22, 16, 14, 16],
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#6366f1',
+                        pointBorderColor: '#18181b',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }, {
+                        label: '2024年同期',
+                        data: [8, 10, 12, 11, 13, 15, 12, 14, 16, 13, 12, 14],
+                        borderColor: '#6b7280',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: { color: '#9ca3af', usePointStyle: true }
+                        },
+                        tooltip: {
+                            backgroundColor: '#18181b',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            padding: 12,
+                            titleColor: '#f1f1f4',
+                            bodyColor: '#9ca3af'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' },
+                            ticks: { 
+                                color: '#9ca3af',
+                                callback: function(value) { return value + '亿'; }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 低轨经济市场规模预测 - 面积图
+        const marketCtx = document.getElementById('marketChart');
+        if (marketCtx) {
+            new Chart(marketCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034', '2035'],
+                    datasets: [{
+                        label: '市场规模（万亿元）',
+                        data: [2.1, 2.5, 3.0, 3.6, 4.3, 5.2, 6.2, 7.5, 9.0, 10.8, 13.0, 15.6],
+                        borderColor: '#10b981',
+                        backgroundColor: function(context) {
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+                            gradient.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
+                            gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#18181b',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#18181b',
+                            borderColor: '#27272a',
+                            borderWidth: 1,
+                            padding: 12,
+                            titleColor: '#f1f1f4',
+                            bodyColor: '#9ca3af',
+                            callbacks: {
+                                label: function(context) {
+                                    return '市场规模: ' + context.raw + '万亿元';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#27272a' },
+                            ticks: { 
+                                color: '#9ca3af',
+                                callback: function(value) { return value + '万亿'; }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 进度条动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const progress = bar.style.getPropertyValue('--progress');
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = progress;
+                }, 500);
+            });
         });
     </script>
 </body>
