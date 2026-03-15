@@ -3543,5 +3543,247 @@ if (typeof newsData !== 'undefined') {
 })();
 </script>
 
+<!-- 自动补充: 10条最新新闻 2026-03-16 -->
+<script>
+// 新补充的10条新闻数据
+const newNewsBatch = [
+    {
+        id: 'news-48',
+        title: 'SpaceX星舰V3版即将首飞，推力翻倍运载能力大幅提升',
+        category: 'commercial',
+        date: '2026-03-16',
+        source: 'IT之家/凤凰网科技',
+        summary: '马斯克宣布星舰V3版本将于3月中旬进行首次飞行测试，采用33台猛禽3发动机，推力较V2版本翻倍。V3采用更薄但更强的不锈钢结构，单次可发射100颗星链V3卫星，计划实现每小时发射一次的高频发射能力。',
+        tags: ['商业航天', 'SpaceX', '星舰'],
+        priority: 'hot',
+        priorityText: '首飞在即',
+        icon: '🚀',
+        gradient: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+        location: { lat: 25.9972, lng: -97.1550, name: '星舰基地' }
+    },
+    {
+        id: 'news-49',
+        title: '小鹏汇天完成近2亿美元融资，高瓴红杉追加投资',
+        category: 'lowaltitude',
+        date: '2026-03-14',
+        source: '财新/36氪',
+        summary: '小鹏汇天宣布完成近2亿美元新一轮股权融资，高瓴创投、红杉中国等机构参投，历史融资总额达10亿美元。资金将用于"陆地航母"飞行汽车的量产交付和适航认证，累计订单超7000台。',
+        tags: ['低空经济', '小鹏汇天', '融资'],
+        priority: 'hot',
+        priorityText: '巨额融资',
+        icon: '💰',
+        gradient: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+        location: { lat: 23.1291, lng: 113.2644, name: '广州' }
+    },
+    {
+        id: 'news-50',
+        title: '中国成功发射遥感五十号02星，长征火箭第633次飞行',
+        category: 'remote',
+        date: '2026-03-15',
+        source: '央视新闻/新华社',
+        summary: '3月15日21时22分，我国在太原卫星发射中心使用长征六号改运载火箭，成功将遥感五十号02星发射升空。该卫星主要用于国土普查、农作物估产和防灾减灾等领域，是长征系列运载火箭的第633次飞行。',
+        tags: ['遥感卫星', '中国航天', '太原'],
+        priority: 'new',
+        priorityText: '发射成功',
+        icon: '🛰️',
+        gradient: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)',
+        location: { lat: 38.8491, lng: 111.6080, name: '太原' }
+    },
+    {
+        id: 'news-51',
+        title: '沃飞长空获近10亿元融资，创2026年低空经济最大单笔纪录',
+        category: 'lowaltitude',
+        date: '2026-03-02',
+        source: '财新/封面新闻',
+        summary: '沃飞长空宣布完成新一轮近10亿元融资，由中信建投领投。资金将用于AE200系列适航取证、全球总部基地投产及低空出行商业模式构建。AE200-100已进入TC取证第四阶段，预计2026年取证。',
+        tags: ['低空经济', '沃飞长空', '融资'],
+        priority: 'hot',
+        priorityText: '重大融资',
+        icon: '🚁',
+        gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+        location: { lat: 30.5728, lng: 104.0668, name: '成都' }
+    },
+    {
+        id: 'news-52',
+        title: '2026政府工作报告：加快发展卫星互联网',
+        category: 'commercial',
+        date: '2026-03-10',
+        source: '央广网/中国政府网',
+        summary: '2026年政府工作报告提出"加快发展卫星互联网"，并将其与人工智能、算力基础设施等共同列为数字经济核心支撑方向。专家分析称，卫星互联网战略地位升级，正上升为与5G、AI并列的新型信息基础设施。',
+        tags: ['商业航天', '政策', '卫星互联网'],
+        priority: 'hot',
+        priorityText: '政策利好',
+        icon: '📋',
+        gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+        location: { lat: 39.9042, lng: 116.4074, name: '北京' }
+    },
+    {
+        id: 'news-53',
+        title: 'SpaceX 2025年营收155亿美元，2026年将超越NASA全部预算',
+        category: 'commercial',
+        date: '2026-03-15',
+        source: '华尔街日报/Bloomberg',
+        summary: '马斯克披露SpaceX 2025财年营收约155亿美元，其中火箭发射服务是主要收入来源。特朗普政府2026财年NASA预算拟从254亿美元削减至188亿美元，SpaceX预计2026年营收将超越这一数字，成为首家营收超越国家航天预算的商业航天公司。',
+        tags: ['商业航天', 'SpaceX', '财报'],
+        priority: 'hot',
+        priorityText: '里程碑',
+        icon: '📊',
+        gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+        location: { lat: 30.2672, lng: -97.7431, name: '德克萨斯' }
+    },
+    {
+        id: 'news-54',
+        title: '千帆星座进入巴西市场，已与30多国启动业务洽谈',
+        category: 'remote',
+        date: '2026-03-12',
+        source: '财新周刊/央视',
+        summary: '巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。垣信卫星已与30多个国家启动业务洽谈，计划2026年四季度在巴西启动商业运营。目前千帆星座在轨卫星达90颗。',
+        tags: ['卫星互联网', '千帆星座', '出海'],
+        priority: 'new',
+        priorityText: '国际化',
+        icon: '🌐',
+        gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+        location: { lat: -14.2350, lng: -51.9253, name: '巴西' }
+    },
+    {
+        id: 'news-55',
+        title: '广汽高域GOVY AirCab获2000架意向订单，总额超33亿元',
+        category: 'lowaltitude',
+        date: '2026-03-13',
+        source: '搜狐汽车/证券时报',
+        summary: '广汽集团旗下高域科技宣布其首款量产型多旋翼eVTOL飞行汽车GOVY AirCab已获超2000架意向订单，预估总金额突破33亿元。该产品定价168万元，计划2026年底取证并启动量产交付。',
+        tags: ['低空经济', '广汽高域', 'eVTOL'],
+        priority: 'hot',
+        priorityText: '大单',
+        icon: '✈️',
+        gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
+        location: { lat: 23.1291, lng: 113.2644, name: '广州' }
+    },
+    {
+        id: 'news-56',
+        title: '蓝箭航天计划Q2开展朱雀三号第二次回收试验',
+        category: 'commercial',
+        date: '2026-03-14',
+        source: '科技日报/新浪财经',
+        summary: '蓝箭航天透露，朱雀三号将于2026年第二季度再次开展垂直回收试验，重点验证着陆段发动机点火可靠性。若回收成功，计划在第四季度实现中国首次入轨级火箭回收复用飞行，打造"发射-回收-复用"闭环。',
+        tags: ['商业航天', '蓝箭航天', '可回收火箭'],
+        priority: 'new',
+        priorityText: '回收试验',
+        icon: '🎯',
+        gradient: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+        location: { lat: 39.9042, lng: 116.4074, name: '北京' }
+    },
+    {
+        id: 'news-57',
+        title: '亿航智能发布VT35长航程无人驾驶载人航空器',
+        category: 'lowaltitude',
+        date: '2026-03-11',
+        source: '亿航智能官网/泰伯网',
+        summary: '亿航智能发布新一代长航程复合翼无人驾驶载人eVTOL产品VT35，中国民航局已受理其型号合格证申请。该产品将打造"空中交通一小时"生活圈，与EH216-S形成协同，进一步拓展城市空中交通应用场景。',
+        tags: ['低空经济', '亿航智能', 'eVTOL'],
+        priority: 'new',
+        priorityText: '新品发布',
+        icon: '🆕',
+        gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+        location: { lat: 23.1291, lng: 113.2644, name: '广州' }
+    }
+];
+
+// 自动将新闻插入到页面
+(function() {
+    const tagClassMap = {
+        '商业航天': 'commercial',
+        '低空经济': 'lowaltitude',
+        '遥感卫星': 'remote',
+        '卫星互联网': 'remote',
+        '国际动态': 'international',
+        '政策': 'policy',
+        '融资': 'investment',
+        'SpaceX': 'international',
+        '中国航天': 'commercial'
+    };
+    
+    newNewsBatch.forEach(news => {
+        const article = document.createElement('article');
+        article.className = 'news-card';
+        article.setAttribute('data-id', news.id);
+        article.setAttribute('data-category', news.category);
+        article.setAttribute('data-date', news.date);
+        article.setAttribute('data-lat', news.location.lat);
+        article.setAttribute('data-lng', news.location.lng);
+        article.setAttribute('onclick', 'openModal(this)');
+        
+        const tagsHtml = news.tags.map(tag => {
+            const tagClass = tagClassMap[tag] || 'commercial';
+            return `<span class="tag ${tagClass}">${tag}</span>`;
+        }).join('');
+        
+        article.innerHTML = `
+            <div class="news-image" style="background: ${news.gradient};">
+                ${news.icon}
+                <span class="news-priority ${news.priority}">${news.priorityText}</span>
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('${news.id}')" title="收藏">☆</button>
+            </div>
+            <div class="news-content">
+                <div class="news-meta">
+                    ${tagsHtml}
+                </div>
+                <h3 class="news-title">${news.title}</h3>
+                <p class="news-summary">${news.summary}</p>
+                <div class="news-footer">
+                    <span class="news-source">${news.source}</span>
+                    <span>刚刚</span>
+                </div>
+            </div>
+        `;
+        
+        // 根据分类插入到对应区域
+        let targetGrid;
+        if (news.category === 'commercial') {
+            targetGrid = document.getElementById('commercialGrid');
+        } else if (news.category === 'lowaltitude') {
+            targetGrid = document.getElementById('lowaltitudeGrid');
+        } else if (news.category === 'remote') {
+            // 遥感新闻插入到遥感section
+            const remoteSection = document.getElementById('remote');
+            if (remoteSection) {
+                targetGrid = remoteSection.querySelector('.news-grid');
+            }
+        }
+        
+        if (targetGrid) {
+            targetGrid.insertBefore(article, targetGrid.firstChild);
+        }
+    });
+    
+    // 更新统计数据
+    const statCards = document.querySelectorAll('.stat-value');
+    if (statCards.length >= 4) {
+        // 商业航天
+        const commercialCount = document.querySelectorAll('[data-category="commercial"]').length;
+        statCards[0].textContent = commercialCount;
+        // 低空经济
+        const lowaltitudeCount = document.querySelectorAll('[data-category="lowaltitude"]').length;
+        statCards[1].textContent = lowaltitudeCount;
+        // 遥感卫星
+        const remoteCount = document.querySelectorAll('[data-category="remote"]').length;
+        statCards[2].textContent = remoteCount;
+        // 总计
+        const totalCount = document.querySelectorAll('.news-card').length;
+        statCards[3].textContent = totalCount;
+    }
+    
+    // 更新footer
+    const footer = document.getElementById('mainFooter');
+    if (footer) {
+        const totalCount = document.querySelectorAll('.news-card').length;
+        footer.innerHTML = `<p>Space Daily 空天信息日报 | 每日更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
+        <p>2026年3月16日 | 共${totalCount}条资讯 | 上次更新: 01:00 CST | 新增10条</p>`;
+    }
+    
+    console.log('[Space Daily] 已自动补充10条最新新闻');
+})();
+</script>
+
 </body>
 </html>
