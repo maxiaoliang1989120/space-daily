@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,10 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* CSS Variables for Theme Support */
         :root {
             --primary: #0a0a0f;
             --secondary: #12121a;
@@ -21,18 +22,35 @@
             --border: #27272a;
             --card: #18181b;
             --card-hover: #27272a;
+            --shadow: rgba(99, 102, 241, 0.15);
             --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
             --gradient-2: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
             --gradient-3: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
             --gradient-4: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
+        
+        [data-theme="light"] {
+            --primary: #f8fafc;
+            --secondary: #f1f5f9;
+            --accent: #4f46e5;
+            --accent-light: #6366f1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --card: #ffffff;
+            --card-hover: #f8fafc;
+            --shadow: rgba(99, 102, 241, 0.1);
+        }
+        
         body {
             font-family: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--primary);
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
         }
+        
         /* Navigation */
         .navbar {
             position: fixed;
@@ -41,7 +59,13 @@
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
+            transition: all 0.3s;
         }
+        
+        [data-theme="light"] .navbar {
+            background: rgba(248, 250, 252, 0.95);
+        }
+        
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -51,12 +75,14 @@
             align-items: center;
             justify-content: space-between;
         }
+        
         .logo {
             display: flex;
             align-items: center;
             gap: 12px;
             text-decoration: none;
         }
+        
         .logo-icon {
             width: 40px; height: 40px;
             background: var(--gradient-1);
@@ -65,7 +91,13 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
+            transition: transform 0.3s;
         }
+        
+        .logo:hover .logo-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
         .logo-text {
             font-size: 22px;
             font-weight: 700;
@@ -73,26 +105,65 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        
         .nav-links {
             display: flex;
             gap: 32px;
         }
+        
         .nav-links a {
             color: var(--text-muted);
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
             transition: all 0.2s;
+            position: relative;
         }
+        
         .nav-links a:hover, .nav-links a.active {
             color: var(--text);
         }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+        
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
-        .theme-toggle {
+        
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #10b981;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .live-indicator::before {
+            content: '';
+            width: 8px; height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle, .rss-btn, .favorites-btn {
             width: 40px;
             height: 40px;
             border-radius: 10px;
@@ -104,33 +175,42 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
-        .theme-toggle:hover {
+        
+        .theme-toggle:hover, .rss-btn:hover, .favorites-btn:hover {
+            background: var(--accent);
             border-color: var(--accent);
-            background: var(--card-hover);
+            transform: translateY(-2px);
         }
-        .live-indicator {
+        
+        .favorites-btn {
+            position: relative;
+        }
+        
+        .favorites-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #10b981;
-            font-size: 12px;
-            font-weight: 600;
+            justify-content: center;
         }
-        .live-indicator::before {
-            content: '';
-            width: 8px; height: 8px;
-            background: #10b981;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
+        
         /* Search Box */
         .search-box {
             position: relative;
             display: flex;
             align-items: center;
         }
+        
         .search-box input {
             width: 280px;
             padding: 10px 40px 10px 16px;
@@ -142,19 +222,23 @@
             outline: none;
             transition: all 0.3s;
         }
+        
         .search-box input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
         }
+        
         .search-box input::placeholder {
             color: var(--text-muted);
         }
+        
         .search-icon {
             position: absolute;
             right: 12px;
             font-size: 16px;
             pointer-events: none;
         }
+        
         .no-results {
             text-align: center;
             padding: 60px 24px;
@@ -162,111 +246,11 @@
             font-size: 16px;
             display: none;
         }
+        
         .no-results.show {
             display: block;
         }
-        /* Filter Bar */
-        .filter-bar {
-            position: fixed;
-            top: 64px;
-            left: 0;
-            right: 0;
-            background: rgba(18, 18, 26, 0.98);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            z-index: 999;
-            padding: 16px 0;
-        }
-        .filter-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .filter-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            white-space: nowrap;
-            min-width: 80px;
-        }
-        .filter-options {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .filter-btn {
-            padding: 6px 14px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--card);
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover {
-            border-color: var(--accent);
-            color: var(--text);
-        }
-        .filter-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-        /* Load More Button */
-        .load-more-container {
-            text-align: center;
-            padding: 40px 24px;
-        }
-        .load-more-btn {
-            padding: 12px 32px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .load-more-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        .load-more-btn.hidden {
-            display: none;
-        }
-        .news-card.hidden {
-            display: none !important;
-        }
-        /* Update hero margin for filter bar */
-        .hero {
-            margin-top: 160px;
-        }
-        @media (max-width: 768px) {
-            .filter-bar {
-                top: 64px;
-            }
-            .filter-group {
-                gap: 8px;
-            }
-            .filter-label {
-                min-width: auto;
-            }
-            .hero {
-                margin-top: 180px;
-            }
-        }
+        
         /* Modal Styles */
         .modal-overlay {
             display: none;
@@ -282,9 +266,11 @@
             align-items: center;
             padding: 24px;
         }
+        
         .modal-overlay.active {
             display: flex;
         }
+        
         .modal-content {
             background: var(--card);
             border: 1px solid var(--border);
@@ -296,6 +282,7 @@
             position: relative;
             animation: modalSlideIn 0.3s ease;
         }
+        
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -306,6 +293,7 @@
                 transform: translateY(0);
             }
         }
+        
         .modal-header {
             padding: 24px 24px 0;
             display: flex;
@@ -313,11 +301,13 @@
             align-items: flex-start;
             gap: 16px;
         }
+        
         .modal-meta {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
+        
         .modal-close {
             width: 36px;
             height: 36px;
@@ -333,36 +323,55 @@
             transition: all 0.2s;
             flex-shrink: 0;
         }
+        
         .modal-close:hover {
             background: var(--accent);
             border-color: var(--accent);
         }
+        
         .modal-body {
             padding: 20px 24px;
         }
+        
         .modal-title {
             font-size: 22px;
             font-weight: 700;
             line-height: 1.4;
             margin-bottom: 16px;
         }
+        
         .modal-summary {
             font-size: 15px;
             color: var(--text);
             line-height: 1.8;
             margin-bottom: 24px;
         }
+        
         .modal-footer {
             padding: 16px 24px 24px;
             border-top: 1px solid var(--border);
             display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .modal-footer-row {
+            display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        
         .modal-source {
             color: var(--text-muted);
             font-size: 13px;
         }
+        
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
         .modal-action {
             padding: 10px 20px;
             background: var(--accent);
@@ -374,24 +383,65 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
+        
         .modal-link {
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
+        
         .modal-link:hover {
             background: var(--accent-light);
         }
+        
+        /* Share Buttons */
+        .share-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .share-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .share-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card-hover);
+            color: var(--text);
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .share-btn.wechat:hover { background: #07c160; color: white; border-color: #07c160; }
+        .share-btn.weibo:hover { background: #e6162d; color: white; border-color: #e6162d; }
+        .share-btn.copy:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
         }
+        
         /* Hero */
         .hero {
             margin-top: 64px;
@@ -399,16 +449,19 @@
             background: linear-gradient(180deg, var(--secondary) 0%, var(--primary) 100%);
             border-bottom: 1px solid var(--border);
         }
+        
         .hero-container {
             max-width: 1400px;
             margin: 0 auto;
         }
+        
         .hero-stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 24px;
             margin-bottom: 32px;
         }
+        
         .stat-card {
             background: var(--card);
             border: 1px solid var(--border);
@@ -416,16 +469,20 @@
             padding: 24px;
             transition: all 0.3s;
         }
+        
         .stat-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             border-color: var(--accent);
+            box-shadow: 0 20px 40px var(--shadow);
         }
+        
         .stat-header {
             display: flex;
             align-items: center;
             gap: 12px;
             margin-bottom: 12px;
         }
+        
         .stat-icon {
             width: 44px; height: 44px;
             border-radius: 12px;
@@ -433,7 +490,13 @@
             align-items: center;
             justify-content: center;
             font-size: 22px;
+            transition: transform 0.3s;
         }
+        
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
         .stat-icon.rocket { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
         .stat-icon.evtol { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
         .stat-icon.satellite { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); }
@@ -442,36 +505,64 @@
             font-size: 13px;
             color: var(--text-muted);
         }
+        
         .stat-value {
             font-size: 36px;
             font-weight: 700;
             margin-top: 4px;
+            transition: all 0.3s;
         }
+        
+        .stat-card:hover .stat-value {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
         .hero-title {
             font-size: 42px;
             font-weight: 700;
             margin-bottom: 12px;
+            animation: fadeInUp 0.6s ease;
         }
+        
         .hero-subtitle {
             font-size: 16px;
             color: var(--text-muted);
             max-width: 600px;
+            animation: fadeInUp 0.6s ease 0.1s both;
         }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Main Content */
         .main {
             max-width: 1400px;
             margin: 0 auto;
             padding: 40px 24px;
         }
+        
         .section {
             margin-bottom: 48px;
+            animation: fadeInUp 0.6s ease;
         }
+        
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 24px;
         }
+        
         .section-title {
             font-size: 24px;
             font-weight: 700;
@@ -479,38 +570,58 @@
             align-items: center;
             gap: 12px;
         }
+        
         .section-title .icon {
             font-size: 28px;
+            animation: bounce 2s infinite;
         }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
         .view-all {
             color: var(--accent-light);
             text-decoration: none;
             font-size: 14px;
+            transition: all 0.2s;
         }
+        
+        .view-all:hover {
+            color: var(--accent);
+            transform: translateX(4px);
+        }
+        
         /* News Grid */
         .news-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
         }
+        
         .news-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            position: relative;
         }
+        
         .news-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px) scale(1.02);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 25px 50px var(--shadow);
         }
+        
         .news-card.featured {
             grid-column: span 2;
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
+        
         .news-image {
             height: 200px;
             display: flex;
@@ -519,11 +630,18 @@
             font-size: 64px;
             position: relative;
             overflow: hidden;
+            transition: transform 0.5s;
         }
+        
+        .news-card:hover .news-image {
+            transform: scale(1.05);
+        }
+        
         .news-card.featured .news-image {
             height: 100%;
             min-height: 320px;
         }
+        
         .news-priority {
             position: absolute;
             top: 16px; left: 16px;
@@ -531,27 +649,49 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            animation: slideInLeft 0.5s ease;
         }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
         .news-priority.hot { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
         .news-priority.new { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        
         .news-content {
             padding: 24px;
             display: flex;
             flex-direction: column;
             height: 100%;
         }
+        
         .news-meta {
             display: flex;
             gap: 8px;
             margin-bottom: 16px;
             flex-wrap: wrap;
         }
+        
         .tag {
             padding: 4px 12px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 600;
+            transition: all 0.2s;
         }
+        
+        .tag:hover {
+            transform: translateY(-2px);
+        }
+        
         .tag.commercial { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .tag.lowaltitude { background: rgba(99, 102, 241, 0.15); color: #6366f1; }
         .tag.remote { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
@@ -559,6 +699,15 @@
         .tag.policy { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
         .tag.tech { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
         .tag.international { background: rgba(236, 72, 153, 0.15); color: #ec4899; }
+        
+        [data-theme="light"] .tag.commercial { background: rgba(239, 68, 68, 0.1); }
+        [data-theme="light"] .tag.lowaltitude { background: rgba(99, 102, 241, 0.1); }
+        [data-theme="light"] .tag.remote { background: rgba(14, 165, 233, 0.1); }
+        [data-theme="light"] .tag.investment { background: rgba(16, 185, 129, 0.1); }
+        [data-theme="light"] .tag.policy { background: rgba(245, 158, 11, 0.1); }
+        [data-theme="light"] .tag.tech { background: rgba(139, 92, 246, 0.1); }
+        [data-theme="light"] .tag.international { background: rgba(236, 72, 153, 0.1); }
+        
         .news-title {
             font-size: 17px;
             font-weight: 600;
@@ -568,11 +717,18 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            transition: color 0.3s;
         }
+        
+        .news-card:hover .news-title {
+            color: var(--accent-light);
+        }
+        
         .news-card.featured .news-title {
             font-size: 22px;
             -webkit-line-clamp: 3;
         }
+        
         .news-summary {
             font-size: 14px;
             color: var(--text-muted);
@@ -584,6 +740,7 @@
             margin-bottom: 16px;
             flex-grow: 1;
         }
+        
         .news-footer {
             display: flex;
             align-items: center;
@@ -594,11 +751,57 @@
             padding-top: 16px;
             border-top: 1px solid var(--border);
         }
+        
         .news-source {
             display: flex;
             align-items: center;
             gap: 8px;
         }
+        
+        /* Favorite Button */
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+        
+        [data-theme="light"] .favorite-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text);
+        }
+        
+        .favorite-btn:hover {
+            transform: scale(1.15);
+            background: rgba(239, 68, 68, 0.8);
+        }
+        
+        .favorite-btn.active {
+            background: #ef4444;
+            color: white;
+            animation: heartBeat 0.5s;
+        }
+        
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.3); }
+            50% { transform: scale(1.1); }
+            75% { transform: scale(1.25); }
+        }
+        
         /* Footer */
         .footer {
             border-top: 1px solid var(--border);
@@ -607,157 +810,15 @@
             color: var(--text-muted);
             font-size: 14px;
         }
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .news-grid { grid-template-columns: repeat(2, 1fr); }
-            .news-card.featured { grid-column: span 2; }
-            .hero-stats { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .news-grid { grid-template-columns: 1fr; }
-            .news-card.featured { grid-template-columns: 1fr; grid-column: span 1; }
-            .news-card.featured .news-image { height: 200px; min-height: auto; }
-            .hero-stats { grid-template-columns: repeat(2, 1fr); }
-            .hero-title { font-size: 28px; }
-            .stat-value { font-size: 28px; }
-        }
         
-        /* Dashboard */
-        .dashboard {
-            padding: 48px 24px;
-            background: var(--primary);
-            border-bottom: 1px solid var(--border);
-        }
-        .dashboard-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .dashboard-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .dashboard-subtitle {
-            font-size: 16px;
-            color: var(--text-muted);
-        }
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-        }
-        .chart-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s;
-        }
-        .chart-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.1);
-        }
-        .chart-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .chart-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .chart-badge {
-            padding: 4px 12px;
-            background: rgba(99, 102, 241, 0.15);
-            color: var(--accent-light);
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .chart-container {
-            position: relative;
-            height: 250px;
-        }
-        .chart-source {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 16px;
-            text-align: right;
-        }
-        
-        /* Progress Bars */
-        .progress-container {
-            padding: 8px 0;
-        }
-        .progress-item {
-            margin-bottom: 24px;
-        }
-        .progress-item:last-child {
-            margin-bottom: 0;
-        }
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .progress-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-        }
-        .progress-value {
-            font-size: 13px;
-            color: var(--accent-light);
-            font-weight: 500;
-        }
-        .progress-bar-bg {
-            height: 12px;
-            background: var(--secondary);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            width: var(--progress);
-            background: var(--color);
-            border-radius: 6px;
-            transition: width 1.5s ease-out;
-            position: relative;
-        }
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
         /* Back to Top Button */
         .back-to-top {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 24px;
+            right: 24px;
             width: 48px;
             height: 48px;
-            border-radius: 12px;
+            border-radius: 50%;
             border: 1px solid var(--border);
             background: var(--card);
             color: var(--text);
@@ -770,729 +831,599 @@
             z-index: 999;
             opacity: 0;
             visibility: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
+        
         .back-to-top.visible {
             opacity: 1;
             visibility: visible;
+            transform: translateY(0);
         }
+        
         .back-to-top:hover {
-            border-color: var(--accent);
             background: var(--accent);
-            transform: translateY(-2px);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--shadow);
         }
-        /* RSS Subscribe Button */
-        .rss-btn {
-            position: fixed;
-            bottom: 90px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--card);
-            color: #f97316;
-            font-size: 20px;
-            cursor: pointer;
+        
+        /* Favorites Page */
+        .favorites-page {
+            display: none;
+            margin-top: 64px;
+            padding: 40px 24px;
+            min-height: calc(100vh - 64px);
+        }
+        
+        .favorites-page.active {
+            display: block;
+        }
+        
+        .favorites-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .favorites-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            z-index: 999;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            text-decoration: none;
+            justify-content: space-between;
+            margin-bottom: 32px;
         }
-        .rss-btn:hover {
-            border-color: #f97316;
-            background: rgba(249, 115, 22, 0.1);
-            transform: translateY(-2px);
+        
+        .favorites-title {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        /* Favorite Button */
-        .favorite-btn {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(0,0,0,0.5);
-            color: var(--text);
+        
+        .favorites-empty {
+            text-align: center;
+            padding: 80px 24px;
+            color: var(--text-muted);
+        }
+        
+        .favorites-empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .favorites-empty-text {
             font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            z-index: 10;
-            backdrop-filter: blur(4px);
+            margin-bottom: 24px;
         }
-        .favorite-btn:hover {
-            background: rgba(0,0,0,0.7);
-            transform: scale(1.1);
-        }
-        .favorite-btn.active {
-            color: #ef4444;
-        }
-        .favorite-btn.active:hover {
-            color: #dc2626;
-        }
-        /* Modal Actions */
-        .modal-action-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .modal-action-btn {
-            padding: 10px 16px;
-            border: 1px solid var(--border);
+        
+        .favorites-empty-btn {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
             border-radius: 8px;
-            background: var(--card-hover);
-            color: var(--text);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
         }
-        .modal-action-btn:hover {
-            border-color: var(--accent);
-            background: var(--accent);
+        
+        .favorites-empty-btn:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
         }
-        .modal-action-btn.favorite {
-            color: var(--text);
+        
+        .hidden {
+            display: none !important;
         }
-        .modal-action-btn.favorite.active {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: #ef4444;
-            color: #ef4444;
-        }
+        
         /* Toast Notification */
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 80px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 24px;
             color: var(--text);
+            padding: 12px 24px;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: 500;
             z-index: 3000;
             opacity: 0;
             transition: all 0.3s;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-        .toast.success {
-            border-color: #10b981;
-        }
-        .toast.error {
-            border-color: #ef4444;
-        }
-        /* Light Theme Variables */
-        body.light-theme {
-            --primary: #fafafa;
-            --secondary: #f5f5f7;
-            --accent: #6366f1;
-            --accent-light: #4f46e5;
-            --text: #1a1a2e;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --card: #ffffff;
-            --card-hover: #f3f4f6;
-        }
-        body.light-theme .navbar {
-            background: rgba(255, 255, 255, 0.95);
-        }
-        body.light-theme .filter-bar {
-            background: rgba(245, 245, 247, 0.98);
-        }
-        body.light-theme .news-card:hover {
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
-        }
-        body.light-theme .back-to-top,
-        body.light-theme .rss-btn {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .progress-detail {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 6px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Responsive */
         @media (max-width: 1024px) {
-            .charts-grid { grid-template-columns: 1fr; }
+            .news-grid { grid-template-columns: repeat(2, 1fr); }
+            .news-card.featured { grid-column: span 2; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .news-grid { grid-template-columns: 1fr; }
+            .news-card.featured { grid-template-columns: 1fr; grid-column: span 1; }
+            .news-card.featured .news-image { height: 200px; min-height: auto; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+            .hero-title { font-size: 28px; }
+            .stat-value { font-size: 28px; }
+            .search-box input { width: 180px; }
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">
+            <a href="#" class="logo" onclick="showHome()">
                 <div class="logo-icon">🚀</div>
                 <span class="logo-text">Space Daily</span>
             </a>
             <div class="nav-links">
-                <a href="#" class="active">首页</a>
-                <a href="#commercial">商业航天</a>
-                <a href="#lowaltitude">低空经济</a>
-                <a href="#remote">遥感卫星</a>
-                <a href="#international">国际动态</a>
-            </div>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="搜索新闻..." onkeyup="searchNews()">
-                <span class="search-icon">🔍</span>
+                <a href="#" class="active" onclick="showHome()">首页</a>
+                <a href="#commercial" onclick="showHome()">商业航天</a>
+                <a href="#lowaltitude" onclick="showHome()">低空经济</a>
+                <a href="#remote" onclick="showHome()">遥感卫星</a>
+                <a href="#international" onclick="showHome()">国际动态</a>
+                <a href="#" onclick="showFavorites()">我的收藏 ⭐</a>
             </div>
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索新闻..." onkeyup="searchNews()">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <button class="favorites-btn" onclick="showFavorites()" title="我的收藏">
+                    ⭐
+                    <span class="favorites-count" id="favCount" style="display: none;">0</span>
+                </button>
+                <button class="rss-btn" onclick="subscribeRSS()" title="RSS订阅">📡</button>
+                <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌓</button>
             </div>
             <div class="live-indicator">实时更新 | 2026年3月15日</div>
         </div>
     </nav>
 
-    <!-- 筛选栏 -->
-    <div class="filter-bar">
-        <div class="filter-container">
-            <div class="filter-group">
-                <span class="filter-label">📅 日期筛选</span>
-                <div class="filter-options" id="dateFilter">
-                    <button class="filter-btn active" data-date="all">全部</button>
-                    <button class="filter-btn" data-date="last7">最近7天</button>
-                    <button class="filter-btn" data-date="last30">最近30天</button>
-                    <button class="filter-btn" data-date="2026-03">2026年3月</button>
-                    <button class="filter-btn" data-date="2026-02">2026年2月</button>
+    <!-- Main Content Page -->
+    <div id="homePage">
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon rocket">🚀</div>
+                            <span class="stat-label">商业航天</span>
+                        </div>
+                        <div class="stat-value">18</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon evtol">🚁</div>
+                            <span class="stat-label">低空经济</span>
+                        </div>
+                        <div class="stat-value">14</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon satellite">🛰️</div>
+                            <span class="stat-label">遥感卫星</span>
+                        </div>
+                        <div class="stat-value">16</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-icon total">📊</div>
+                            <span class="stat-label">今日资讯</span>
+                        </div>
+                        <div class="stat-value">48</div>
+                    </div>
                 </div>
+                <h1 class="hero-title">空天信息日报</h1>
+                <p class="hero-subtitle">聚焦商业航天、低空经济、遥感卫星领域的前沿动态，覆盖 SpaceX、Planet Labs、蓝箭航天、星际荣耀等全球头部企业</p>
             </div>
-            <div class="filter-group">
-                <span class="filter-label">🏷️ 分类筛选</span>
-                <div class="filter-options" id="categoryFilter">
-                    <button class="filter-btn active" data-category="all">全部</button>
-                    <button class="filter-btn" data-category="commercial">商业航天</button>
-                    <button class="filter-btn" data-category="lowaltitude">低空经济</button>
-                    <button class="filter-btn" data-category="remote">遥感卫星</button>
-                    <button class="filter-btn" data-category="international">国际动态</button>
+        </section>
+
+        <main class="main">
+            <!-- 头条新闻 -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="icon">🔥</span> 今日头条</h2>
                 </div>
+                <div class="news-grid">
+                    <article class="news-card featured" data-id="news-1" onclick="openModal(this)">
+                        <div class="news-image" style="background: var(--gradient-1);">
+                            🚀
+                            <span class="news-priority hot">里程碑</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-1')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag international">SpaceX</span>
+                                <span class="tag">财报</span>
+                            </div>
+                            <h3 class="news-title">SpaceX 2025年营收155亿美元，2026年将超越NASA全部预算</h3>
+                            <p class="news-summary">马斯克公开披露，SpaceX 2025财年营收约155亿美元，其中火箭发射服务是主要收入来源。据报道，特朗普政府2026财年NASA预算拟从254亿美元削减至188亿美元，而SpaceX预计2026年营收将超迈这一数字，成为首家营收超越国家航天预算的商业航天公司。这标志着商业航天从补充角色跳跃成为主力军，重塑全球太空竞争格局。</p>
+                            <div class="news-footer">
+                                <span class="news-source">华尔街日报/Bloomberg</span>
+                                <span>1小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-2" onclick="openModal(this)">
+                        <div class="news-image" style="background: var(--gradient-2);">
+                            🚁
+                            <span class="news-priority new">量产倒计时</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-2')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag lowaltitude">低空经济</span>
+                                <span class="tag">小鹏汇天</span>
+                            </div>
+                            <h3 class="news-title">小鹏汇天"陆地航母"批量试产下线，累计订单7000+台</h3>
+                            <p class="news-summary">3月5日，小鹏汇天广州黄埔工厂试产下线5台"陆地航母"飞行器并启动编队试飞。全球首条飞行汽车量产线满产状态下每30分钟可下线一台飞行器，计划2026年量产交付。全国两会期间，汇天联合广州城投、电子五所共建的广州海心沙全空间智能体验中心正式启动。</p>
+                            <div class="news-footer">
+                                <span class="news-source">界面新闻/财新</span>
+                                <span>2小时前</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- 商业航天 -->
+            <section class="section" id="commercial">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
+                    <a href="#" class="view-all">查看全部 →</a>
+                </div>
+                <div class="news-grid">
+                    <article class="news-card" data-id="news-3" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
+                            📊
+                            <span class="news-priority hot">数据</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-3')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag policy">政策</span>
+                            </div>
+                            <h3 class="news-title">2025年中国商业航天发射50次创新高，占全年发射总数54%</h3>
+                            <p class="news-summary">国家航天局发布数据：2025年中国商业航天完成发射50次，入轨商业卫星311颗，占全年入轨卫星总数的84%。海南商业航天发射场正式启用，北京火箭大街竣工形成产业集群。行业规模达2.5万亿元，年均复合增长率超20%，企业数量超600家。</p>
+                            <div class="news-footer">
+                                <span class="news-source">国家航天局/21财经</span>
+                                <span>1小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-4" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
+                            🎯
+                            <span class="news-priority new">突破</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-4')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag">蓝箭航天</span>
+                            </div>
+                            <h3 class="news-title">朱雀三号首次挑战入轨回收，中国可回收火箭迈出关键一步</h3>
+                            <p class="news-summary">2025年底，蓝箭航天朱雀三号VTVL-1试验箭进行10公里级垂直起降飞行试验，虽然回收阶段未能成功，但这是中国首次挑战可重复使用火箭入轨回收，验证了多项关键技术。蓝箭智能制造基地实现零部件出库时间从3分钟压缩至30秒，IPO进程正在推进。</p>
+                            <div class="news-footer">
+                                <span class="news-source">澎湃/财新</span>
+                                <span>3小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-5" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
+                            🌐
+                            <span class="news-priority new">争夺</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-5')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag policy">频轨资源</span>
+                            </div>
+                            <h3 class="news-title">中国向ITU申报20.3万颗卫星频轨资源，7家主体竞争14个星座</h3>
+                            <p class="news-summary">2025年12月，中国正式向国际电信联盟(ITU)申报新增20.3万颗卫星频轨资源申请，覆盖星网、垣信、中国移动等7家主体的14个星座。FCC同日批准SpaceX部署7500颗二代星链卫星。全球低轨频轨争夺战进入白热化阶段，"先到先得"规则下各国加速布局。</p>
+                            <div class="news-footer">
+                                <span class="news-source">上海证券报/证券时报</span>
+                                <span>5小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-6" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+                            💰
+                            <span class="news-priority hot">资本</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-6')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag investment">IPO</span>
+                            </div>
+                            <h3 class="news-title">2025年商业航天融资186亿元，国家设立200亿商业航天发展基金</h3>
+                            <p class="news-summary">《中国商业航天产业发展报告(2025)》显示，行业融资总额达186亿元，同比增长32%。蓝箭航天、中科宇航、天兵科技、星际荣耀、星河动力5家火箭公司推进IPO冲刺科创板。上交所明确商业航天企业适用科创板第五套上市标准，券商会议座无虚席。</p>
+                            <div class="news-footer">
+                                <span class="news-source">证券时报/财新</span>
+                                <span>6小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-7" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            🛰️
+                            <span class="news-priority new">出海</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-7')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag">千帆星座</span>
+                            </div>
+                            <h3 class="news-title">千帆星座进入巴西市场，已与30多国启动业务洽谈</h3>
+                            <p class="news-summary">2月12日，巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。垣信卫星已与30多个国家启动业务洽谈，计划2026年四季度在巴西启动商业运营。目前千帆星座在轨卫星达90颗，已完成"鼓浪屿"号邮轮网联通信测试和香港智慧农业示范应用。</p>
+                            <div class="news-footer">
+                                <span class="news-source">财新周刊/央视</span>
+                                <span>7小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-8" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                            🔬
+                            <span class="news-priority hot">新品</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-8')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag commercial">商业航天</span>
+                                <span class="tag tech">太空算力</span>
+                            </div>
+                            <h3 class="news-title">追觅下周发射首颗太空算力卫星，计划200万颗组网打造"算力星座"</h3>
+                            <p class="news-summary">AWE 2026展会现场，追觅宣布下周发射第一颗太空算力卫星，由旗下芯际穿越负责。公司计划未来发射200万颗太空算力卫星打造算力组网系统，将AI推理能力送上太空。太空算力成为继卫星通信、遥感之后的第三大卫星应用赛道。</p>
+                            <div class="news-footer">
+                                <span class="news-source">界面/泰伯网</span>
+                                <span>8小时前</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- 低空经济 -->
+            <section class="section" id="lowaltitude">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
+                    <a href="#" class="view-all">查看全部 →</a>
+                </div>
+                <div class="news-grid">
+                    <article class="news-card" data-id="news-9" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
+                            🏭
+                            <span class="news-priority hot">量产</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-9')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag lowaltitude">低空经济</span>
+                                <span class="tag">小鹏汇天</span>
+                            </div>
+                            <h3 class="news-title">小鹏汇天飞行汽车量产工厂试产，每30分钟下线一台</h3>
+                            <p class="news-summary">位于广州黄埔区的飞行汽车量产工厂建筑面积约12万平方米，是全球首个利用现代化流水线进行飞行汽车批量生产的工厂，满产状态下每30分钟可下线一台飞行器。陆地航母累计订单超7000台，预计2026年底启动量产交付。</p>
+                            <div class="news-footer">
+                                <span class="news-source">21财经/财新</span>
+                                <span>2小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-10" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
+                            🤝
+                            <span class="news-priority hot">合作</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-10')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag lowaltitude">低空经济</span>
+                                <span class="tag">沃飞长空</span>
+                            </div>
+                            <h3 class="news-title">沃飞长空与四川航空战略合作，推进"民航+低空出行"场景落地</h3>
+                            <p class="news-summary">3月25日，沃飞长空与四川航空集团通航投资公司签署战略合作协议，双方将推进"民航+低空出行"城市接驳场景落地，在飞行测试、设施运营、场景拓展等6大领域开展合作，联合推出"支线航空+低空出行"运营航线。</p>
+                            <div class="news-footer">
+                                <span class="news-source">四川航空/证券时报</span>
+                                <span>4小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-11" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
+                            🔋
+                            <span class="news-priority new">投资</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-11')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag lowaltitude">低空经济</span>
+                                <span class="tag">峰飞航空</span>
+                            </div>
+                            <h3 class="news-title">峰飞航空获宁德时代数亿美元投资，推进航空电池研发</h3>
+                            <p class="news-summary">峰飞航空获宁德时代独家投资数亿美元，双方将合力推进航空电池研发。峰飞航空2吨级eVTOL采用"升力+巡航"复合翼构型，搭载宁德时代定制化航空级电池，实现200公里/小时巡航速度与5人载客能力。</p>
+                            <div class="news-footer">
+                                <span class="news-source">财新/36氪</span>
+                                <span>6小时前</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- 遥感卫星 -->
+            <section class="section" id="remote">
+                <div class="section-header">
+                    <h2 class="section-title"><span class="icon">🛰️</span> 遥感卫星与国际动态</h2>
+                    <a href="#" class="view-all">查看全部 →</a>
+                </div>
+                <div class="news-grid">
+                    <article class="news-card" data-id="news-12" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
+                            🌍
+                            <span class="news-priority hot">组网完成</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-12')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag remote">遥感卫星</span>
+                                <span class="tag international">Maxar</span>
+                            </div>
+                            <h3 class="news-title">Maxar WorldView Legion星座组网完成，重访周期提升至15次/天</h3>
+                            <p class="news-summary">2025年2月，SpaceX成功发射Maxar最后两颗WorldView Legion卫星，完成六星星座组网。该星座实现亚米级分辨率，对特定地区重访周期提升至15次/天，每天可采集360万平方公里30厘米级影像，在国防、灾害响应领域占据优势。</p>
+                            <div class="news-footer">
+                                <span class="news-source">SpaceNews/Payload Space</span>
+                                <span>1小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-13" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                            📡
+                            <span class="news-priority new">发射</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-13')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag remote">遥感卫星</span>
+                                <span class="tag international">Planet</span>
+                            </div>
+                            <h3 class="news-title">Planet Labs Pelican-2卫星发射，计划扩展星座至200颗</h3>
+                            <p class="news-summary">2025年1月，Planet Labs Pelican-2卫星成功发射，提供40厘米分辨率图像。公司计划将星座扩展至200颗卫星，增强全球监测能力。Planet Labs凭借多在轨卫星和高研发投入，在泰伯智库2025时空智能与卫星遥感市场竞争力矩阵中位列领先者象限。</p>
+                            <div class="news-footer">
+                                <span class="news-source">泰伯网/Planet Labs</span>
+                                <span>3小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-14" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+                            🌐
+                            <span class="news-priority new">组网</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-14')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag remote">卫星互联网</span>
+                                <span class="tag">千帆星座</span>
+                            </div>
+                            <h3 class="news-title">千帆星座在轨卫星达90颗，已开展商业示范应用</h3>
+                            <p class="news-summary">3月12日，长征八号遥六运载火箭以"一箭十八星"方式将千帆星座第五批组网卫星送入轨道，在轨卫星数量达90颗。垣信卫星已与中国移动(香港)、星旅远洋邮轮合作，在"鼓浪屿"号邮轮上实现网联通信测试，并在香港开展智慧农业商业示范应用。</p>
+                            <div class="news-footer">
+                                <span class="news-source">央视新闻/财新</span>
+                                <span>5小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-15" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
+                            🚀
+                            <span class="news-priority hot">出海</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-15')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag remote">卫星互联网</span>
+                                <span class="tag">垣信卫星</span>
+                            </div>
+                            <h3 class="news-title">千帆星座进入巴西市场，已与30多国启动业务洽谈</h3>
+                            <p class="news-summary">2月12日，巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。此前垣信卫星已与马来西亚卫星运营商签署合作备忘录。截至目前，公司已与30多个国家启动业务洽谈，计划今年四季度在巴西启动商业运营。</p>
+                            <div class="news-footer">
+                                <span class="news-source">财新周刊</span>
+                                <span>7小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-16" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
+                            📊
+                            <span class="news-priority new">数据</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-16')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag international">国际</span>
+                                <span class="tag">发射统计</span>
+                            </div>
+                            <h3 class="news-title">2025年全球发射329次创历史新高，SpaceX占美国发射95%</h3>
+                            <p class="news-summary">2025年全球进行329次轨道发射尝试，其中321次成功。美国发射181次(SpaceX 170次)，中国92次，欧洲8次。全年部署4517颗卫星，同比增长58%，其中87%为SpaceX星链卫星。商业发射占全球70%。</p>
+                            <div class="news-footer">
+                                <span class="news-source">Payload Space</span>
+                                <span>8小时前</span>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-id="news-17" onclick="openModal(this)">
+                        <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
+                            🔬
+                            <span class="news-priority new">技术</span>
+                            <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite('news-17')" title="收藏">☆</button>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-meta">
+                                <span class="tag international">国际</span>
+                                <span class="tag">ESA/NASA</span>
+                            </div>
+                            <h3 class="news-title">NISAR卫星计划2025年发射，印度ISRO与NASA联合研制</h3>
+                            <p class="news-summary">NASA与印度空间研究组织(ISRO)联合研制的NISAR卫星计划2025年发射，搭载L波段SAR载荷，用于监测生态变化和自然灾害。该任务代表NASA与ISRO最大规模合作之一，NASA投入超10亿美元进行任务研制。</p>
+                            <div class="news-footer">
+                                <span class="news-source">SpaceNews/NASA</span>
+                                <span>10小时前</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Favorites Page -->
+    <div class="favorites-page" id="favoritesPage">
+        <div class="favorites-container">
+            <div class="favorites-header">
+                <h2 class="favorites-title">⭐ 我的收藏</h2>
+                <button class="modal-action" onclick="showHome()">返回首页</button>
+            </div>
+            <div id="favoritesContent">
+                <!-- Favorites will be loaded here -->
             </div>
         </div>
     </div>
 
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-stats">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon rocket">🚀</div>
-                        <span class="stat-label">商业航天</span>
-                    </div>
-                    <div class="stat-value">18</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon evtol">🚁</div>
-                        <span class="stat-label">低空经济</span>
-                    </div>
-                    <div class="stat-value">14</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon satellite">🛰️</div>
-                        <span class="stat-label">遥感卫星</span>
-                    </div>
-                    <div class="stat-value">16</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon total">📊</div>
-                        <span class="stat-label">今日资讯</span>
-                    </div>
-                    <div class="stat-value">48</div>
-                </div>
-            </div>
-            <h1 class="hero-title">空天信息日报</h1>
-            <p class="hero-subtitle">聚焦商业航天、低空经济、遥感卫星领域的前沿动态，覆盖 SpaceX、Planet Labs、蓝箭航天、星际荣耀等全球头部企业</p>
-        </div>
-    </section>
-
-    <!-- 数据看板 -->
-    <section class="dashboard">
-        <div class="dashboard-container">
-            <div class="dashboard-header">
-                <h2 class="dashboard-title">📊 航天数据看板</h2>
-                <p class="dashboard-subtitle">实时追踪全球航天产业发展态势</p>
-            </div>
-            <div class="charts-grid">
-                <!-- 2025年全球发射统计 -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">🚀 2025年全球发射统计</h3>
-                        <span class="chart-badge">年度数据</span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="launchChart"></canvas>
-                    </div>
-                    <p class="chart-source">数据来源：Payload Space / 国家航天局</p>
-                </div>
-
-                <!-- 商业航天融资趋势 -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">💰 2025年商业航天融资趋势</h3>
-                        <span class="chart-badge">月度追踪</span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="financingChart"></canvas>
-                    </div>
-                    <p class="chart-source">数据来源：《中国商业航天产业发展报告(2025)》</p>
-                </div>
-
-                <!-- 卫星星座部署进度 -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">🛰️ 卫星星座部署进度</h3>
-                        <span class="chart-badge">实时对比</span>
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-item">
-                            <div class="progress-label">
-                                <span class="progress-name">🇨🇳 千帆星座</span>
-                                <span class="progress-value">90颗 / 14,000颗目标</span>
-                            </div>
-                            <div class="progress-bar-bg">
-                                <div class="progress-bar" style="--progress: 0.64%; --color: linear-gradient(90deg, #6366f1, #8b5cf6);"></div>
-                            </div>
-                            <p class="progress-detail">已进入巴西等30+国家市场</p>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label">
-                                <span class="progress-name">🇺🇸 星链 Starlink</span>
-                                <span class="progress-value">7,000+颗 / 42,000颗目标</span>
-                            </div>
-                            <div class="progress-bar-bg">
-                                <div class="progress-bar" style="--progress: 16.7%; --color: linear-gradient(90deg, #0ea5e9, #06b6d4);"></div>
-                            </div>
-                            <p class="progress-detail">FCC批准7500颗二代卫星部署</p>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-label">
-                                <span class="progress-name">🇨🇳 中国星网</span>
-                                <span class="progress-value">申报中 / 20.3万颗申请</span>
-                            </div>
-                            <div class="progress-bar-bg">
-                                <div class="progress-bar" style="--progress: 5%; --color: linear-gradient(90deg, #10b981, #059669);"></div>
-                            </div>
-                            <p class="progress-detail">ITU申报20.3万颗频轨资源</p>
-                        </div>
-                    </div>
-                    <p class="chart-source">数据来源：ITU / FCC / 垣信卫星</p>
-                </div>
-
-                <!-- 低轨经济市场规模预测 -->
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <h3 class="chart-title">📈 低轨经济市场规模预测</h3>
-                        <span class="chart-badge">2024-2035</span>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="marketChart"></canvas>
-                    </div>
-                    <p class="chart-source">数据来源：行业研究报告 / CAGR 20%+</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <main class="main">
-        <!-- 头条新闻 -->
-        <section class="section">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🔥</span> 今日头条</h2>
-            </div>
-            <div class="news-grid">
-                <article class="news-card featured" onclick="openModal(this)" data-link="https://weekly.caixin.com/2026-03-07/102420532.html" data-category="commercial" data-date="2026-03-15" data-id="news-1">
-                    <div class="news-image" style="background: var(--gradient-1);">
-                        🚀
-                        <span class="news-priority hot">里程碑</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-1')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag international">SpaceX</span>
-                            <span class="tag">财报</span>
-                        </div>
-                        <h3 class="news-title">SpaceX 2025年营收155亿美元，2026年将超越NASA全部预算</h3>
-                        <p class="news-summary">马斯克公开披露，SpaceX 2025财年营收约155亿美元，其中火箭发射服务是主要收入来源。据报道，特朗普政府2026财年NASA预算拟从254亿美元削减至188亿美元，而SpaceX预计2026年营收将超迈这一数字，成为首家营收超越国家航天预算的商业航天公司。这标志着商业航天从补充角色跳跃成为主力军，重塑全球太空竞争格局。</p>
-                        <div class="news-footer">
-                            <span class="news-source">华尔街日报/Bloomberg</span>
-                            <span>1小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-link="https://www.jiemian.com/article/11826453.html" data-category="lowaltitude" data-date="2026-03-14" data-id="news-2">
-                    <div class="news-image" style="background: var(--gradient-2);">
-                        🚁
-                        <span class="news-priority new">量产倒计时</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-2')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">小鹏汇天</span>
-                        </div>
-                        <h3 class="news-title">小鹏汇天"陆地航母"批量试产下线，累计订单7000+台</h3>
-                        <p class="news-summary">3月5日，小鹏汇天广州黄埔工厂试产下线5台"陆地航母"飞行器并启动编队试飞。全球首条飞行汽车量产线满产状态下每30分钟可下线一台飞行器，计划2026年量产交付。全国两会期间，汇天联合广州城投、电子五所共建的广州海心沙全空间智能体验中心正式启动。</p>
-                        <div class="news-footer">
-                            <span class="news-source">界面新闻/财新</span>
-                            <span>2小时前</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- 商业航天 -->
-        <section class="section" id="commercial">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🚀</span> 商业航天动态</h2>
-                <a href="#" class="view-all">查看全部 →</a>
-            </div>
-            <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-15" data-link="https://www.cnsa.gov.cn/n6758823/n6758838/c10726402/content.html" data-id="news-3">
-                    <div class="news-image" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
-                        📊
-                        <span class="news-priority hot">数据</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-3')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag policy">政策</span>
-                        </div>
-                        <h3 class="news-title">2025年中国商业航天发射50次创新高，占全年发射总数54%</h3>
-                        <p class="news-summary">国家航天局发布数据：2025年中国商业航天完成发射50次，入轨商业卫星311颗，占全年入轨卫星总数的84%。海南商业航天发射场正式启用，北京火箭大街竣工形成产业集群。行业规模达2.5万亿元，年均复合增长率超20%，企业数量超600家。</p>
-                        <div class="news-footer">
-                            <span class="news-source">国家航天局/21财经</span>
-                            <span>1小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-14" data-link="http://www.news.cn/finance/20250317/b1748ebcf06c4af3b4af02d4ef4d6504/c.html" data-id="news-4">
-                    <div class="news-image" style="background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);">
-                        🎯
-                        <span class="news-priority new">突破</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-4')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">蓝箭航天</span>
-                        </div>
-                        <h3 class="news-title">朱雀三号首次挑战入轨回收，中国可回收火箭迈出关键一步</h3>
-                        <p class="news-summary">2025年底，蓝箭航天朱雀三号VTVL-1试验箭进行10公里级垂直起降飞行试验，虽然回收阶段未能成功，但这是中国首次挑战可重复使用火箭入轨回收，验证了多项关键技术。蓝箭智能制造基地实现零部件出库时间从3分钟压缩至30秒，IPO进程正在推进。</p>
-                        <div class="news-footer">
-                            <span class="news-source">澎湃/财新</span>
-                            <span>3小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-13" data-link="https://www.news.cn/tech/20260112/fcfaf74691dc49d9b1d7d99cac61b3bb/c.html" data-id="news-5">
-                    <div class="news-image" style="background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);">
-                        🌐
-                        <span class="news-priority new">争夺</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-5')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag policy">频轨资源</span>
-                        </div>
-                        <h3 class="news-title">中国向ITU申报20.3万颗卫星频轨资源，7家主体竞争14个星座</h3>
-                        <p class="news-summary">2025年12月，中国正式向国际电信联盟(ITU)申报新增20.3万颗卫星频轨资源申请，覆盖星网、垣信、中国移动等7家主体的14个星座。FCC同日批准SpaceX部署7500颗二代星链卫星。全球低轨频轨争夺战进入白热化阶段，"先到先得"规则下各国加速布局。</p>
-                        <div class="news-footer">
-                            <span class="news-source">上海证券报/证券时报</span>
-                            <span>5小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-12" data-link="https://www.21jingji.com/article/20260123/herald/eea4b64e56ac4ac6617b19f481dcf641.html" data-id="news-6">
-                    <div class="news-image" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-                        💰
-                        <span class="news-priority hot">资本</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-6')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag investment">IPO</span>
-                        </div>
-                        <h3 class="news-title">2025年商业航天融资186亿元，国家设立200亿商业航天发展基金</h3>
-                        <p class="news-summary">《中国商业航天产业发展报告(2025)》显示，行业融资总额达186亿元，同比增长32%。蓝箭航天、中科宇航、天兵科技、星际荣耀、星河动力5家火箭公司推进IPO冲刺科创板。上交所明确商业航天企业适用科创板第五套上市标准，券商会议座无虚席。</p>
-                        <div class="news-footer">
-                            <span class="news-source">证券时报/财新</span>
-                            <span>6小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-11" data-link="https://www.caixin.com/2026-03-11/102421761.html" data-id="news-7">
-                    <div class="news-image" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                        🛰️
-                        <span class="news-priority new">出海</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-7')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag">千帆星座</span>
-                        </div>
-                        <h3 class="news-title">千帆星座进入巴西市场，已与30多国启动业务洽谈</h3>
-                        <p class="news-summary">2月12日，巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。垣信卫星已与30多个国家启动业务洽谈，计划2026年四季度在巴西启动商业运营。目前千帆星座在轨卫星达90颗，已完成"鼓浪屿"号邮轮网联通信测试和香港智慧农业示范应用。</p>
-                        <div class="news-footer">
-                            <span class="news-source">财新周刊/央视</span>
-                            <span>7小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="commercial" data-date="2026-03-10" data-link="https://www.taibo.cn/newsflashes/30830032" data-id="news-8">
-                    <div class="news-image" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                        🔬
-                        <span class="news-priority hot">新品</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-8')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag commercial">商业航天</span>
-                            <span class="tag tech">太空算力</span>
-                        </div>
-                        <h3 class="news-title">追觅下周发射首颗太空算力卫星，计划200万颗组网打造"算力星座"</h3>
-                        <p class="news-summary">AWE 2026展会现场，追觅宣布下周发射第一颗太空算力卫星，由旗下芯际穿越负责。公司计划未来发射200万颗太空算力卫星打造算力组网系统，将AI推理能力送上太空。太空算力成为继卫星通信、遥感之后的第三大卫星应用赛道。</p>
-                        <div class="news-footer">
-                            <span class="news-source">界面/泰伯网</span>
-                            <span>8小时前</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- 低空经济 -->
-        <section class="section" id="lowaltitude">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🚁</span> 低空经济</h2>
-                <a href="#" class="view-all">查看全部 →</a>
-            </div>
-            <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-15" data-link="https://www.jiemian.com/article/11826453.html" data-id="news-9">
-                    <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
-                        🏭
-                        <span class="news-priority hot">量产</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-9')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">小鹏汇天</span>
-                        </div>
-                        <h3 class="news-title">小鹏汇天飞行汽车量产工厂试产，每30分钟下线一台</h3>
-                        <p class="news-summary">位于广州黄埔区的飞行汽车量产工厂建筑面积约12万平方米，是全球首个利用现代化流水线进行飞行汽车批量生产的工厂，满产状态下每30分钟可下线一台飞行器。陆地航母累计订单超7000台，预计2026年底启动量产交付。</p>
-                        <div class="news-footer">
-                            <span class="news-source">21财经/财新</span>
-                            <span>2小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-13" data-link="https://www.sc.chinanews.com.cn/cjbd/2025-03-26/225801.html" data-id="news-10">
-                    <div class="news-image" style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);">
-                        🤝
-                        <span class="news-priority hot">合作</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-10')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">沃飞长空</span>
-                        </div>
-                        <h3 class="news-title">沃飞长空与四川航空战略合作，推进"民航+低空出行"场景落地</h3>
-                        <p class="news-summary">3月25日，沃飞长空与四川航空集团通航投资公司签署战略合作协议，双方将推进"民航+低空出行"城市接驳场景落地，在飞行测试、设施运营、场景拓展等6大领域开展合作，联合推出"支线航空+低空出行"运营航线。</p>
-                        <div class="news-footer">
-                            <span class="news-source">四川航空/证券时报</span>
-                            <span>4小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="lowaltitude" data-date="2026-03-12" data-link="https://www.caixin.com/2024-08-03/102223265.html" data-id="news-11">
-                    <div class="news-image" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
-                        🔋
-                        <span class="news-priority new">投资</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-11')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag lowaltitude">低空经济</span>
-                            <span class="tag">峰飞航空</span>
-                        </div>
-                        <h3 class="news-title">峰飞航空获宁德时代数亿美元投资，推进航空电池研发</h3>
-                        <p class="news-summary">峰飞航空获宁德时代独家投资数亿美元，双方将合力推进航空电池研发。峰飞航空2吨级eVTOL采用"升力+巡航"复合翼构型，搭载宁德时代定制化航空级电池，实现200公里/小时巡航速度与5人载客能力。</p>
-                        <div class="news-footer">
-                            <span class="news-source">财新/36氪</span>
-                            <span>6小时前</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- 遥感卫星 -->
-        <section class="section" id="remote">
-            <div class="section-header">
-                <h2 class="section-title"><span class="icon">🛰️</span> 遥感卫星与国际动态</h2>
-                <a href="#" class="view-all">查看全部 →</a>
-            </div>
-            <div class="news-grid">
-                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-15" data-link="https://cloud.tencent.com/developer/news/2139965" data-id="news-12">
-                    <div class="news-image" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
-                        🌍
-                        <span class="news-priority hot">组网完成</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-12')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag international">Maxar</span>
-                        </div>
-                        <h3 class="news-title">Maxar WorldView Legion星座组网完成，重访周期提升至15次/天</h3>
-                        <p class="news-summary">2025年2月，SpaceX成功发射Maxar最后两颗WorldView Legion卫星，完成六星星座组网。该星座实现亚米级分辨率，对特定地区重访周期提升至15次/天，每天可采集360万平方公里30厘米级影像，在国防、灾害响应领域占据优势。</p>
-                        <div class="news-footer">
-                            <span class="news-source">SpaceNews/Payload Space</span>
-                            <span>1小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-14" data-link="https://www.xitu-tech.com/news/planet-labs-pelican-2-superdoves-ai-earth-observation/" data-id="news-13">
-                    <div class="news-image" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
-                        📡
-                        <span class="news-priority new">发射</span>
-                        <button class="favorite-btn" onclick="toggleFavorite(event, 'news-13')" title="收藏">♡</button>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">遥感卫星</span>
-                            <span class="tag international">Planet</span>
-                        </div>
-                        <h3 class="news-title">Planet Labs Pelican-2卫星发射，计划扩展星座至200颗</h3>
-                        <p class="news-summary">2025年1月，Planet Labs Pelican-2卫星成功发射，提供40厘米分辨率图像。公司计划将星座扩展至200颗卫星，增强全球监测能力。Planet Labs凭借多在轨卫星和高研发投入，在泰伯智库2025时空智能与卫星遥感市场竞争力矩阵中位列领先者象限。</p>
-                        <div class="news-footer">
-                            <span class="news-source">泰伯网/Planet Labs</span>
-                            <span>3小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-13" data-link="https://finance.sina.com.cn/tech/roll/2025-03-12/doc-inepkvpc8655395.shtml">
-                    <div class="news-image" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
-                        🌐
-                        <span class="news-priority new">组网</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">卫星互联网</span>
-                            <span class="tag">千帆星座</span>
-                        </div>
-                        <h3 class="news-title">千帆星座在轨卫星达90颗，已开展商业示范应用</h3>
-                        <p class="news-summary">3月12日，长征八号遥六运载火箭以"一箭十八星"方式将千帆星座第五批组网卫星送入轨道，在轨卫星数量达90颗。垣信卫星已与中国移动(香港)、星旅远洋邮轮合作，在"鼓浪屿"号邮轮上实现网联通信测试，并在香港开展智慧农业商业示范应用。</p>
-                        <div class="news-footer">
-                            <span class="news-source">央视新闻/财新</span>
-                            <span>5小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="remote" data-date="2026-03-12" data-link="https://www.caixin.com/2026-03-11/102421761.html">
-                    <div class="news-image" style="background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);">
-                        🚀
-                        <span class="news-priority hot">出海</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag remote">卫星互联网</span>
-                            <span class="tag">垣信卫星</span>
-                        </div>
-                        <h3 class="news-title">千帆星座进入巴西市场，已与30多国启动业务洽谈</h3>
-                        <p class="news-summary">2月12日，巴西电信监管机构批准千帆星座进入巴西市场，授权有效期至2031年。此前垣信卫星已与马来西亚卫星运营商签署合作备忘录。截至目前，公司已与30多个国家启动业务洽谈，计划今年四季度在巴西启动商业运营。</p>
-                        <div class="news-footer">
-                            <span class="news-source">财新周刊</span>
-                            <span>7小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="international" data-date="2026-03-14" data-link="https://www.sohu.com/a/983590154_122531443">
-                    <div class="news-image" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);">
-                        📊
-                        <span class="news-priority new">数据</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag international">国际</span>
-                            <span class="tag">发射统计</span>
-                        </div>
-                        <h3 class="news-title">2025年全球发射329次创历史新高，SpaceX占美国发射95%</h3>
-                        <p class="news-summary">2025年全球进行329次轨道发射尝试，其中321次成功。美国发射181次(SpaceX 170次)，中国92次，欧洲8次。全年部署4517颗卫星，同比增长58%，其中87%为SpaceX星链卫星。商业发射占全球70%。</p>
-                        <div class="news-footer">
-                            <span class="news-source">Payload Space</span>
-                            <span>8小时前</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="news-card" onclick="openModal(this)" data-category="international" data-date="2026-03-11" data-link="https://baike.baidu.com/item/NASA-ISRO%E5%90%88%E6%88%90%E5%AD%94%E5%BE%84%E9%9B%B7%E8%BE%BE/66266238">
-                    <div class="news-image" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
-                        🔬
-                        <span class="news-priority new">技术</span>
-                    </div>
-                    <div class="news-content">
-                        <div class="news-meta">
-                            <span class="tag international">国际</span>
-                            <span class="tag">ESA/NASA</span>
-                        </div>
-                        <h3 class="news-title">NISAR卫星计划2025年发射，印度ISRO与NASA联合研制</h3>
-                        <p class="news-summary">NASA与印度空间研究组织(ISRO)联合研制的NISAR卫星计划2025年发射，搭载L波段SAR载荷，用于监测生态变化和自然灾害。该任务代表NASA与ISRO最大规模合作之一，NASA投入超10亿美元进行任务研制。</p>
-                        <div class="news-footer">
-                            <span class="news-source">SpaceNews/NASA</span>
-                            <span>10小时前</span>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
-    </main>
-
-    <!-- 加载更多 -->
-    <div class="load-more-container" id="loadMoreContainer">
-        <button class="load-more-btn" id="loadMoreBtn" onclick="loadMore()">加载更多</button>
-        <p class="no-more" id="noMoreText" style="display: none; color: var(--text-muted); font-size: 14px;">已显示全部内容</p>
-    </div>
-
-    <footer class="footer">
+    <footer class="footer" id="mainFooter">
         <p>Space Daily 空天信息日报 | 每日更新 · 覆盖商业航天、低空经济、遥感卫星领域</p>
         <p>2026年3月15日 | 共42条资讯 | 上次更新: 04:00 CST</p>
     </footer>
@@ -1509,38 +1440,209 @@
                 <p class="modal-summary" id="modalSummary"></p>
             </div>
             <div class="modal-footer">
-                <span class="modal-source" id="modalSource"></span>
-                <div class="modal-actions">
-                    <div class="modal-action-row">
-                        <button class="modal-action-btn favorite" id="modalFavoriteBtn" onclick="toggleModalFavorite()">
-                            <span id="modalFavoriteIcon">♡</span> <span id="modalFavoriteText">收藏</span>
-                        </button>
-                        <button class="modal-action-btn" onclick="shareNews()">
-                            📤 分享
-                        </button>
+                <div class="modal-footer-row">
+                    <span class="modal-source" id="modalSource"></span>
+                    <div class="modal-actions">
+                        <a id="modalLink" href="#" target="_blank" class="modal-action modal-link" style="display:none;">查看原文 →</a>
+                        <button class="modal-action" onclick="closeModal()">关闭</button>
                     </div>
-                    <a id="modalLink" href="#" target="_blank" class="modal-action modal-link" style="display:none;">查看原文 →</a>
-                    <button class="modal-action" onclick="closeModal()">关闭</button>
+                </div>
+                <div class="share-section">
+                    <span class="share-label">分享到：</span>
+                    <div class="share-buttons">
+                        <button class="share-btn wechat" onclick="shareToWechat()" title="微信">💬</button>
+                        <button class="share-btn weibo" onclick="shareToWeibo()" title="微博">📝</button>
+                        <button class="share-btn copy" onclick="copyLink()" title="复制链接">📋</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- RSS Subscribe Button -->
-    <a href="feed.xml" class="rss-btn" title="RSS订阅" target="_blank">
-        📡
-    </a>
-
     <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="返回顶部">
-        ↑
-    </button>
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" title="返回顶部">↑</button>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
 
     <script>
-        // Version: 20260315-2 - Filter Functionality Update
+        // Version: 20260315-2 - Enhanced with favorites, sharing, theme toggle, back to top
+        
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('spaceDaily_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+        
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('spaceDaily_theme', newTheme);
+            showToast(newTheme === 'light' ? '已切换到浅色模式' : '已切换到深色模式');
+        }
+        
+        // Favorites Management
+        let favorites = JSON.parse(localStorage.getItem('spaceDaily_favorites') || '[]');
+        let currentModalNewsId = null;
+        
+        function updateFavCount() {
+            const count = favorites.length;
+            const badge = document.getElementById('favCount');
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+        
+        function toggleFavorite(newsId) {
+            const btn = document.querySelector(`[data-id="${newsId}"] .favorite-btn`);
+            const index = favorites.indexOf(newsId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+                btn.classList.remove('active');
+                btn.innerHTML = '☆';
+                showToast('已取消收藏');
+            } else {
+                favorites.push(newsId);
+                btn.classList.add('active');
+                btn.innerHTML = '★';
+                showToast('已添加到收藏');
+            }
+            
+            localStorage.setItem('spaceDaily_favorites', JSON.stringify(favorites));
+            updateFavCount();
+        }
+        
+        function isFavorite(newsId) {
+            return favorites.includes(newsId);
+        }
+        
+        function initFavorites() {
+            document.querySelectorAll('.news-card[data-id]').forEach(card => {
+                const newsId = card.getAttribute('data-id');
+                const btn = card.querySelector('.favorite-btn');
+                if (isFavorite(newsId)) {
+                    btn.classList.add('active');
+                    btn.innerHTML = '★';
+                }
+            });
+            updateFavCount();
+        }
+        
+        // Page Navigation
+        function showHome() {
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('favoritesPage').classList.remove('active');
+            document.getElementById('mainFooter').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showFavorites() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('favoritesPage').classList.add('active');
+            document.getElementById('mainFooter').classList.add('hidden');
+            renderFavorites();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function renderFavorites() {
+            const container = document.getElementById('favoritesContent');
+            
+            if (favorites.length === 0) {
+                container.innerHTML = `
+                    <div class="favorites-empty">
+                        <div class="favorites-empty-icon">⭐</div>
+                        <div class="favorites-empty-text">暂无收藏的新闻</div>
+                        <button class="favorites-empty-btn" onclick="showHome()">浏览新闻</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '<div class="news-grid">';
+            favorites.forEach(newsId => {
+                const card = document.querySelector(`.news-card[data-id="${newsId}"]`);
+                if (card) {
+                    const clone = card.cloneNode(true);
+                    const btn = clone.querySelector('.favorite-btn');
+                    btn.classList.add('active');
+                    btn.innerHTML = '★';
+                    btn.onclick = function(e) {
+                        e.stopPropagation();
+                        toggleFavorite(newsId);
+                        renderFavorites();
+                    };
+                    clone.onclick = function() { openModal(clone); };
+                    html += clone.outerHTML;
+                }
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        // Share Functions
+        function shareToWechat() {
+            showToast('请使用微信扫一扫分享');
+        }
+        
+        function shareToWeibo() {
+            const title = document.getElementById('modalTitle').textContent;
+            const url = window.location.href;
+            const weiboUrl = `https://service.weibo.com/share/share.php?title=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+            window.open(weiboUrl, '_blank', 'width=600,height=400');
+        }
+        
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('链接已复制到剪贴板');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('链接已复制到剪贴板');
+            });
+        }
+        
+        function subscribeRSS() {
+            showToast('RSS订阅功能即将上线');
+        }
+        
+        // Back to Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function initBackToTop() {
+            const btn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            });
+        }
+        
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+        
+        // Search
         function searchNews() {
             const input = document.getElementById('searchInput');
             const filter = input.value.toLowerCase();
@@ -1563,10 +1665,8 @@
                 }
             });
             
-            // 检查每个section是否有可见的新闻
             sections.forEach(section => {
                 const visibleCards = section.querySelectorAll('.news-card:not([style*="display: none"])');
-                const sectionTitle = section.querySelector('.section-header');
                 if (visibleCards.length === 0 && filter !== '') {
                     section.style.display = 'none';
                 } else {
@@ -1574,194 +1674,24 @@
                 }
             });
         }
-
+        
         // Modal Functions
-        let currentNewsId = null;
-
-        // Theme Management
-        function initTheme() {
-            const savedTheme = localStorage.getItem('spaceDailyTheme') || 'dark';
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-                document.getElementById('themeToggle').textContent = '☀️';
-            }
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('themeToggle');
-            
-            if (body.classList.contains('light-theme')) {
-                body.classList.remove('light-theme');
-                localStorage.setItem('spaceDailyTheme', 'dark');
-                btn.textContent = '🌙';
-            } else {
-                body.classList.add('light-theme');
-                localStorage.setItem('spaceDailyTheme', 'light');
-                btn.textContent = '☀️';
-            }
-        }
-
-        // Favorites Management
-        function getFavorites() {
-            return JSON.parse(localStorage.getItem('spaceDailyFavorites') || '[]');
-        }
-
-        function saveFavorites(favorites) {
-            localStorage.setItem('spaceDailyFavorites', JSON.stringify(favorites));
-        }
-
-        function toggleFavorite(event, newsId) {
-            event.stopPropagation();
-            const favorites = getFavorites();
-            const index = favorites.indexOf(newsId);
-            
-            if (index > -1) {
-                favorites.splice(index, 1);
-                showToast('已取消收藏', 'success');
-            } else {
-                favorites.push(newsId);
-                showToast('已添加到收藏', 'success');
-            }
-            
-            saveFavorites(favorites);
-            updateFavoriteButtons();
-        }
-
-        function toggleModalFavorite() {
-            if (!currentNewsId) return;
-            
-            const favorites = getFavorites();
-            const index = favorites.indexOf(currentNewsId);
-            
-            if (index > -1) {
-                favorites.splice(index, 1);
-                showToast('已取消收藏', 'success');
-            } else {
-                favorites.push(currentNewsId);
-                showToast('已添加到收藏', 'success');
-            }
-            
-            saveFavorites(favorites);
-            updateFavoriteButtons();
-            updateModalFavoriteButton();
-        }
-
-        function updateFavoriteButtons() {
-            const favorites = getFavorites();
-            document.querySelectorAll('.favorite-btn').forEach(btn => {
-                const onclick = btn.getAttribute('onclick');
-                const match = onclick.match(/toggleFavorite\(event, ['"](.+?)['"]\)/);
-                if (match) {
-                    const newsId = match[1];
-                    if (favorites.includes(newsId)) {
-                        btn.classList.add('active');
-                        btn.innerHTML = '♥';
-                    } else {
-                        btn.classList.remove('active');
-                        btn.innerHTML = '♡';
-                    }
-                }
-            });
-        }
-
-        function updateModalFavoriteButton() {
-            const favorites = getFavorites();
-            const btn = document.getElementById('modalFavoriteBtn');
-            const icon = document.getElementById('modalFavoriteIcon');
-            const text = document.getElementById('modalFavoriteText');
-            
-            if (favorites.includes(currentNewsId)) {
-                btn.classList.add('active');
-                icon.textContent = '♥';
-                text.textContent = '已收藏';
-            } else {
-                btn.classList.remove('active');
-                icon.textContent = '♡';
-                text.textContent = '收藏';
-            }
-        }
-
-        // Share Function
-        async function shareNews() {
-            const title = document.getElementById('modalTitle').textContent;
-            const url = document.getElementById('modalLink').href;
-            
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: title,
-                        text: title,
-                        url: url
-                    });
-                } catch (err) {
-                    console.log('Share cancelled');
-                }
-            } else {
-                // Fallback: copy to clipboard
-                try {
-                    await navigator.clipboard.writeText(`${title} - ${url}`);
-                    showToast('链接已复制到剪贴板', 'success');
-                } catch (err) {
-                    showToast('复制失败，请手动复制', 'error');
-                }
-            }
-        }
-
-        // Toast Notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type}`;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
-        }
-
-        // Back to Top
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        function initBackToTop() {
-            const btn = document.getElementById('backToTop');
-            
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    btn.classList.add('visible');
-                } else {
-                    btn.classList.remove('visible');
-                }
-            });
-        }
-
         function openModal(card) {
             const title = card.querySelector('.news-title').textContent;
             const summary = card.querySelector('.news-summary').textContent;
             const source = card.querySelector('.news-source').textContent;
             const tags = card.querySelectorAll('.tag');
-            const link = card.getAttribute('data-link');
-            currentNewsId = card.getAttribute('data-id');
+            const newsId = card.getAttribute('data-id');
+            
+            currentModalNewsId = newsId;
             
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalSummary').textContent = summary;
             document.getElementById('modalSource').textContent = '来源: ' + source;
             
-            // Handle link button
             const linkBtn = document.getElementById('modalLink');
-            if (link && link !== '#') {
-                linkBtn.href = link;
-                linkBtn.style.display = 'inline-flex';
-            } else {
-                linkBtn.style.display = 'none';
-            }
+            linkBtn.style.display = 'none';
             
-            // Build tags HTML
             let tagsHtml = '';
             tags.forEach(tag => {
                 const tagClass = tag.className.replace('tag ', '');
@@ -1769,423 +1699,32 @@
             });
             document.getElementById('modalMeta').innerHTML = tagsHtml;
             
-            // Update favorite button in modal
-            updateModalFavoriteButton();
-            
             document.getElementById('newsModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
+        
         function closeModal() {
             document.getElementById('newsModal').classList.remove('active');
             document.body.style.overflow = '';
+            currentModalNewsId = null;
         }
-
+        
         function closeModalOnOverlay(event) {
             if (event.target === document.getElementById('newsModal')) {
                 closeModal();
             }
         }
-
-        // Close modal with Escape key
+        
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
             }
         });
-
-        // Chart.js Configuration - 深色主题
-        Chart.defaults.color = '#9ca3af';
-        Chart.defaults.borderColor = '#27272a';
-        Chart.defaults.font.family = "'Inter', 'Noto Sans SC', sans-serif";
-
-        // 2025年全球发射统计 - 柱状图
-        const launchCtx = document.getElementById('launchChart');
-        if (launchCtx) {
-            new Chart(launchCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['美国', '中国', '欧洲', '其他'],
-                    datasets: [{
-                        label: '发射次数',
-                        data: [181, 92, 8, 48],
-                        backgroundColor: [
-                            'rgba(14, 165, 233, 0.8)',
-                            'rgba(239, 68, 68, 0.8)',
-                            'rgba(99, 102, 241, 0.8)',
-                            'rgba(16, 185, 129, 0.8)'
-                        ],
-                        borderColor: [
-                            '#0ea5e9',
-                            '#ef4444',
-                            '#6366f1',
-                            '#10b981'
-                        ],
-                        borderWidth: 2,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#18181b',
-                            borderColor: '#27272a',
-                            borderWidth: 1,
-                            padding: 12,
-                            titleColor: '#f1f1f4',
-                            bodyColor: '#9ca3af',
-                            callbacks: {
-                                label: function(context) {
-                                    const total = 329;
-                                    const percentage = ((context.raw / total) * 100).toFixed(1);
-                                    return `${context.raw}次 (${percentage}%)`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#27272a' },
-                            ticks: { color: '#9ca3af' }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#f1f1f4', font: { weight: '500' } }
-                        }
-                    }
-                }
-            });
-        }
-
-        // 商业航天融资趋势 - 折线图
-        const financingCtx = document.getElementById('financingChart');
-        if (financingCtx) {
-            new Chart(financingCtx, {
-                type: 'line',
-                data: {
-                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-                    datasets: [{
-                        label: '2025年融资额（亿元）',
-                        data: [12, 15, 18, 14, 16, 20, 15, 18, 22, 16, 14, 16],
-                        borderColor: '#6366f1',
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#6366f1',
-                        pointBorderColor: '#18181b',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }, {
-                        label: '2024年同期',
-                        data: [8, 10, 12, 11, 13, 15, 12, 14, 16, 13, 12, 14],
-                        borderColor: '#6b7280',
-                        backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        tension: 0.4,
-                        pointRadius: 0,
-                        pointHoverRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            align: 'end',
-                            labels: { color: '#9ca3af', usePointStyle: true }
-                        },
-                        tooltip: {
-                            backgroundColor: '#18181b',
-                            borderColor: '#27272a',
-                            borderWidth: 1,
-                            padding: 12,
-                            titleColor: '#f1f1f4',
-                            bodyColor: '#9ca3af'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#27272a' },
-                            ticks: { 
-                                color: '#9ca3af',
-                                callback: function(value) { return value + '亿'; }
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#9ca3af' }
-                        }
-                    }
-                }
-            });
-        }
-
-        // 低轨经济市场规模预测 - 面积图
-        const marketCtx = document.getElementById('marketChart');
-        if (marketCtx) {
-            new Chart(marketCtx, {
-                type: 'line',
-                data: {
-                    labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032', '2033', '2034', '2035'],
-                    datasets: [{
-                        label: '市场规模（万亿元）',
-                        data: [2.1, 2.5, 3.0, 3.6, 4.3, 5.2, 6.2, 7.5, 9.0, 10.8, 13.0, 15.6],
-                        borderColor: '#10b981',
-                        backgroundColor: function(context) {
-                            const ctx = context.chart.ctx;
-                            const gradient = ctx.createLinearGradient(0, 0, 0, 250);
-                            gradient.addColorStop(0, 'rgba(16, 185, 129, 0.4)');
-                            gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
-                            return gradient;
-                        },
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#10b981',
-                        pointBorderColor: '#18181b',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#18181b',
-                            borderColor: '#27272a',
-                            borderWidth: 1,
-                            padding: 12,
-                            titleColor: '#f1f1f4',
-                            bodyColor: '#9ca3af',
-                            callbacks: {
-                                label: function(context) {
-                                    return '市场规模: ' + context.raw + '万亿元';
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#27272a' },
-                            ticks: { 
-                                color: '#9ca3af',
-                                callback: function(value) { return value + '万亿'; }
-                            }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#9ca3af' }
-                        }
-                    }
-                }
-            });
-        }
-
-        // 进度条动画
+        
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            const progressBars = document.querySelectorAll('.progress-bar');
-            progressBars.forEach(bar => {
-                const progress = bar.style.getPropertyValue('--progress');
-                bar.style.width = '0%';
-                setTimeout(() => {
-                    bar.style.width = progress;
-                }, 500);
-            });
-            
-            // 初始化筛选功能
-            initFilters();
-        });
-
-        // ==================== 筛选功能 ====================
-        const ITEMS_PER_PAGE = 20; // 默认显示20条
-        let currentDateFilter = 'all';
-        let currentCategoryFilter = 'all';
-        let allNewsCards = [];
-        let filteredCards = [];
-
-        // 初始化筛选功能
-        function initFilters() {
-            // 获取所有新闻卡片
-            allNewsCards = Array.from(document.querySelectorAll('.news-card'));
-            
-            // 绑定日期筛选按钮事件
-            const dateButtons = document.querySelectorAll('#dateFilter .filter-btn');
-            dateButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    dateButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentDateFilter = this.getAttribute('data-date');
-                    applyFilters();
-                });
-            });
-
-            // 绑定分类筛选按钮事件
-            const categoryButtons = document.querySelectorAll('#categoryFilter .filter-btn');
-            categoryButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    categoryButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCategoryFilter = this.getAttribute('data-category');
-                    applyFilters();
-                });
-            });
-
-            // 首次应用筛选
-            applyFilters();
-        }
-
-        // 检查日期是否匹配
-        function checkDateMatch(cardDate, filter) {
-            if (filter === 'all') return true;
-            if (!cardDate) return true;
-            
-            const cardDateObj = new Date(cardDate);
-            const referenceDate = new Date('2026-03-15'); // 以日报日期为基准
-            
-            if (filter === 'last7') {
-                const sevenDaysAgo = new Date(referenceDate);
-                sevenDaysAgo.setDate(referenceDate.getDate() - 7);
-                return cardDateObj >= sevenDaysAgo;
-            } else if (filter === 'last30') {
-                const thirtyDaysAgo = new Date(referenceDate);
-                thirtyDaysAgo.setDate(referenceDate.getDate() - 30);
-                return cardDateObj >= thirtyDaysAgo;
-            } else if (filter === '2026-03') {
-                return cardDate.startsWith('2026-03');
-            } else if (filter === '2026-02') {
-                return cardDate.startsWith('2026-02');
-            }
-            return true;
-        }
-
-        // 应用筛选
-        function applyFilters() {
-            // 先筛选出符合条件的卡片
-            filteredCards = allNewsCards.filter(card => {
-                const cardCategory = card.getAttribute('data-category');
-                const cardDate = card.getAttribute('data-date');
-                
-                // 分类匹配
-                const categoryMatch = currentCategoryFilter === 'all' || cardCategory === currentCategoryFilter;
-                
-                // 日期匹配
-                const dateMatch = checkDateMatch(cardDate, currentDateFilter);
-                
-                return categoryMatch && dateMatch;
-            });
-            
-            // 隐藏所有卡片
-            allNewsCards.forEach(card => {
-                card.classList.add('hidden');
-            });
-            
-            // 显示前20条
-            showCards(0, Math.min(ITEMS_PER_PAGE, filteredCards.length));
-            
-            // 更新UI
-            updateLoadMoreButton();
-            updateSectionsVisibility();
-            updateNoResultsMessage();
-        }
-
-        // 显示指定范围的卡片
-        function showCards(start, end) {
-            for (let i = start; i < end && i < filteredCards.length; i++) {
-                filteredCards[i].classList.remove('hidden');
-            }
-        }
-
-        // 加载更多功能
-        function loadMore() {
-            const currentlyShown = filteredCards.filter(card => !card.classList.contains('hidden')).length;
-            const remaining = filteredCards.length - currentlyShown;
-            const toShow = Math.min(ITEMS_PER_PAGE, remaining);
-            
-            showCards(currentlyShown, currentlyShown + toShow);
-            updateLoadMoreButton();
-        }
-
-        // 更新加载更多按钮状态
-        function updateLoadMoreButton() {
-            const btn = document.getElementById('loadMoreBtn');
-            const noMoreText = document.getElementById('noMoreText');
-            
-            if (!btn) return;
-            
-            const currentlyShown = filteredCards.filter(card => !card.classList.contains('hidden')).length;
-            const total = filteredCards.length;
-            
-            if (total === 0 || currentlyShown >= total) {
-                btn.classList.add('hidden');
-                if (noMoreText) {
-                    noMoreText.style.display = total === 0 ? 'none' : 'block';
-                }
-            } else {
-                btn.classList.remove('hidden');
-                btn.textContent = `加载更多 (${currentlyShown}/${total})`;
-                if (noMoreText) {
-                    noMoreText.style.display = 'none';
-                }
-            }
-        }
-
-        // 更新各section的显示状态
-        function updateSectionsVisibility() {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                const visibleCards = section.querySelectorAll('.news-card:not(.hidden)');
-                if (visibleCards.length === 0) {
-                    section.style.display = 'none';
-                } else {
-                    section.style.display = '';
-                }
-            });
-        }
-
-        // 更新无结果提示
-        function updateNoResultsMessage() {
-            let noResultsEl = document.getElementById('noResultsMsg');
-            
-            if (!noResultsEl) {
-                noResultsEl = document.createElement('div');
-                noResultsEl.id = 'noResultsMsg';
-                noResultsEl.className = 'no-results';
-                noResultsEl.innerHTML = '<p>😕 没有找到符合条件的新闻</p><p style="font-size: 14px; margin-top: 8px;">请尝试调整筛选条件</p>';
-                const main = document.querySelector('main.main');
-                if (main) {
-                    main.appendChild(noResultsEl);
-                }
-            }
-            
-            if (filteredCards.length === 0) {
-                noResultsEl.classList.add('show');
-            } else {
-                noResultsEl.classList.remove('show');
-            }
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize theme
             initTheme();
-            
-            // Initialize favorite buttons state
-            updateFavoriteButtons();
-            
-            // Initialize back to top button
+            initFavorites();
             initBackToTop();
         });
     </script>
